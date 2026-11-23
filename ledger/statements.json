@@ -109,6 +109,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "theorem h1Norm_sq_galilean_centered (u : ℝ → Position → Velocity) (t : ℝ) (hSmooth : ContDiff ℝ ∞ (u t)) (hPeriodic : LatticePeriodic (u t)) : (h1Norm (u t) : ℝ) ^ 2 = (h1Norm (galileanVelocity (spatialMean (u t)) u t) : ℝ) ^ 2 + ‖spatialMean (u t)‖ ^ 2"
  },
+ "kineticEnergy_hasDerivWithinAt": {
+  "basis": "Compared both intermediate statements with the Section 3.2 energy calculation and equation (1). See runs/review-2026-11-23-Energy-components.md.",
+  "file": "NavierStokesTao/Energy.lean",
+  "frozen_at": "2026-11-23T15:47:59-05:00",
+  "hash": "f3f5452b2ca431ca",
+  "kind": "theorem",
+  "paper": "none",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem kineticEnergy_hasDerivWithinAt {T : ℝ} {u : ℝ → Position → Velocity} (hT : 0 < T) (hu : ContDiffOn ℝ ∞ (fun z : ℝ × Position ↦ u z.1 z.2) (Set.Icc 0 T ×ˢ Set.univ)) (t : ℝ) (ht : t ∈ Set.Icc 0 T) : HasDerivWithinAt (fun s ↦ ∫ x in Set.Icc (0 : Position) 1, ‖u s x‖ ^ 2) (∫ x in Set.Icc (0 : Position) 1, 2 * ⟪u t x, derivWithin (fun s ↦ u s x) (Set.Icc 0 T) t⟫_ℝ) (Set.Icc 0 T) t"
+ },
  "kineticEnergy_identity": {
   "basis": "Compared the statement and SmoothSolution with equation (1) and the energy identity in Section 3.2, including normalization, endpoint derivatives, and the spatial mean. See runs/review-2026-11-23-Energy.md.",
   "file": "NavierStokesTao/Energy.lean",
@@ -118,6 +128,16 @@
   "paper": "Section 3.2, energy identity",
   "reviewer": "gpt-6:subagent",
   "statement": "theorem kineticEnergy_identity {T : ℝ} {u₀ : Position → Velocity} {u : ℝ → Position → Velocity} {p : ℝ → Position → ℝ} (hT : 0 < T) (hu : SmoothSolution (Set.Icc 0 T) u₀ u p) (t : ℝ) (ht : t ∈ Set.Icc 0 T) : HasDerivWithinAt (fun s ↦ ∫ x in Set.Icc (0 : Position) 1, ‖u s x‖ ^ 2) (-2 * ∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u t) x‖ ^ 2) (Set.Icc 0 T) t"
+ },
+ "kineticEnergy_spatialBalance": {
+  "basis": "Compared both intermediate statements with the Section 3.2 energy calculation and equation (1). See runs/review-2026-11-23-Energy-components.md.",
+  "file": "NavierStokesTao/Energy.lean",
+  "frozen_at": "2026-11-23T15:47:59-05:00",
+  "hash": "803b89acc7f6b7d7",
+  "kind": "theorem",
+  "paper": "none",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem kineticEnergy_spatialBalance (v : Position → Velocity) (q : Position → ℝ) (hv : ContDiff ℝ ∞ v) (hq : ContDiff ℝ ∞ q) (hvper : LatticePeriodic v) (hqper : LatticePeriodic q) (hdiv : ∀ x, spatialDivergence v x = 0) : (∫ x in Set.Icc (0 : Position) 1, 2 * ⟪v x, spatialLaplacian v x - pressureGradient q x - fderiv ℝ v x (v x).ofLp⟫_ℝ) = -2 * ∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i v x‖ ^ 2"
  },
  "latticePeriodic_factors_torus": {
   "basis": "Independent back-translation before checking Tao v5 equation (1), the Fourier notation, and Mathlib’s normalized Haar measure and fundamental-domain integral. See runs/review-2026-11-23-torus-integral.md.",
