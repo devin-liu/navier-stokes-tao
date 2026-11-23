@@ -164,3 +164,5 @@
 {"ts": "2026-11-23T12:27:33-05:00", "type": "state", "decl": "galileanVelocity_inverse", "from": "proved-local", "to": "merged", "note": null}
 {"ts": "2026-11-23T12:27:33-05:00", "type": "state", "decl": "spatialMean_galileanVelocity", "from": "proved-local", "to": "merged", "note": null}
 {"ts": "2026-11-23T12:27:36-05:00", "type": "preflight", "behind": "0", "ahead": "0", "open_prs": [], "overlap": [], "verdict": "clear"}
+{"ts": "2026-11-23T12:27:55-05:00", "type": "model-pass", "kind": "statement", "model": "gpt-6", "tier": "mid", "targets": ["torusPoint", "latticePeriodic_factors_torus", "setIntegral_torusPoint"], "files": [], "purpose": "Connect the Cartesian periodic lifts to Mathlib’s product quotient torus and its normalized integral.", "lemma": null, "usage_before": "unmeasured", "operator_ok": false}
+{"ts": "2026-11-23T12:28:28-05:00", "type": "statement-check", "file": "NavierStokesTao/TorusIntegral.lean", "sha": "55037f4", "secs": 13.5, "ok": true, "declarations": 3, "sorries": 2}

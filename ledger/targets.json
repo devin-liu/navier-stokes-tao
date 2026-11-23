@@ -43,6 +43,13 @@
   "state": "stuck",
   "updated": "2026-11-23T12:24:20-05:00"
  },
+ "latticePeriodic_factors_torus": {
+  "decl": "latticePeriodic_factors_torus",
+  "file": "NavierStokesTao/TorusIntegral.lean",
+  "paper": "none",
+  "state": "open",
+  "updated": "2026-11-23T12:28:28-05:00"
+ },
  "longTermBound_implies_shortTermBound": {
   "axioms": [
    "propext",
@@ -67,6 +74,13 @@
   "paper": "Theorem 1.4",
   "state": "open",
   "updated": "2026-11-23T12:07:02-05:00"
+ },
+ "setIntegral_torusPoint": {
+  "decl": "setIntegral_torusPoint",
+  "file": "NavierStokesTao/TorusIntegral.lean",
+  "paper": "none",
+  "state": "open",
+  "updated": "2026-11-23T12:28:28-05:00"
  },
  "setIntegral_unitCube_translate": {
   "decl": "setIntegral_unitCube_translate",
