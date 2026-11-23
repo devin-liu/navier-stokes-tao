@@ -1,6 +1,8 @@
 # Running cycles
 
-Paste this into a fresh desktop agent whose working folder is this one. Replace the name. A
+Paste this into a fresh desktop agent whose working folder is this one. Replace the name.
+The short form does the same: *"Read `prompts/cycle.md` and run its quoted prompt as
+`claude-desktop`, including its go-ahead paragraph."* A
 cycle takes one file, or one group of paper items, from the map to a merged pull request. The
 agent keeps running cycles until one of the stop conditions at the end holds.
 
@@ -12,16 +14,18 @@ pasting if you want to be asked first.
 > If the turn is held by someone else, or `pgrep -fl 'lake|setup.sh|firstpass|gate.py'` shows a
 > run, say so and stop. If `sync` reports problems, sort them out first.
 >
-> My go-ahead for this session, without asking again: `scripts/paper.sh fetch` once; and for
-> work that passed `scripts/gate.py handin`, the whole hand-in sequence in `AGENTS.md` ("What a
-> go-ahead for hand-in covers"): push the cycle branch, open the pull request, and squash-merge
-> it once CI is green. Its skip conditions apply: skip and carry on, do not stop to ask.
-> Everything else that leaves this machine, ask me first.
+> My go-ahead for this session, without asking again: for work that passed
+> `scripts/gate.py handin`, the whole hand-in sequence in `AGENTS.md` ("What a go-ahead for
+> hand-in covers"): push the cycle branch, open the pull request with `Closes #N` for each open
+> issue it resolves (`gh issue list`), and squash-merge it once CI is green. Its skip
+> conditions apply: skip and carry on, do not stop to ask. Everything else that changes
+> anything outside this machine, ask me first.
 >
 > Each cycle, cheapest step first, using only the scripts:
 >
-> 0. **Sync.** On `main` with a clean tree: `scripts/nst preflight`, then
->    `scripts/nst branch <slug>`. If a cycle branch is already checked out, finish it instead.
+> 0. **Sync.** On `main`: `scripts/nst preflight`, then `scripts/nst branch <slug>`. If a
+>    cycle branch is already checked out, finish it instead. The first time,
+>    `scripts/paper.sh fetch`.
 > 1. **Inbox.** For each file in `inbox/` that `scripts/nst status` lists as not checked:
 >    `scripts/firstpass.py <file> --decl … --candidates inbox --route private`, then
 >    `scripts/gate.py apply` for each win.

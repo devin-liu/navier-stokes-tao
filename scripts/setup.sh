@@ -15,6 +15,10 @@ while [ $# -gt 0 ]; do
   case $1 in
     --reuse) reuse=$2; shift 2 ;;
     --local-only) local_only=1; shift ;;
+    --update|--fork|--warm)
+      echo "$1 belongs to a workspace that contributes to someone else's repository. This repository is" >&2
+      echo "its own upstream: a cycle starts with \`scripts/nst preflight\` and \`scripts/nst branch <slug>\`." >&2
+      exit 2 ;;
     *) echo "unknown option $1" >&2; exit 2 ;;
   esac
 done

@@ -129,6 +129,8 @@ def cmd_turn(a) -> None:
         LOCK.unlink()
         # The handover is part of the record: commit it with the ledgers when on a cycle branch.
         commit_ledger(f"Turn handover ({row['agent']})", ("NEXT.md",))
+        if rv.STATE == rv.ROOT and git("branch", "--show-current").stdout.strip() == rv.cfg().get("branch", "main"):
+            print("on main: the handover stays uncommitted here and is carried onto the next cycle branch by `scripts/nst branch`.")
         print("turn released; NEXT.md rewritten.")
 
 
@@ -306,8 +308,13 @@ def cmd_preflight(a) -> None:
 
 def cmd_branch(a) -> None:
     main = rv.cfg().get("branch", "main")
-    if git("status", "--porcelain", "--untracked-files=no").stdout.strip():
-        rv.die("uncommitted changes; commit or sort them out first (scripts/nst sync)")
+    # A turn that ended on `main` leaves its handover uncommitted there (main only changes through
+    # pull requests). Those records travel onto the new branch; anything else has to be sorted out.
+    records = ("NEXT.md", "REPORT.md", "ledger/")
+    dirty = [l[3:] for l in git("status", "--porcelain", "--untracked-files=no").stdout.splitlines() if l.strip()]
+    other = [f for f in dirty if not f.startswith(records)]
+    if other:
+        rv.die(f"uncommitted changes outside the records ({', '.join(other[:4])}); commit or sort them out first (scripts/nst sync)")
     cur = git("branch", "--show-current").stdout.strip()
     if cur != main:
         rv.die(f"already on `{cur}`. Finish that cycle (hand-in, PR, merge) or switch to {main} yourself.")
@@ -317,7 +324,12 @@ def cmd_branch(a) -> None:
         rv.die(f"local {main} does not fast-forward to origin/{main}: {rv.short(r.stderr, 200)}")
     name = f"cycle/{datetime.date.today().strftime('%m%d')}-{re.sub(r'[^a-z0-9]+', '-', a.slug.lower()).strip('-')}"
     r = git("switch", "-c", name)
-    print(f"on {name} from {main} @ {rv.git_sha(rv.worktree())}" if r.returncode == 0 else rv.short(r.stderr, 200))
+    if r.returncode != 0:
+        rv.die(rv.short(r.stderr, 200))
+    print(f"on {name} from {main} @ {rv.git_sha(rv.worktree())}")
+    if dirty:
+        commit_ledger("Carry the handover over from main", ("NEXT.md",) + (("REPORT.md",) if "REPORT.md" in dirty else ()))
+        print(f"  carried onto the branch and committed: {', '.join(dirty)}")
 
 
 # ---------------------------------------------------------------- targets and statements
