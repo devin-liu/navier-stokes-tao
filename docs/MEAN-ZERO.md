@@ -14,7 +14,7 @@ Thus `m(t) = m(0) = m` on the solution interval.
 
 ## Transformation of the solution
 
-Let `x` be the old coordinate and `y = x − tm) the moving coordinate. In that frame
+Let `x` be the old coordinate and `y = x − tm` the moving coordinate. In that frame
 the fields and initial datum are
 
 ```text
