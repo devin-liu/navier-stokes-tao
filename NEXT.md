@@ -2,16 +2,16 @@
 
 Written by `scripts/nst turn end`. Do not edit by hand and do not append: the next handover replaces it.
 
-Updated 2026-11-23T12:01:51-05:00 by claude-desktop (0 Lean runs, 0 model passes this turn).
+Updated 2026-11-23T12:10:53-05:00 by claude-desktop (13 Lean runs, 3 model passes this turn).
 
 ## Done last turn
 
-2026-11-23: the previous turn was started with a prompt written for a different workspace (it named scripts/rv, setup.sh --update and claims) and stopped without work. Fixed what made that a dead end: AGENTS.md now tells an agent with such a prompt to run prompts/cycle.md here; scripts/setup.sh explains --update/--fork/--warm instead of 'unknown option'; scripts/paper.sh fetch is classed as a read (no go-ahead); scripts/nst branch carries an uncommitted handover from main onto the new branch (tested in a scratch clone); prompts/cycle.md adds Closes #N for resolved issues and a one-line short form. scripts/selftest.sh passes. Operator go-ahead 2026-11-23, in their words: 'Create up to 10 open ones so we can kick things off' (covered: issues #2 to #10 and four labels, created and seen on GitHub). PR #1 merged 2026-11-23T16:50Z; CI green on main. Licence Apache-2.0 went in with PR #1.
+Ran the quoted prompts/cycle.md as claude-desktop. On 2026-11-23 GitHub preflights found the checkout 0 behind origin/main, 0 open PRs and 9 open issues. The issue list confirmed milestone issues #2 through #6 were open that day. Fetched and read the arXiv source through scripts/paper.sh, added the four Section 1 Lean modules and updated docs/MAP.md. All four modules build. Scratch Lean checks verified the zero solution and the norm of constant velocity. Independent review at runs/review-2026-11-23-section-one.md found no mathematical mismatch, but the reviewer read docs/MAP.md before back-translating the Lean. No declarations were frozen. The gate accepted longTermBound_implies_shortTermBound with propext, Classical.choice and Quot.sound. Theorem 1.4 remains a statement with sorry, with the analytical proof slated for milestone 4. Hand-in passed, diff checked, and a draft was prepared with Closes #6. The session go-ahead to push, open and squash-merge after green CI was unused while awaiting the statement decisions.
 
 ## Next action
 
-prompts/cycle.md from step 0, milestone 1 of docs/MAP.md (issues #2 to #6): scripts/paper.sh fetch, check the Section 1 rows against the source, then the statement pass
+Obtain a replacement independent statement review after the operator decision.
 
 ## Waiting on the operator
 
-Merge the pull request from branch fix/first-kickoff. The statement choices in docs/MAP.md (issues #2, #3, #4) are yours to decide once the first statement pass proposes them.
+Approve or revise the periodic lift, joint smoothness with one-sided endpoint derivatives, explicit pressure, and inhomogeneous H¹ choices in docs/MAP.md. Authorize one replacement review because the first pass did not follow the reading protocol. Stuck targets: none.

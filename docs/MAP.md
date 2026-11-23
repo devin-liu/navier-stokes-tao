@@ -28,17 +28,29 @@ before anything large is tried, and it tests the definitions before analysis is 
 
 ## Choices the first statement pass has to make, and write down here
 
-- **The torus and fields.** `Ω = (ℝ/ℤ)³`. Mathlib has `UnitAddTorus`; decide between functions
-  on it and periodic functions on `ℝ³`, and say why.
+- **The torus and fields.** Model `Ω = (ℝ/ℤ)³` by its integer-periodic lifts on `Fin 3 → ℝ`,
+  with values in `EuclideanSpace ℝ (Fin 3)` for velocity and `ℝ` for pressure. The lifts
+  give global Cartesian coordinates for Mathlib's `fderiv` and `Pi.single`. The quotient
+  `UnitAddTorus (Fin 3)` has Mathlib's `UnitAddTorus.mFourier` and `UnitAddTorus.mFourierCoeff`.
+  Connect the lifts to the quotient when the Fourier theory is introduced. Time is curried
+  for slices, with joint smoothness on the product.
 - **Smooth solution on `[0,T]`.** The conjectures quantify over smooth `(u, p)` on the closed
-  interval; the paper does not spell out the regularity class. The bounds quantify over
-  solutions that already exist; only Conjecture 1.1 asserts existence. Keep that distinction.
-- **The `H¹` norm in the conjectures.** Section 1.5 defines `H^s_0` for mean-zero fields from
-  the nonzero Fourier modes. The conjectures use `H¹_x(Ω)` with no mean-zero hypothesis, and
-  the paper does not define it separately; the use of Poincaré in (7) suggests the
-  inhomogeneous norm. Choose, and record the reason.
-- **Pressure.** The paper removes it by Leray projection and recovers it for smooth solutions.
-  Decide whether a solution is a pair `(u, p)` or a field `u` with a pressure asserted to exist.
+  interval. Use `ContDiffOn ℝ ∞` jointly on the closed time interval times all spatial
+  coordinates and `derivWithin` on the time slice for the equation, including its endpoints.
+  Use the same convention on the closed forward ray for Conjecture 1.1. The source leaves
+  the endpoint smoothness convention implicit.
+- **The `H¹` norm in the conjectures.** Use the inhomogeneous norm, given on smooth fields
+  by the square root of the integral of `|u|² + ∑ᵢ |∂ᵢu|²` over a unit cube. The cube has
+  unit Lebesgue measure (`Real.volume_Icc_pi`), so a constant field has its Euclidean norm.
+  The notation subsection defines the homogeneous norm only in the mean-zero case, and
+  Section 3.2 uses Poincaré to bound `H¹` by the derivative norm there. Equivalent
+  inhomogeneous norms give equivalent conjectures by rescaling the bounding functions.
+  The derivative seminorm loses the constant mode. Mean conservation and the Galilean
+  reduction let one treat this mode separately: on the mean-zero part, Poincaré compares
+  the two norms, while the initial inhomogeneous norm controls the conserved mean.
+- **Pressure.** Keep a smooth pressure as a separate argument to `SmoothSolution`, as in
+  equation (1) and Conjectures 1.1–1.3. Only Conjecture 1.1 asserts existence of a solution
+  pair. Section 2 uses Leray projection to eliminate pressure and later recovers it.
 - **`F` and `G`.** Nondecreasing `ℝ₊ → ℝ₊`; the same function for all times and solutions.
 - **`u(0)` and `u₀`** are used interchangeably in the paper.
 
@@ -46,14 +58,15 @@ before anything large is tried, and it tests the definitions before analysis is 
 
 | Paper item | What it says | Lean | File | Needs |
 |---|---|---|---|---|
-| eq. (1) | Periodic incompressible Navier–Stokes on `Ω`, viscosity 1, smooth `u`, `p`, divergence-free smooth data | — | `Setting.lean` | |
+| eq. (1) | Periodic incompressible Navier–Stokes on `Ω`, viscosity 1, smooth `u`, `p`, divergence-free smooth data | `SmoothSolution` | `Setting.lean` | |
+| Section 1.5, `H¹` in (2)–(3) | Inhomogeneous norm on smooth periodic fields, with the normalization above | `h1Norm` | `Sobolev.lean` | spatial partial derivatives |
 | Section 1.5, `H^s_0` | Mean-zero distributions with the norm from nonzero Fourier modes | — | `Sobolev.lean` | |
-| Section 1.5, `X^s_T` | `C⁰_t H^s_0 ∩ L²_t H^{s+1}_0` on `[0,T] × Ω` (named in Section 2) | — | `Sobolev.lean` | `H^s_0` |
-| Conjecture 1.1 | Every smooth divergence-free datum has a global smooth solution on `[0,∞)` | — | `Conjectures.lean` | eq. (1) |
-| Conjecture 1.2, eq. (2) | A nondecreasing `F` bounds `‖u(T)‖_{H¹}` by `F(‖u₀‖_{H¹})` for every finite `T > 0` and every smooth solution on `[0,T]` | — | `Conjectures.lean` | eq. (1), `H¹` |
-| Conjecture 1.3, eq. (3) | The same with a nondecreasing `G` and `0 < T ≤ 1` | — | `Conjectures.lean` | eq. (1), `H¹` |
-| Theorem 1.4 | Conjectures 1.1, 1.2 and 1.3 are equivalent | — | `Main.lean` | Section 3 |
-| (not in the paper) | 1.2 ⇒ 1.3 with `G = F` | — | `Conjectures.lean` | the two statements |
+| Section 2, `X^s_T` | `C⁰_t H^s_0 ∩ L²_t H^{s+1}_0` on `[0,T] × Ω`, with the sum norm | — | `Sobolev.lean` | `H^s_0` |
+| Conjecture 1.1 | Every smooth divergence-free datum has a global smooth solution on `[0,∞)` | `globalRegularity` | `Conjectures.lean` | eq. (1) |
+| Conjecture 1.2, eq. (2) | A nondecreasing `F` bounds `‖u(T)‖_{H¹}` by `F(‖u₀‖_{H¹})` for every finite `T > 0` and every smooth solution on `[0,T]` | `longTermBound` | `Conjectures.lean` | eq. (1), `H¹` |
+| Conjecture 1.3, eq. (3) | The same with a nondecreasing `G` and `0 < T ≤ 1` | `shortTermBound` | `Conjectures.lean` | eq. (1), `H¹` |
+| Theorem 1.4 | Conjectures 1.1, 1.2 and 1.3 are equivalent | `regularityEquivalence` | `Main.lean` | Section 3 |
+| (not in the paper) | 1.2 ⇒ 1.3 with `G = F` | `longTermBound_implies_shortTermBound` | `Conjectures.lean` | the two statements |
 
 ## Section 2: review of the `H¹` theory
 
@@ -86,6 +99,6 @@ as standard. In Lean each is its own target.
 
 ## Files, in import order
 
-`Basic` → `Setting`, `Sobolev` → `Conjectures` → `MeanZero`, `Heat`, `Energy`, `Duhamel` →
+`Basic`, `Setting` → `Sobolev` → `Conjectures` → `MeanZero`, `Heat`, `Energy`, `Duhamel` →
 `LocalTheory` → `Implications` → `Main`. One file per row group; split a file when it passes
 about 400 lines or when two people would want it at once.
