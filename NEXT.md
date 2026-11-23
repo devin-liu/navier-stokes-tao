@@ -2,16 +2,16 @@
 
 Written by `scripts/nst turn end`. Do not edit by hand and do not append: the next handover replaces it.
 
-Updated 2026-11-23T15:49:54-05:00 by codex-desktop (13 Lean runs, 6 model passes this turn).
+Updated 2026-11-23T17:24:30-05:00 by codex-desktop (5 Lean runs, 3 model passes this turn).
 
 ## Done last turn
 
-Ran prompts/cycle.md as codex-desktop. Operator authorization: “Go ahead and push cycle/1123-lean-ci, open the PR, and squash-merge it once CI passes. Then continue the cycle.” Used the outward authorization for the CI branch. On GitHub on 2026-11-23, PR #17 opened, its required build passed, and the squash merge was confirmed at 5a6cd9f67ba42f56d8f6bed38a5acc9169dfa832. Continued locally on cycle/1123-energy-identity. Independently reviewed and froze the energy identity and two component statements. Gate accepted kineticEnergy_identity with inherited sorryAx from the two component lemmas. Both components missed the Lean-only pass and their blockers are recorded in the target ledger. Local hand-in passed and outbox/PR.md and outbox/pr.sh were generated.
+Ran the cycle as codex-desktop. Operator authorization: “Go ahead and push cycle/1123-energy-identity, open the PR, and squash-merge it once CI passes. Then continue the cycle.” On GitHub on 2026-11-23, PR #18 opened, its required build passed, and the squash merge was confirmed at 6e299421de3083cd3073e0b1e62fb8348791860b. Recorded kineticEnergy_identity as merged and still conditional. On cycle/1123-periodic-divergence, built and independently froze integral_periodic_divergence_eq_zero. Lean-only pass missed. The model candidate applied the box divergence theorem, then stopped at the integer face-shift elaboration after the allowed repair. The candidate and exact diagnostic are in inbox and runs. Local hand-in passed and a statement-only PR was drafted.
 
 ## Next action
 
-Decide whether to publish the prepared energy identity PR from cycle/1123-energy-identity.
+Decide whether to allow one more repair of the periodic divergence candidate before publishing the branch.
 
 ## Waiting on the operator
 
-Authorization to push and open the energy PR and, if desired, squash-merge after green CI. Stuck proof targets for private-attempt selection: kineticEnergy_hasDerivWithinAt, kineticEnergy_spatialBalance, h1Norm_sq_galilean_centered, smoothSolution_galilean, spatialMean_conserved.
+Operator approval for another repair under the model-pass budget, or a new private candidate. Stuck targets: integral_periodic_divergence_eq_zero, kineticEnergy_hasDerivWithinAt, kineticEnergy_spatialBalance, h1Norm_sq_galilean_centered, smoothSolution_galilean, spatialMean_conserved.
