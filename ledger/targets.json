@@ -11,10 +11,11 @@
   "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "Section 2, mean-zero reduction",
+  "pr": 13,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "4844316d44724b22",
-  "updated": "2026-11-23T12:23:40-05:00"
+  "updated": "2026-11-23T12:27:33-05:00"
  },
  "galileanVelocity_inverse": {
   "axioms": [
@@ -28,10 +29,11 @@
   "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "Section 2, mean-zero reduction",
+  "pr": 13,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "d2b24c9f7e90ae3b",
-  "updated": "2026-11-23T12:23:50-05:00"
+  "updated": "2026-11-23T12:27:33-05:00"
  },
  "h1Norm_sq_galilean_centered": {
   "decl": "h1Norm_sq_galilean_centered",
@@ -103,9 +105,10 @@
   "inherited_sorry": true,
   "model": "gpt-6",
   "paper": "Section 2, mean-zero reduction",
+  "pr": 13,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "71571def5a8c37da",
-  "updated": "2026-11-23T12:24:18-05:00"
+  "updated": "2026-11-23T12:27:33-05:00"
  }
 }
