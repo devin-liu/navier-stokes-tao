@@ -118,10 +118,11 @@
   "model": "gpt-6",
   "note": "Tactic tiers missed. Use UnitAddTorus.integral_preimage and Haar invariance after descending the periodic lift and identifying the half-open cube with the closed cube almost everywhere.",
   "paper": "none",
+  "pr": 16,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "f1d42396e9695a92",
-  "updated": "2026-11-23T13:01:26-05:00"
+  "updated": "2026-11-23T13:09:36-05:00"
  },
  "smoothSolution_galilean": {
   "decl": "smoothSolution_galilean",

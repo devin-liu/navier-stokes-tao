@@ -74,6 +74,17 @@ printf 'by exact Nat.le_succ_of_le (step_up h)\n' >"$tmp/inherit.lean"
 python3 "$S/gate.py" apply $F uses_earlier --proof-file "$tmp/inherit.lean" --route human >"$out" 2>&1
 expect "inherited sorryAx is accepted and disclosed" 'sorryAx is inherited'
 
+python3 "$S/gate.py" audit-axioms >"$out" 2>&1; rc=$?
+expect "audit permits recorded inherited sorry" '3 accepted proofs checked, 0 failures'
+[ "$rc" = 0 ] || { echo "  FAIL audit should pass (rc=$rc)"; fails=$((fails + 1)); }
+targets="$tmp/state/ledger/targets.json"
+cp "$targets" "$tmp/targets.json"
+sed 's/"inherited_sorry": true/"inherited_sorry": false/' "$tmp/targets.json" >"$targets"
+python3 "$S/gate.py" audit-axioms >"$out" 2>&1; rc=$?
+expect "audit detects unrecorded inherited sorry" 'uses_earlier: unexpected axioms: sorryAx'
+[ "$rc" = 1 ] || { echo "  FAIL audit should reject (rc=$rc)"; fails=$((fails + 1)); }
+cp "$tmp/targets.json" "$targets"
+
 sed 's/^namespace Probe$/import Does.Not.Exist\nnamespace Probe/' "$tmp/wt/$F" >"$tmp/wt/Probe/Broken.lean"
 before=$(grep -c '"type": "try"' "$tmp/state/ledger/attempts.jsonl")
 python3 "$S/firstpass.py" Probe/Broken.lean --decl step_up --timeout 300 >"$out" 2>&1; rc=$?

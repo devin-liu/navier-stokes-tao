@@ -5,6 +5,7 @@
   scripts/gate.py apply <file> <decl> --from-run RUN            # a win found by firstpass.py
   scripts/gate.py apply <file> <decl> --proof-file F --route R  # any other proof (see firstpass.py for the format)
   scripts/gate.py axioms <file> <decl> [<decl> ...]
+  scripts/gate.py audit-axioms                     # recheck accepted proofs after a build
   scripts/gate.py check <file>                     # new or changed statements: lint, build the module, register targets
   scripts/gate.py handin                           # full build, lint, frozen statements, ledger, privacy check
 
@@ -24,6 +25,7 @@ import time
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 import nstlib as rv  # noqa: E402
+from nst import PROVED  # noqa: E402
 
 ALLOWED_AXIOMS = {"propext", "Classical.choice", "Quot.sound"}
 FORBIDDEN = re.compile(r"\b(sorry|admit|sorryAx|native_decide|implemented_by|unsafe)\b|maxHeartbeats|^\s*axiom\b", re.M)
@@ -54,6 +56,9 @@ def read_axioms(wt: pathlib.Path, rel: str, text: str, decls: list[str], timeout
     (wt / srel).write_text(scratch)
     rc, out, secs, timed_out = rv.lake_lean(wt, srel, timeout)
     res: dict[str, list[str] | None] = {d: None for d in decls}
+    if rc != 0:
+        print(out, file=sys.stderr)
+        return res
     for m in rv.parse_messages(out, only=srel):
         for d, full in names.items():
             if f"'{full}'" in m["text"] or f"`{full}`" in m["text"]:
@@ -197,6 +202,34 @@ def cmd_axioms(a) -> None:
         print(f"{d}: " + ("no answer (does the module build?)" if ax is None else (", ".join(ax) or "none")))
 
 
+def cmd_audit_axioms(a) -> None:
+    wt = rv.worktree()
+    by_file: dict[str, dict[str, dict]] = {}
+    for row in rv.load_targets().values():
+        if row["state"] in PROVED:
+            by_file.setdefault(row["file"], {})[row["decl"]] = row
+
+    checked = failures = 0
+    timeout = rv.cfg().get("lean_timeout_sec", 600)
+    with rv.build_lock(wt):
+        for rel, rows in sorted(by_file.items()):
+            text = (wt / rel).read_text(encoding="utf-8")
+            for decl, axioms in read_axioms(wt, rel, text, sorted(rows), timeout).items():
+                checked += 1
+                if axioms is None:
+                    print(f"{rel}: {decl}: Lean did not report axioms")
+                    failures += 1
+                    continue
+                allowed = ALLOWED_AXIOMS | ({"sorryAx"} if rows[decl].get("inherited_sorry") else set())
+                extra = sorted(set(axioms) - allowed)
+                if extra:
+                    print(f"{rel}: {decl}: unexpected axioms: {', '.join(extra)}")
+                    failures += 1
+
+    print(f"Axiom audit: {checked} accepted proofs checked, {failures} failures")
+    sys.exit(1 if failures else 0)
+
+
 def lean_tree(wt: pathlib.Path) -> str:
     """Git's hash of the committed Lean library: what a hand-in check actually checked."""
     r = subprocess.run(["git", "rev-parse", f"HEAD:{rv.lean_root()}"], cwd=wt, capture_output=True, text=True)
@@ -283,6 +316,7 @@ def main() -> None:
     g.add_argument("--from-run"); g.add_argument("--proof-file")
     p.add_argument("--route"); p.set_defaults(fn=cmd_apply)
     p = sub.add_parser("axioms"); p.add_argument("file"); p.add_argument("decl", nargs="+"); p.set_defaults(fn=cmd_axioms)
+    p = sub.add_parser("audit-axioms"); p.set_defaults(fn=cmd_audit_axioms)
     p = sub.add_parser("handin"); p.set_defaults(fn=cmd_handin)
     a = ap.parse_args()
     a.fn(a)

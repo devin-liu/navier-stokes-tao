@@ -2,16 +2,16 @@
 
 Written by `scripts/nst turn end`. Do not edit by hand and do not append: the next handover replaces it.
 
-Updated 2026-11-23T13:04:51-05:00 by codex-desktop (0 Lean runs, 0 model passes this turn).
+Updated 2026-11-23T15:39:35-05:00 by codex-desktop (0 Lean runs, 0 model passes this turn).
 
 ## Done last turn
 
-Observed on GitHub 2026-11-23 at 18:03Z that PR #15 merged at 17:59:35Z as 4e3b605. Recorded setIntegral_torusPoint as merged. Preflight observed 2026-11-23 at 18:03Z: 0 open PRs, 3 open issues, branch 3 ahead and 0 behind; PR #15 build passed in 1m50s. Fast-forwarded local main and carried the verified translation proof and ledger to cycle/1123-cube-translation. Fresh axioms check found only propext, Classical.choice, Quot.sound for both setIntegral_unitCube_translate and spatialMean_galileanVelocity; the latter ledger classification still reflects its original acceptance. All hand-in checks passed at d49639d; reviewed the Lean diff and drafted the PR. No outward write.
+Ran the cycle kickoff as codex-desktop. Sync found 0 problems and hand-in passed again. GitHub preflight on 2026-11-23 found the CI branch 4 commits ahead and 0 behind origin/main, with 0 open PRs and 3 open issues. The standard draft command declined the CI-only diff because it has no Lean change or proved-local target. Prepared a local CI PR body in outbox/PR.md. The previous outbox/pr.sh targets the earlier cube-translation branch and was not run.
 
 ## Next action
 
-With operator authorization, push cycle/1123-cube-translation and open its drafted PR.
+Decide whether to push cycle/1123-lean-ci and open its CI pull request.
 
 ## Waiting on the operator
 
-Authorization to push and open the new PR. Stuck targets: h1Norm_sq_galilean_centered, smoothSolution_galilean, spatialMean_conserved.
+Explicit authorization to push and open the CI PR, and to squash-merge after green CI if desired. Stuck proof targets for private-attempt selection: h1Norm_sq_galilean_centered, smoothSolution_galilean, spatialMean_conserved.
