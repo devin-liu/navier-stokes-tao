@@ -1,6 +1,6 @@
 # Progress report
 
-Generated 2026-11-23T15:49:31-05:00 by `scripts/nst report` from `ledger/`. Do not edit by hand.
+Generated 2026-11-23T17:22:08-05:00 by `scripts/nst report` from `ledger/`. Do not edit by hand.
 
 Repository: [devin-liu/navier-stokes-tao](https://github.com/devin-liu/navier-stokes-tao). Every proof counted here was accepted by Lean in a build of the real module; none is counted on a model's say-so.
 
@@ -9,8 +9,7 @@ Repository: [devin-liu/navier-stokes-tao](https://github.com/devin-liu/navier-st
 | State | Count |
 |---|---|
 | open | 1 |
-| proved-local | 1 |
-| merged | 7 |
+| merged | 8 |
 | stuck | 5 |
 | **all targets taken on** | **14** |
 
@@ -32,12 +31,12 @@ Statements frozen: 30.
 
 | Route | Proved | Merged |
 |---|---|---|
-| after a model pass | 8 | 7 |
+| after a model pass | 8 | 8 |
 
 ## Cost
 
 - Lean runs with no model call: 25, 4 minutes, 189 proof attempts.
-- Model passes: 19 (mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof claude-fable-5-2: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured).
+- Model passes: 21 (mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof claude-fable-5-2: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured).
 - A usage figure of `unmeasured` means nobody read the meter; it is not zero.
 
 ## Targets
@@ -46,7 +45,7 @@ Statements frozen: 30.
 |---|---|---|---|---|---|---|
 | `longTermBound_implies_shortTermBound` | none | merged | verified | after a model pass | #12 | propext, Classical.choice, Quot.sound |
 | `kineticEnergy_hasDerivWithinAt` | none | stuck |  |  |  |  |
-| `kineticEnergy_identity` | Section 3.2, energy identity | proved-local | conditional | after a model pass |  | propext, sorryAx, Classical.choice, Quot.sound |
+| `kineticEnergy_identity` | Section 3.2, energy identity | merged | conditional | after a model pass | #18 | propext, sorryAx, Classical.choice, Quot.sound |
 | `kineticEnergy_spatialBalance` | none | stuck |  |  |  |  |
 | `regularityEquivalence` | Theorem 1.4 | open |  |  |  |  |
 | `galileanVelocity_initial` | Section 2, mean-zero reduction | merged | verified | after a model pass | #13 | propext, Classical.choice, Quot.sound |
