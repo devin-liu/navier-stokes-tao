@@ -11,10 +11,11 @@
   "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "Section 2, mean-zero reduction",
+  "pr": 13,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "4844316d44724b22",
-  "updated": "2026-11-23T12:23:40-05:00"
+  "updated": "2026-11-23T12:27:33-05:00"
  },
  "galileanVelocity_inverse": {
   "axioms": [
@@ -28,10 +29,11 @@
   "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "Section 2, mean-zero reduction",
+  "pr": 13,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "d2b24c9f7e90ae3b",
-  "updated": "2026-11-23T12:23:50-05:00"
+  "updated": "2026-11-23T12:27:33-05:00"
  },
  "h1Norm_sq_galilean_centered": {
   "decl": "h1Norm_sq_galilean_centered",
@@ -40,6 +42,23 @@
   "paper": "Section 2, mean-zero reduction",
   "state": "stuck",
   "updated": "2026-11-23T12:24:20-05:00"
+ },
+ "latticePeriodic_factors_torus": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 6.4,
+  "decl": "latticePeriodic_factors_torus",
+  "file": "NavierStokesTao/TorusIntegral.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
+  "paper": "none",
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "c017ea0255fc33dc",
+  "updated": "2026-11-23T12:30:26-05:00"
  },
  "longTermBound_implies_shortTermBound": {
   "axioms": [
@@ -65,6 +84,14 @@
   "paper": "Theorem 1.4",
   "state": "open",
   "updated": "2026-11-23T12:07:02-05:00"
+ },
+ "setIntegral_torusPoint": {
+  "decl": "setIntegral_torusPoint",
+  "file": "NavierStokesTao/TorusIntegral.lean",
+  "note": "Candidate reached the last almost-everywhere cube equality. Align the default volume on Position with Measure.pi of real Lebesgue measure explicitly. The one repair round was used.",
+  "paper": "none",
+  "state": "stuck",
+  "updated": "2026-11-23T12:30:27-05:00"
  },
  "setIntegral_unitCube_translate": {
   "decl": "setIntegral_unitCube_translate",
@@ -103,9 +130,10 @@
   "inherited_sorry": true,
   "model": "gpt-6",
   "paper": "Section 2, mean-zero reduction",
+  "pr": 13,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "71571def5a8c37da",
-  "updated": "2026-11-23T12:24:18-05:00"
+  "updated": "2026-11-23T12:27:33-05:00"
  }
 }
