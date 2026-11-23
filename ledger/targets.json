@@ -46,9 +46,10 @@
  "kineticEnergy_hasDerivWithinAt": {
   "decl": "kineticEnergy_hasDerivWithinAt",
   "file": "NavierStokesTao/Energy.lean",
+  "note": "Lean-only pass 20261123-154850-Energy missed. Mathlib parametric integral differentiation assumes an ordinary derivative on a neighborhood, so the proof needs a one-sided endpoint argument or a C1 reflection extension with a compact uniform bound.",
   "paper": "none",
-  "state": "open",
-  "updated": "2026-11-23T15:47:11-05:00"
+  "state": "stuck",
+  "updated": "2026-11-23T15:49:30-05:00"
  },
  "kineticEnergy_identity": {
   "axioms": [
