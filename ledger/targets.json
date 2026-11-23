@@ -11,10 +11,11 @@
   "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "none",
+  "pr": 12,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "a3a81032a33af505",
-  "updated": "2026-11-23T12:10:03-05:00"
+  "updated": "2026-11-23T12:17:29-05:00"
  },
  "regularityEquivalence": {
   "decl": "regularityEquivalence",
