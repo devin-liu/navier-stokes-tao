@@ -13,6 +13,12 @@ statements are ours to write, and a wrong statement is the most expensive mistak
 So the work has two gates, not one: a statement is **frozen** after an independent check
 against the paper, and a proof is **accepted** after a build of the real module.
 
+**If the prompt you were given names `scripts/rv`, an upstream checkout, `setup.sh --update`,
+claims or a fork, it was written for a different workspace.** Do not stop and do not look for
+that checkout. The work meant is this repository's own loop: follow `prompts/cycle.md` here
+(its quoted prompt, with your agent name), and say in `--did` that you did. A go-ahead in the
+prompt you were given still counts for what it names; nothing else is implied.
+
 ## Every session
 
 ```sh
@@ -95,7 +101,9 @@ Never put a `sorry` inside a proof.
 
 - Every accepted `gate.py apply` and `gate.py check` commits the file and the ledger on the
   cycle branch. Nothing uncommitted should outlive a turn; uncommitted Lean edits fail the
-  hand-in. `turn end` commits the handover.
+  hand-in. `turn end` commits the handover. The one exception: a turn that ends on `main`
+  (after a merge, or with nothing done) leaves `NEXT.md` and the ledger uncommitted there, and
+  the next `scripts/nst branch` carries them onto the new branch.
 - Read in batches, change one at a time. `firstpass.py` covers a whole batch; each
   `gate.py apply` is one change. An interrupted batch picks up from `scripts/nst status`: apply
   the wins still waiting from the same run, and never repeat a pass for targets that already
@@ -133,7 +141,8 @@ Never put a `sorry` inside a proof.
   target and what it cites, by line range.
 - The paper by line range: `scripts/paper.sh toc`, `scripts/paper.sh <first> <last>`,
   `scripts/paper.sh grep <pattern>`. The source is in the untracked `refs/`
-  (`scripts/paper.sh fetch`, once). Never commit the paper's text; cite the item.
+  (`scripts/paper.sh fetch`, once; it needs no go-ahead). Never commit the paper's text; cite
+  the item.
 - Mathlib by search: `grep -rn "<name or phrase>" .lake/packages/mathlib/Mathlib --include=*.lean | head`.
   Never guess a lemma name.
 - `runs/<run>/FAILURES.md` is the bundle for a model pass. Do not read `runs/<run>/t*.out`
@@ -165,8 +174,11 @@ Never put a `sorry` inside a proof.
 
 Local work is free: edits, Lean runs, and commits on a cycle branch. Anything that leaves this
 machine needs the operator's go-ahead: `git push`, opening or merging a pull request, creating
-or commenting on issues, changing repository settings, and downloads (`scripts/setup.sh`
-without `--reuse`, `scripts/paper.sh fetch`).
+or commenting on issues, changing repository settings, and the multi-GB download in
+`scripts/setup.sh` without `--reuse`.
+
+Reading is free: `git fetch`, `gh … view` and `gh … list`, `scripts/nst preflight`, and
+`scripts/paper.sh fetch` (the paper's public source, once, into the untracked `refs/`).
 
 - A go-ahead is the operator's words in the current session, and covers what it names. The
   kickoff in `prompts/cycle.md` carries one for the session it is pasted into. An earlier

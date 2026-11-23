@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # The paper, by line range, so nobody loads all of it. Zero model calls.
 #
-#   scripts/paper.sh fetch            download the arXiv source once into refs/ (untracked; operator's go-ahead)
+#   scripts/paper.sh fetch            download the arXiv source once into refs/ (untracked; a read, no go-ahead needed)
 #   scripts/paper.sh toc              sections and numbered items with their line numbers
 #   scripts/paper.sh FIRST LAST       those lines of the TeX source
 #   scripts/paper.sh grep PATTERN     matching lines with numbers
