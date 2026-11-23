@@ -1,4 +1,5 @@
 import NavierStokesTao.Sobolev
+import NavierStokesTao.TorusIntegral
 
 namespace NavierStokesTao
 
@@ -29,7 +30,19 @@ theorem setIntegral_unitCube_translate {E : Type*} [NormedAddCommGroup E] [Norme
     [CompleteSpace E] (f : Position → E) (hSmooth : Continuous f)
     (hPeriodic : LatticePeriodic f) (a : Position) :
     (∫ x in Set.Icc (0 : Position) 1, f (x + a)) = ∫ x in Set.Icc (0 : Position) 1, f x := by
-  sorry
+  obtain ⟨F, hF⟩ := latticePeriodic_factors_torus f hPeriodic
+  have torusPoint_add (x : Position) : torusPoint (x + a) = torusPoint x + torusPoint a := by
+    funext i
+    exact AddCircle.coe_add (1 : ℝ) (x i) (a i)
+  calc
+    (∫ x in Set.Icc (0 : Position) 1, f (x + a)) =
+        ∫ x in Set.Icc (0 : Position) 1, F (torusPoint x + torusPoint a) := by
+      simp only [← torusPoint_add, hF]
+    _ = ∫ z, F (z + torusPoint a) :=
+      setIntegral_torusPoint (fun z ↦ F (z + torusPoint a))
+    _ = ∫ z, F z := integral_add_right_eq_self F (torusPoint a)
+    _ = ∫ x in Set.Icc (0 : Position) 1, f x := by
+      simpa only [hF] using (setIntegral_torusPoint F).symm
 
 /-- At time zero the boost subtracts its constant velocity from the initial field.
 (Paper: Section 2, mean-zero reduction) -/

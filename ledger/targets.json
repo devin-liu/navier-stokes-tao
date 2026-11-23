@@ -99,18 +99,29 @@
   "model": "claude-fable-5-2",
   "note": "Candidate reached the last almost-everywhere cube equality. Align the default volume on Position with Measure.pi of real Lebesgue measure explicitly. The one repair round was used.",
   "paper": "none",
+  "pr": 15,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "ecbc276173a83dcb",
-  "updated": "2026-11-23T12:52:00-05:00"
+  "updated": "2026-11-23T13:04:01-05:00"
  },
  "setIntegral_unitCube_translate": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.4,
   "decl": "setIntegral_unitCube_translate",
   "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
   "note": "Tactic tiers missed. Use UnitAddTorus.integral_preimage and Haar invariance after descending the periodic lift and identifying the half-open cube with the closed cube almost everywhere.",
   "paper": "none",
-  "state": "stuck",
-  "updated": "2026-11-23T12:24:19-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "f1d42396e9695a92",
+  "updated": "2026-11-23T13:01:26-05:00"
  },
  "smoothSolution_galilean": {
   "decl": "smoothSolution_galilean",
