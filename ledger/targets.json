@@ -45,6 +45,13 @@
   "state": "open",
   "updated": "2026-11-23T12:07:02-05:00"
  },
+ "setIntegral_unitCube_translate": {
+  "decl": "setIntegral_unitCube_translate",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "paper": "none",
+  "state": "open",
+  "updated": "2026-11-23T12:19:45-05:00"
+ },
  "smoothSolution_galilean": {
   "decl": "smoothSolution_galilean",
   "file": "NavierStokesTao/MeanZero.lean",

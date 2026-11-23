@@ -22,6 +22,15 @@ def galileanVelocity (c : Velocity) (u : ℝ → Position → Velocity)
 def galileanPressure (c : Velocity) (p : ℝ → Position → ℝ) (t : ℝ) (x : Position) : ℝ :=
   p t (x + t • c.ofLp)
 
+/-- The integral of a continuous periodic lift over the unit cube is invariant under
+translation. This is the translation invariance of the torus integral in Cartesian
+coordinates. (Paper: none) -/
+theorem setIntegral_unitCube_translate {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [CompleteSpace E] (f : Position → E) (hSmooth : Continuous f)
+    (hPeriodic : LatticePeriodic f) (a : Position) :
+    (∫ x in Set.Icc (0 : Position) 1, f (x + a)) = ∫ x in Set.Icc (0 : Position) 1, f x := by
+  sorry
+
 /-- At time zero the boost subtracts its constant velocity from the initial field.
 (Paper: Section 2, mean-zero reduction) -/
 theorem galileanVelocity_initial (c : Velocity) (u : ℝ → Position → Velocity) :
