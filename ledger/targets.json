@@ -1,4 +1,46 @@
 {
+ "galileanVelocity_initial": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 9.0,
+  "decl": "galileanVelocity_initial",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
+  "paper": "Section 2, mean-zero reduction",
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "4844316d44724b22",
+  "updated": "2026-11-23T12:23:40-05:00"
+ },
+ "galileanVelocity_inverse": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.8,
+  "decl": "galileanVelocity_inverse",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
+  "paper": "Section 2, mean-zero reduction",
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "d2b24c9f7e90ae3b",
+  "updated": "2026-11-23T12:23:50-05:00"
+ },
+ "h1Norm_sq_galilean_centered": {
+  "decl": "h1Norm_sq_galilean_centered",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "note": "Tactic tiers missed. After translation invariance, use the translated spatial derivative and expand the square with the cross term given by the mean.",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "stuck",
+  "updated": "2026-11-23T12:24:20-05:00"
+ },
  "longTermBound_implies_shortTermBound": {
   "axioms": [
    "propext",
@@ -11,10 +53,11 @@
   "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "none",
+  "pr": 12,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "a3a81032a33af505",
-  "updated": "2026-11-23T12:10:03-05:00"
+  "updated": "2026-11-23T12:17:29-05:00"
  },
  "regularityEquivalence": {
   "decl": "regularityEquivalence",
@@ -22,5 +65,47 @@
   "paper": "Theorem 1.4",
   "state": "open",
   "updated": "2026-11-23T12:07:02-05:00"
+ },
+ "setIntegral_unitCube_translate": {
+  "decl": "setIntegral_unitCube_translate",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "note": "Tactic tiers missed. Use UnitAddTorus.integral_preimage and Haar invariance after descending the periodic lift and identifying the half-open cube with the closed cube almost everywhere.",
+  "paper": "none",
+  "state": "stuck",
+  "updated": "2026-11-23T12:24:19-05:00"
+ },
+ "smoothSolution_galilean": {
+  "decl": "smoothSolution_galilean",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "note": "Tactic tiers missed. The chain rule must be implemented for the affine boost on the relative time domain and for its spatial slices.",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "stuck",
+  "updated": "2026-11-23T12:24:19-05:00"
+ },
+ "spatialMean_conserved": {
+  "decl": "spatialMean_conserved",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "note": "Tactic tiers missed. Differentiate the mean under the integral, express transport as a divergence, and use periodic cancellation of each boundary flux.",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "stuck",
+  "updated": "2026-11-23T12:24:19-05:00"
+ },
+ "spatialMean_galileanVelocity": {
+  "axioms": [
+   "propext",
+   "sorryAx",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 8.3,
+  "decl": "spatialMean_galileanVelocity",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": true,
+  "model": "gpt-6",
+  "paper": "Section 2, mean-zero reduction",
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "71571def5a8c37da",
+  "updated": "2026-11-23T12:24:18-05:00"
  }
 }
