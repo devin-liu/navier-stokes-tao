@@ -39,6 +39,46 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "abbrev Velocity := EuclideanSpace ℝ (Fin 3)"
  },
+ "galileanPressure": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "995365a46a63b741",
+  "kind": "def",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "def galileanPressure (c : Velocity) (p : ℝ → Position → ℝ) (t : ℝ) (x : Position) : ℝ := p t (x + t • c.ofLp)"
+ },
+ "galileanVelocity": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "dd05587a11009004",
+  "kind": "def",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "def galileanVelocity (c : Velocity) (u : ℝ → Position → Velocity) (t : ℝ) (x : Position) : Velocity := u t (x + t • c.ofLp) - c"
+ },
+ "galileanVelocity_initial": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "4844316d44724b22",
+  "kind": "theorem",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem galileanVelocity_initial (c : Velocity) (u : ℝ → Position → Velocity) : galileanVelocity c u 0 = fun x ↦ u 0 x - c"
+ },
+ "galileanVelocity_inverse": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "d2b24c9f7e90ae3b",
+  "kind": "theorem",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem galileanVelocity_inverse (c : Velocity) (u : ℝ → Position → Velocity) : galileanVelocity (-c) (galileanVelocity c u) = u"
+ },
  "globalRegularity": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
   "file": "NavierStokesTao/Conjectures.lean",
@@ -58,6 +98,16 @@
   "paper": "Section 1.5",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "noncomputable def h1Norm (v : Position → Velocity) : ℝ≥0 := let energy := ∫ x in Set.Icc (0 : Position) 1, ‖v x‖ ^ 2 + ∑ i : Fin 3, ‖spatialPartial i v x‖ ^ 2 ⟨Real.sqrt energy, Real.sqrt_nonneg energy⟩"
+ },
+ "h1Norm_sq_galilean_centered": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "0e897d34fde38e6b",
+  "kind": "theorem",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem h1Norm_sq_galilean_centered (u : ℝ → Position → Velocity) (t : ℝ) (hSmooth : ContDiff ℝ ∞ (u t)) (hPeriodic : LatticePeriodic (u t)) : (h1Norm (u t) : ℝ) ^ 2 = (h1Norm (galileanVelocity (spatialMean (u t)) u t) : ℝ) ^ 2 + ‖spatialMean (u t)‖ ^ 2"
  },
  "longTermBound": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
@@ -99,6 +149,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "theorem regularityEquivalence : (globalRegularity ↔ longTermBound) ∧ (globalRegularity ↔ shortTermBound)"
  },
+ "setIntegral_unitCube_translate": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "f1d42396e9695a92",
+  "kind": "theorem",
+  "paper": "none",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem setIntegral_unitCube_translate {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] (f : Position → E) (hSmooth : Continuous f) (hPeriodic : LatticePeriodic f) (a : Position) : (∫ x in Set.Icc (0 : Position) 1, f (x + a)) = ∫ x in Set.Icc (0 : Position) 1, f x"
+ },
  "shortTermBound": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
   "file": "NavierStokesTao/Conjectures.lean",
@@ -108,6 +168,16 @@
   "paper": "Conjecture 1.3",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def shortTermBound : Prop := ∃ G : ℝ≥0 → ℝ≥0, Monotone G ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 → ∀ (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Icc 0 T) u₀ u p → h1Norm (u T) ≤ G (h1Norm u₀)"
+ },
+ "smoothSolution_galilean": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "f41e744ff18393bf",
+  "kind": "theorem",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem smoothSolution_galilean {times : Set ℝ} (hDiff : UniqueDiffOn ℝ times) {u₀ : Position → Velocity} {u : ℝ → Position → Velocity} {p : ℝ → Position → ℝ} (h : SmoothSolution times u₀ u p) (c : Velocity) : SmoothSolution times (fun x ↦ u₀ x - c) (galileanVelocity c u) (galileanPressure c p)"
  },
  "spatialDivergence": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
@@ -128,6 +198,36 @@
   "paper": "eq. (1",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "noncomputable def spatialLaplacian (v : Position → Velocity) (x : Position) : Velocity := ∑ i, spatialPartial i (spatialPartial i v) x"
+ },
+ "spatialMean": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "6929bbe711bcd66a",
+  "kind": "def",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "noncomputable def spatialMean (v : Position → Velocity) : Velocity := ∫ x in Set.Icc (0 : Position) 1, v x"
+ },
+ "spatialMean_conserved": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "8f4df2137d55cf3f",
+  "kind": "theorem",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem spatialMean_conserved {times : Set ℝ} (hConvex : Convex ℝ times) (hZero : 0 ∈ times) (hDiff : UniqueDiffOn ℝ times) {u₀ : Position → Velocity} {u : ℝ → Position → Velocity} {p : ℝ → Position → ℝ} (h : SmoothSolution times u₀ u p) {t : ℝ} (ht : t ∈ times) : spatialMean (u t) = spatialMean u₀"
+ },
+ "spatialMean_galileanVelocity": {
+  "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "frozen_at": "2026-11-23T12:22:44-05:00",
+  "hash": "71571def5a8c37da",
+  "kind": "theorem",
+  "paper": "Section 2, mean-zero reduction",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem spatialMean_galileanVelocity (c : Velocity) (u : ℝ → Position → Velocity) (t : ℝ) (hSmooth : ContDiff ℝ ∞ (u t)) (hPeriodic : LatticePeriodic (u t)) : spatialMean (galileanVelocity c u t) = spatialMean (u t) - c"
  },
  "spatialPartial": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
