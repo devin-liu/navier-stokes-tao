@@ -255,3 +255,4 @@
 {"ts": "2026-11-23T15:43:40-05:00", "type": "model-pass", "kind": "statement", "model": "gpt-6", "tier": "mid", "targets": ["kineticEnergy_identity"], "files": [], "purpose": "State the Section 3.2 kinetic energy identity for smooth finite-interval solutions.", "lemma": null, "usage_before": "unmeasured", "operator_ok": false}
 {"ts": "2026-11-23T15:43:44-05:00", "type": "model-pass", "kind": "review", "model": "gpt-6", "tier": "mid", "targets": ["kineticEnergy_identity"], "files": [], "purpose": "Independent comparison of the proposed kinetic energy identity with Section 3.2.", "lemma": null, "usage_before": "unmeasured", "operator_ok": false}
 {"ts": "2026-11-23T15:45:02-05:00", "type": "preflight", "behind": "0", "ahead": "0", "open_prs": [], "overlap": [], "verdict": "clear"}
+{"ts": "2026-11-23T15:45:23-05:00", "type": "statement-check", "file": "NavierStokesTao/Energy.lean", "sha": "16ea424", "secs": 9.1, "ok": true, "declarations": 1, "sorries": 1}

@@ -43,6 +43,13 @@
   "state": "stuck",
   "updated": "2026-11-23T12:24:20-05:00"
  },
+ "kineticEnergy_identity": {
+  "decl": "kineticEnergy_identity",
+  "file": "NavierStokesTao/Energy.lean",
+  "paper": "Section 3.2, energy identity",
+  "state": "open",
+  "updated": "2026-11-23T15:45:23-05:00"
+ },
  "latticePeriodic_factors_torus": {
   "axioms": [
    "propext",
