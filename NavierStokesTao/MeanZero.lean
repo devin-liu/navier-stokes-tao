@@ -35,7 +35,8 @@ theorem setIntegral_unitCube_translate {E : Type*} [NormedAddCommGroup E] [Norme
 (Paper: Section 2, mean-zero reduction) -/
 theorem galileanVelocity_initial (c : Velocity) (u : ℝ → Position → Velocity) :
     galileanVelocity c u 0 = fun x ↦ u 0 x - c := by
-  sorry
+  funext x
+  simp [galileanVelocity]
 
 /-- Changing back to the original frame restores the original velocity field.
 (Paper: Section 2, mean-zero reduction) -/

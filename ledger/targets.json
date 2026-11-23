@@ -1,10 +1,20 @@
 {
  "galileanVelocity_initial": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 9.0,
   "decl": "galileanVelocity_initial",
   "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
   "paper": "Section 2, mean-zero reduction",
-  "state": "open",
-  "updated": "2026-11-23T12:18:54-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "4844316d44724b22",
+  "updated": "2026-11-23T12:23:40-05:00"
  },
  "galileanVelocity_inverse": {
   "decl": "galileanVelocity_inverse",
