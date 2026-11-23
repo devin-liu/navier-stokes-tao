@@ -1,0 +1,17 @@
+# Next
+
+Written by `scripts/nst turn end`. Do not edit by hand and do not append: the next handover replaces it.
+
+Updated 2026-11-23T11:37:23-05:00 by claude-desktop (0 Lean runs, 0 model passes this turn).
+
+## Done last turn
+
+2026-11-23: set up the repository's process, adapted from the earlier contribution workspace: agent guide, ledgers, turn lock, Lean-only pass, gate (statement check, apply with a commit per accept, hand-in), statement freezing with an independent reviewer, lint, privacy check, CI workflow, paper map, prompts. Lean v4.36.0 and Mathlib v4.36.0 pinned; lake build passes locally (6162 jobs, Mathlib from an existing local build, no download). scripts/selftest.sh: 44 checks pass. A rehearsal in a throwaway copy took two toy statements through check, first pass, apply, freeze, hand-in and PR draft; nothing from it is in this tree. No Lean statement of the paper exists yet. docs/MAP.md was seeded from the arXiv HTML page; rows marked ? and all page references are unchecked against the source. Nothing was committed or pushed; CI has never run.
+
+## Next action
+
+prompts/cycle.md from step 0, milestone 1 of docs/MAP.md: scripts/paper.sh fetch, check the Section 1 rows against the source, then the statement pass for the setting, the H1 norm, Conjectures 1.1 to 1.3 and Theorem 1.4
+
+## Waiting on the operator
+
+1) Commit the scaffold on main and push it (scripts/nst branch needs a clean, pushed main). 2) Confirm Apache-2.0 as the licence. 3) The statement choices listed in docs/MAP.md (which H1 norm, what a smooth solution on [0,T] is, pressure) change what the conjectures say: the first statement pass proposes, you decide.

@@ -1,0 +1,29 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Text rules
+        run: python3 scripts/lint.py
+      - name: Ledger check
+        run: python3 scripts/nst.py check
+      - name: Tree and ledger agree, frozen statements unchanged
+        run: python3 scripts/nst.py sync --quiet
+      - name: Privacy check
+        run: bash scripts/leakcheck.sh --generic-only
+      - name: Build with the Mathlib cache
+        uses: leanprover/lean-action@v1
