@@ -4,7 +4,7 @@ import Mathlib.Analysis.InnerProductSpace.PiL2
 
 namespace NavierStokesTao
 
-open scoped BigOperators
+open scoped BigOperators ContDiff
 
 /-- Real coordinates on the covering space of the unit three-torus. (Paper: eq. (1)) -/
 abbrev Position := Fin 3 → ℝ
@@ -40,11 +40,11 @@ The conjectures use a closed interval or ray as `times`. Joint smoothness is exp
 (Paper: eq. (1)) -/
 structure SmoothSolution (times : Set ℝ) (u₀ : Position → Velocity)
     (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ) : Prop where
-  initialSmooth : ContDiff ℝ ⊤ u₀
+  initialSmooth : ContDiff ℝ ∞ u₀
   initialPeriodic : LatticePeriodic u₀
   initialDivergenceFree : ∀ x, spatialDivergence u₀ x = 0
-  velocitySmooth : ContDiffOn ℝ ⊤ (fun z : ℝ × Position ↦ u z.1 z.2) (times ×ˢ Set.univ)
-  pressureSmooth : ContDiffOn ℝ ⊤ (fun z : ℝ × Position ↦ p z.1 z.2) (times ×ˢ Set.univ)
+  velocitySmooth : ContDiffOn ℝ ∞ (fun z : ℝ × Position ↦ u z.1 z.2) (times ×ˢ Set.univ)
+  pressureSmooth : ContDiffOn ℝ ∞ (fun z : ℝ × Position ↦ p z.1 z.2) (times ×ˢ Set.univ)
   velocityPeriodic : ∀ t ∈ times, LatticePeriodic (u t)
   pressurePeriodic : ∀ t ∈ times, LatticePeriodic (p t)
   momentum : ∀ t ∈ times, ∀ x,
