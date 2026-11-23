@@ -3,3 +3,4 @@
 {"ts": "2026-11-23T12:05:24-05:00", "type": "statement-check", "file": "NavierStokesTao/Setting.lean", "sha": "9ab63bc", "secs": 15.7, "ok": true, "declarations": 8, "sorries": 0}
 {"ts": "2026-11-23T12:06:52-05:00", "type": "statement-check", "file": "NavierStokesTao/Sobolev.lean", "sha": "41241a8", "secs": 10.6, "ok": true, "declarations": 1, "sorries": 0}
 {"ts": "2026-11-23T12:06:57-05:00", "type": "statement-check", "file": "NavierStokesTao/Conjectures.lean", "sha": "cb644d7", "secs": 4.4, "ok": true, "declarations": 4, "sorries": 1}
+{"ts": "2026-11-23T12:07:02-05:00", "type": "statement-check", "file": "NavierStokesTao/Main.lean", "sha": "a92ccde", "secs": 4.1, "ok": true, "declarations": 1, "sorries": 1}
