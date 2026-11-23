@@ -36,9 +36,10 @@
  "h1Norm_sq_galilean_centered": {
   "decl": "h1Norm_sq_galilean_centered",
   "file": "NavierStokesTao/MeanZero.lean",
+  "note": "Tactic tiers missed. After translation invariance, use the translated spatial derivative and expand the square with the cross term given by the mean.",
   "paper": "Section 2, mean-zero reduction",
-  "state": "open",
-  "updated": "2026-11-23T12:18:54-05:00"
+  "state": "stuck",
+  "updated": "2026-11-23T12:24:20-05:00"
  },
  "longTermBound_implies_shortTermBound": {
   "axioms": [
