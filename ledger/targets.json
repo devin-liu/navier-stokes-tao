@@ -46,9 +46,10 @@
  "integral_periodic_divergence_eq_zero": {
   "decl": "integral_periodic_divergence_eq_zero",
   "file": "NavierStokesTao/PeriodicCalculus.lean",
+  "note": "Mathlib divergence theorem applies after unfolding spatialPartial. Candidate run 20261123-172339-PeriodicCalculus stopped at Pi.single elaboration in the opposite-face shift. Give the integer shift the explicit type Fin 3 → ℤ before coercing its entries to ℝ. The candidate repair budget was used.",
   "paper": "none",
-  "state": "open",
-  "updated": "2026-11-23T17:22:46-05:00"
+  "state": "stuck",
+  "updated": "2026-11-23T17:24:08-05:00"
  },
  "kineticEnergy_hasDerivWithinAt": {
   "decl": "kineticEnergy_hasDerivWithinAt",
