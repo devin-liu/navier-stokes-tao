@@ -55,10 +55,11 @@
   "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "none",
+  "pr": 14,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "c017ea0255fc33dc",
-  "updated": "2026-11-23T12:30:26-05:00"
+  "updated": "2026-11-23T12:33:23-05:00"
  },
  "longTermBound_implies_shortTermBound": {
   "axioms": [
