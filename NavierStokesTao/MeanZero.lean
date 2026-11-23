@@ -42,7 +42,10 @@ theorem galileanVelocity_initial (c : Velocity) (u : ℝ → Position → Veloci
 (Paper: Section 2, mean-zero reduction) -/
 theorem galileanVelocity_inverse (c : Velocity) (u : ℝ → Position → Velocity) :
     galileanVelocity (-c) (galileanVelocity c u) = u := by
-  sorry
+  funext t x
+  have shift : x + t • (-c).ofLp + t • c.ofLp = x := by
+    rw [WithLp.ofLp_neg, smul_neg, ← sub_eq_add_neg, sub_add_cancel]
+  simp only [galileanVelocity, shift, sub_neg_eq_add, sub_add_cancel]
 
 /-- A smooth solution has constant spatial mean on a convex time domain containing zero.
 The time-domain hypotheses apply to the positive-length intervals and forward ray of Section 1.
