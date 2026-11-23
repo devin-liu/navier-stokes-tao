@@ -2,16 +2,16 @@
 
 Written by `scripts/nst turn end`. Do not edit by hand and do not append: the next handover replaces it.
 
-Updated 2026-11-23T15:39:35-05:00 by codex-desktop (0 Lean runs, 0 model passes this turn).
+Updated 2026-11-23T15:49:54-05:00 by codex-desktop (13 Lean runs, 6 model passes this turn).
 
 ## Done last turn
 
-Ran the cycle kickoff as codex-desktop. Sync found 0 problems and hand-in passed again. GitHub preflight on 2026-11-23 found the CI branch 4 commits ahead and 0 behind origin/main, with 0 open PRs and 3 open issues. The standard draft command declined the CI-only diff because it has no Lean change or proved-local target. Prepared a local CI PR body in outbox/PR.md. The previous outbox/pr.sh targets the earlier cube-translation branch and was not run.
+Ran prompts/cycle.md as codex-desktop. Operator authorization: “Go ahead and push cycle/1123-lean-ci, open the PR, and squash-merge it once CI passes. Then continue the cycle.” Used the outward authorization for the CI branch. On GitHub on 2026-11-23, PR #17 opened, its required build passed, and the squash merge was confirmed at 5a6cd9f67ba42f56d8f6bed38a5acc9169dfa832. Continued locally on cycle/1123-energy-identity. Independently reviewed and froze the energy identity and two component statements. Gate accepted kineticEnergy_identity with inherited sorryAx from the two component lemmas. Both components missed the Lean-only pass and their blockers are recorded in the target ledger. Local hand-in passed and outbox/PR.md and outbox/pr.sh were generated.
 
 ## Next action
 
-Decide whether to push cycle/1123-lean-ci and open its CI pull request.
+Decide whether to publish the prepared energy identity PR from cycle/1123-energy-identity.
 
 ## Waiting on the operator
 
-Explicit authorization to push and open the CI PR, and to squash-merge after green CI if desired. Stuck proof targets for private-attempt selection: h1Norm_sq_galilean_centered, smoothSolution_galilean, spatialMean_conserved.
+Authorization to push and open the energy PR and, if desired, squash-merge after green CI. Stuck proof targets for private-attempt selection: kineticEnergy_hasDerivWithinAt, kineticEnergy_spatialBalance, h1Norm_sq_galilean_centered, smoothSolution_galilean, spatialMean_conserved.
