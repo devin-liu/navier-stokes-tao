@@ -72,7 +72,8 @@ before anything large is tried, and it tests the definitions before analysis is 
 
 | Paper item | What it says | Lean | File | Needs |
 |---|---|---|---|---|
-| Mean-zero reduction | The mean is conserved; a Galilean change of variables reduces to mean zero. The exact formula must be read from the source | — | `MeanZero.lean` | eq. (1) |
+| Mean-zero reduction | The mean is conserved; a [Galilean change of coordinates](MEAN-ZERO.md) reduces all three conjectures to mean zero | `spatialMean_conserved`, `smoothSolution_galilean`, `spatialMean_galileanVelocity`, `h1Norm_sq_galilean_centered` | `MeanZero.lean` | eq. (1), `H¹` |
+| (not stated separately) | Torus integration is invariant under translations of continuous periodic lifts | `setIntegral_unitCube_translate` | `MeanZero.lean` | periodic lifts, translation invariance of Haar measure |
 | eq. (4) | Duhamel form with a first-order Fourier multiplier `D` whose range is divergence-free and mean-zero; a smooth solution of (4) with smooth divergence-free data solves (1) for a suitable pressure | — | `Duhamel.lean` | heat semigroup |
 | Lemma 2.1 | Energy estimate for the forced heat equation: `‖u‖_{X^s_T} ≲_s ‖u₀‖_{H^s_0} + ‖F‖_{L²_t H^{s-1}_0}` | — | `Energy.lean` | `X^s_T` |
 | eq. (5) | Heat smoothing: `‖e^{tΔ} f‖_{H^{s+δ}_0} ≲_{s,δ} t^{-δ/2} ‖f‖_{H^s_0}` | — | `Heat.lean` | `H^s_0` |
