@@ -47,6 +47,24 @@ of its lift over the closed unit cube. (Paper: none) -/
 theorem setIntegral_torusPoint {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
     (F : UnitAddTorus (Fin 3) → E) :
     (∫ x in Set.Icc (0 : Position) 1, F (torusPoint x)) = ∫ z, F z := by
-  sorry
+  have cube : (Set.pi Set.univ fun i : Fin 3 ↦ Set.Ioc ((0 : Position) i) ((1 : Position) i))
+      =ᵐ[(volume : Measure Position)] Set.Icc (0 : Position) 1 := by
+    rw [volume_pi]
+    exact Measure.univ_pi_Ioc_ae_eq_Icc
+  have sameSet :
+      {x : Position | ∀ i, x i ∈ Set.Ioc ((0 : Position) i) ((0 : Position) i + 1)} =
+        Set.pi Set.univ fun i : Fin 3 ↦ Set.Ioc ((0 : Position) i) ((1 : Position) i) := by
+    ext x
+    simp [Set.mem_pi]
+  have circleVolume : (volume : Measure UnitAddCircle) = AddCircle.haarAddCircle := by
+    simpa using (AddCircle.volume_eq_smul_haarAddCircle (T := (1 : ℝ)))
+  have torusVolume : (volume : Measure (UnitAddTorus (Fin 3))) =
+      Measure.pi (fun _ : Fin 3 ↦ AddCircle.haarAddCircle) := by
+    change Measure.pi (fun _ : Fin 3 ↦ (volume : Measure UnitAddCircle)) = _
+    simp only [circleVolume]
+  rw [torusVolume]
+  refine Eq.trans ?_ (UnitAddTorus.integral_preimage F (0 : Position)).symm
+  rw [sameSet]
+  exact setIntegral_congr_set cube.symm
 
 end NavierStokesTao
