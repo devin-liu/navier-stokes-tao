@@ -1,1 +1,142 @@
-{}
+{
+ "LatticePeriodic": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Setting.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "f2865fac55f65485",
+  "kind": "def",
+  "paper": "eq. (1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "def LatticePeriodic {E : Type*} (f : Position → E) : Prop := ∀ (m : Fin 3 → ℤ) (x : Position), f (x + fun i ↦ (m i : ℝ)) = f x"
+ },
+ "Position": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Setting.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "aecefd02aed6f2a8",
+  "kind": "abbrev",
+  "paper": "eq. (1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "abbrev Position := Fin 3 → ℝ"
+ },
+ "SmoothSolution": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Setting.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "135ffcdd14cb7d73",
+  "kind": "structure",
+  "paper": "eq. (1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "structure SmoothSolution (times : Set ℝ) (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ) : Prop where initialSmooth : ContDiff ℝ ∞ u₀ initialPeriodic : LatticePeriodic u₀ initialDivergenceFree : ∀ x, spatialDivergence u₀ x = 0 velocitySmooth : ContDiffOn ℝ ∞ (fun z : ℝ × Position ↦ u z.1 z.2) (times ×ˢ Set.univ) pressureSmooth : ContDiffOn ℝ ∞ (fun z : ℝ × Position ↦ p z.1 z.2) (times ×ˢ Set.univ) velocityPeriodic : ∀ t ∈ times, LatticePeriodic (u t) pressurePeriodic : ∀ t ∈ times, LatticePeriodic (p t) momentum : ∀ t ∈ times, ∀ x, derivWithin (fun s ↦ u s x) times t + fderiv ℝ (u t) x ((u t x).ofLp) = spatialLaplacian (u t) x - pressureGradient (p t) x incompressible : ∀ t ∈ times, ∀ x, spatialDivergence (u t) x = 0 initial : u 0 = u₀"
+ },
+ "Velocity": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Setting.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "641f238deb2b3e15",
+  "kind": "abbrev",
+  "paper": "eq. (1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "abbrev Velocity := EuclideanSpace ℝ (Fin 3)"
+ },
+ "globalRegularity": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Conjectures.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "37d97af9aa3f1a7d",
+  "kind": "def",
+  "paper": "Conjecture 1.1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "def globalRegularity : Prop := ∀ u₀ : Position → Velocity, ContDiff ℝ ∞ u₀ → LatticePeriodic u₀ → (∀ x, spatialDivergence u₀ x = 0) → ∃ (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Ici 0) u₀ u p"
+ },
+ "h1Norm": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "5d89d5c1f4a8b56d",
+  "kind": "def",
+  "paper": "Section 1.5",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "noncomputable def h1Norm (v : Position → Velocity) : ℝ≥0 := let energy := ∫ x in Set.Icc (0 : Position) 1, ‖v x‖ ^ 2 + ∑ i : Fin 3, ‖spatialPartial i v x‖ ^ 2 ⟨Real.sqrt energy, Real.sqrt_nonneg energy⟩"
+ },
+ "longTermBound": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Conjectures.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "9151401e917cafef",
+  "kind": "def",
+  "paper": "Conjecture 1.2",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "def longTermBound : Prop := ∃ F : ℝ≥0 → ℝ≥0, Monotone F ∧ ∀ (T : ℝ), 0 < T → ∀ (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Icc 0 T) u₀ u p → h1Norm (u T) ≤ F (h1Norm u₀)"
+ },
+ "longTermBound_implies_shortTermBound": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Conjectures.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "a3a81032a33af505",
+  "kind": "theorem",
+  "paper": "none",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem longTermBound_implies_shortTermBound : longTermBound → shortTermBound"
+ },
+ "pressureGradient": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Setting.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "6540685fd444ef81",
+  "kind": "def",
+  "paper": "eq. (1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "noncomputable def pressureGradient (p : Position → ℝ) (x : Position) : Velocity := WithLp.toLp 2 (fun i ↦ spatialPartial i p x)"
+ },
+ "regularityEquivalence": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Main.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "c3abdfb413b5d212",
+  "kind": "theorem",
+  "paper": "Theorem 1.4",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "theorem regularityEquivalence : (globalRegularity ↔ longTermBound) ∧ (globalRegularity ↔ shortTermBound)"
+ },
+ "shortTermBound": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Conjectures.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "8248cb4f8a1d0836",
+  "kind": "def",
+  "paper": "Conjecture 1.3",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "def shortTermBound : Prop := ∃ G : ℝ≥0 → ℝ≥0, Monotone G ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 → ∀ (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Icc 0 T) u₀ u p → h1Norm (u T) ≤ G (h1Norm u₀)"
+ },
+ "spatialDivergence": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Setting.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "01c5aefde560bf59",
+  "kind": "def",
+  "paper": "eq. (1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "noncomputable def spatialDivergence (v : Position → Velocity) (x : Position) : ℝ := ∑ i, spatialPartial i v x i"
+ },
+ "spatialLaplacian": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Setting.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "0001c34a95726b6e",
+  "kind": "def",
+  "paper": "eq. (1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "noncomputable def spatialLaplacian (v : Position → Velocity) (x : Position) : Velocity := ∑ i, spatialPartial i (spatialPartial i v) x"
+ },
+ "spatialPartial": {
+  "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
+  "file": "NavierStokesTao/Setting.lean",
+  "frozen_at": "2026-11-23T12:14:09-05:00",
+  "hash": "2037765f04a08a83",
+  "kind": "def",
+  "paper": "eq. (1",
+  "reviewer": "gpt-6.2-sol:subagent",
+  "statement": "noncomputable def spatialPartial {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (i : Fin 3) (f : Position → E) (x : Position) : E := fderiv ℝ f x (Pi.single i 1)"
+ }
+}
