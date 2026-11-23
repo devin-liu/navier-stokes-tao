@@ -1,1 +1,9 @@
-{}
+{
+ "longTermBound_implies_shortTermBound": {
+  "decl": "longTermBound_implies_shortTermBound",
+  "file": "NavierStokesTao/Conjectures.lean",
+  "paper": "none",
+  "state": "open",
+  "updated": "2026-11-23T12:06:57-05:00"
+ }
+}
