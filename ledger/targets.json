@@ -68,9 +68,10 @@
  "setIntegral_unitCube_translate": {
   "decl": "setIntegral_unitCube_translate",
   "file": "NavierStokesTao/MeanZero.lean",
+  "note": "Tactic tiers missed. Use UnitAddTorus.integral_preimage and Haar invariance after descending the periodic lift and identifying the half-open cube with the closed cube almost everywhere.",
   "paper": "none",
-  "state": "open",
-  "updated": "2026-11-23T12:19:45-05:00"
+  "state": "stuck",
+  "updated": "2026-11-23T12:24:19-05:00"
  },
  "smoothSolution_galilean": {
   "decl": "smoothSolution_galilean",
