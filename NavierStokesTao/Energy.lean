@@ -41,6 +41,24 @@ theorem kineticEnergy_identity {T : ℝ} {u₀ : Position → Velocity}
     HasDerivWithinAt
       (fun s ↦ ∫ x in Set.Icc (0 : Position) 1, ‖u s x‖ ^ 2)
       (-2 * ∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u t) x‖ ^ 2)
-      (Set.Icc 0 T) t := sorry
+      (Set.Icc 0 T) t := by
+  have hslice : ContDiff ℝ ∞ (fun x : Position ↦ (t, x)) :=
+    contDiff_const.prodMk contDiff_id
+  have hv : ContDiff ℝ ∞ (u t) :=
+    ContDiffOn.comp_contDiff (f := fun x : Position ↦ (t, x)) hu.velocitySmooth hslice
+      (fun _ ↦ ⟨ht, Set.mem_univ _⟩)
+  have hp : ContDiff ℝ ∞ (p t) :=
+    ContDiffOn.comp_contDiff (f := fun x : Position ↦ (t, x)) hu.pressureSmooth hslice
+      (fun _ ↦ ⟨ht, Set.mem_univ _⟩)
+  have htime (x : Position) :
+      derivWithin (fun s ↦ u s x) (Set.Icc 0 T) t =
+        spatialLaplacian (u t) x - pressureGradient (p t) x -
+          fderiv ℝ (u t) x (u t x).ofLp :=
+    eq_sub_iff_add_eq.mpr (hu.momentum t ht x)
+  have h := kineticEnergy_hasDerivWithinAt hT hu.velocitySmooth t ht
+  simp only [htime] at h
+  rw [kineticEnergy_spatialBalance (u t) (p t) hv hp
+    (hu.velocityPeriodic t ht) (hu.pressurePeriodic t ht) (hu.incompressible t ht)] at h
+  exact h
 
 end NavierStokesTao
