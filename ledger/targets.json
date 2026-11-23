@@ -101,9 +101,9 @@
   "paper": "none",
   "pr": 15,
   "route": "model",
-  "state": "pr-open",
+  "state": "merged",
   "stmt_hash": "ecbc276173a83dcb",
-  "updated": "2026-11-23T12:57:17-05:00"
+  "updated": "2026-11-23T13:04:01-05:00"
  },
  "setIntegral_unitCube_translate": {
   "axioms": [
