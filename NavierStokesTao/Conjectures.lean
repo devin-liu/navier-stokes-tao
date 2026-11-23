@@ -2,12 +2,12 @@ import NavierStokesTao.Sobolev
 
 namespace NavierStokesTao
 
-open scoped NNReal
+open scoped ContDiff NNReal
 
 /-- Every smooth periodic divergence-free initial velocity has a smooth periodic solution
 with pressure for all forward time. (Paper: Conjecture 1.1) -/
 def globalRegularity : Prop :=
-  ∀ u₀ : Position → Velocity, ContDiff ℝ ⊤ u₀ → LatticePeriodic u₀ →
+  ∀ u₀ : Position → Velocity, ContDiff ℝ ∞ u₀ → LatticePeriodic u₀ →
     (∀ x, spatialDivergence u₀ x = 0) →
     ∃ (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ),
       SmoothSolution (Set.Ici 0) u₀ u p
