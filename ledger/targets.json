@@ -76,9 +76,10 @@
  "smoothSolution_galilean": {
   "decl": "smoothSolution_galilean",
   "file": "NavierStokesTao/MeanZero.lean",
+  "note": "Tactic tiers missed. The chain rule must be implemented for the affine boost on the relative time domain and for its spatial slices.",
   "paper": "Section 2, mean-zero reduction",
-  "state": "open",
-  "updated": "2026-11-23T12:18:54-05:00"
+  "state": "stuck",
+  "updated": "2026-11-23T12:24:19-05:00"
  },
  "spatialMean_conserved": {
   "decl": "spatialMean_conserved",
