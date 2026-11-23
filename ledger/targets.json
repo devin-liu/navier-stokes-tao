@@ -87,10 +87,21 @@
   "updated": "2026-11-23T12:18:54-05:00"
  },
  "spatialMean_galileanVelocity": {
+  "axioms": [
+   "propext",
+   "sorryAx",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 8.3,
   "decl": "spatialMean_galileanVelocity",
   "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": true,
+  "model": "gpt-6",
   "paper": "Section 2, mean-zero reduction",
-  "state": "open",
-  "updated": "2026-11-23T12:18:54-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "71571def5a8c37da",
+  "updated": "2026-11-23T12:24:18-05:00"
  }
 }

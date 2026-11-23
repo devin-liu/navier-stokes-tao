@@ -71,7 +71,17 @@ theorem smoothSolution_galilean {times : Set ℝ} (hDiff : UniqueDiffOn ℝ time
 theorem spatialMean_galileanVelocity (c : Velocity) (u : ℝ → Position → Velocity) (t : ℝ)
     (hSmooth : ContDiff ℝ ∞ (u t)) (hPeriodic : LatticePeriodic (u t)) :
     spatialMean (galileanVelocity c u t) = spatialMean (u t) - c := by
-  sorry
+  let cube := Set.Icc (0 : Position) 1
+  have continuousShift : Continuous (fun x : Position ↦ u t (x + t • c.ofLp)) :=
+    hSmooth.continuous.comp (continuous_id.add continuous_const)
+  have integrableShift : IntegrableOn (fun x : Position ↦ u t (x + t • c.ofLp)) cube :=
+    continuousShift.integrableOn_Icc
+  have integrableConst : IntegrableOn (fun _ : Position ↦ c) cube :=
+    continuous_const.integrableOn_Icc
+  unfold spatialMean galileanVelocity
+  rw [integral_sub integrableShift integrableConst,
+    setIntegral_unitCube_translate (u t) hSmooth.continuous hPeriodic, setIntegral_const]
+  simp [cube, Measure.real, Real.volume_Icc_pi]
 
 /-- A boost by the current spatial mean removes precisely the constant-mode contribution
 to the squared inhomogeneous H¹ norm. For solutions the mean is constant in time.
