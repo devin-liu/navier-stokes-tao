@@ -31,6 +31,9 @@ def shortTermBound : Prop :=
 /-- The long-term bound implies the short-term bound with the same bounding function.
 (Paper: none) -/
 theorem longTermBound_implies_shortTermBound : longTermBound → shortTermBound := by
-  sorry
+  rintro ⟨F, hF, hBound⟩
+  refine ⟨F, hF, ?_⟩
+  intro T hT _ u₀ u p hSolution
+  exact hBound T hT u₀ u p hSolution
 
 end NavierStokesTao

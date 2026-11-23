@@ -1,10 +1,20 @@
 {
  "longTermBound_implies_shortTermBound": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.2,
   "decl": "longTermBound_implies_shortTermBound",
   "file": "NavierStokesTao/Conjectures.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
   "paper": "none",
-  "state": "open",
-  "updated": "2026-11-23T12:06:57-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "a3a81032a33af505",
+  "updated": "2026-11-23T12:10:03-05:00"
  },
  "regularityEquivalence": {
   "decl": "regularityEquivalence",
