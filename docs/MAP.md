@@ -81,7 +81,9 @@ before anything large is tried, and it tests the definitions before analysis is 
 | Proposition 2.2(i), eq. (6) | For `‖u₀‖_{H¹_0} ≤ A` and `T = cA⁻⁴`: a unique strong solution in `X¹_T`, bounded by `≲ A`, depending in a Lipschitz way on the data | — | `LocalTheory.lean` | Lemma 2.1, (5), (4) |
 | Proposition 2.2(ii) | That solution is smooth for `t > 0` | — | `LocalTheory.lean` | 2.2(i) |
 | Proposition 2.2(iii) | Data converging weakly in the ball give solutions converging strongly in `C⁰_t H¹_0([ε,T] × Ω)` | — | `LocalTheory.lean` | 2.2(i), (ii) |
-| Energy identity | Called well known and used in 3.2 | — | `Energy.lean` | eq. (1) |
+| Energy identity | The derivative of the squared kinetic norm is minus twice the integral of the squared velocity gradient. The statement allows any spatial mean and uses inward derivatives at the time endpoints. | `kineticEnergy_identity` | `Energy.lean` | eq. (1), time differentiation, spatial balance |
+| (not stated separately) | Differentiate the cube integral of squared velocity along a smooth time family | `kineticEnergy_hasDerivWithinAt` | `Energy.lean` | differentiation under the integral |
+| (not stated separately) | Pair the spatial momentum terms with the velocity and integrate over the cube | `kineticEnergy_spatialBalance` | `Energy.lean` | periodic integration by parts |
 
 The paper quotes the energy identity, the mean-zero reduction, the existence of `D` and (5)
 as standard. In Lean each is its own target.

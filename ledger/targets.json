@@ -43,6 +43,40 @@
   "state": "stuck",
   "updated": "2026-11-23T12:24:20-05:00"
  },
+ "kineticEnergy_hasDerivWithinAt": {
+  "decl": "kineticEnergy_hasDerivWithinAt",
+  "file": "NavierStokesTao/Energy.lean",
+  "note": "Lean-only pass 20261123-154850-Energy missed. Mathlib parametric integral differentiation assumes an ordinary derivative on a neighborhood, so the proof needs a one-sided endpoint argument or a C1 reflection extension with a compact uniform bound.",
+  "paper": "none",
+  "state": "stuck",
+  "updated": "2026-11-23T15:49:30-05:00"
+ },
+ "kineticEnergy_identity": {
+  "axioms": [
+   "propext",
+   "sorryAx",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.3,
+  "decl": "kineticEnergy_identity",
+  "file": "NavierStokesTao/Energy.lean",
+  "inherited_sorry": true,
+  "model": "gpt-6",
+  "paper": "Section 3.2, energy identity",
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "c11a364ea90ea7f5",
+  "updated": "2026-11-23T15:48:47-05:00"
+ },
+ "kineticEnergy_spatialBalance": {
+  "decl": "kineticEnergy_spatialBalance",
+  "file": "NavierStokesTao/Energy.lean",
+  "note": "Lean-only pass 20261123-154850-Energy missed. First derive zero integral of periodic divergence by cancelling opposite faces in MeasureTheory.integral_divergence_of_hasFDerivAt_off_countable. Then apply that identity to the pressure, advection and viscous fluxes.",
+  "paper": "none",
+  "state": "stuck",
+  "updated": "2026-11-23T15:49:31-05:00"
+ },
  "latticePeriodic_factors_torus": {
   "axioms": [
    "propext",
