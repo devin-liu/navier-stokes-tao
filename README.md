@@ -46,7 +46,36 @@ Beyond the first milestone, the main analytical work is to formalize the local t
 
 A result is **verified** when its module builds with the project’s pinned Lean and Mathlib versions, its statement has been checked against the cited paper item, and its axiom report contains only the standard axioms accepted by the project. A declaration that depends on an unfinished lemma stays marked **conditional**, even if its own proof compiles. Proof PRs should include the output of `#print axioms` for the result they close.
 
-The first setup contribution should pin Lean and Mathlib and establish a clean build in CI. The reproducible build instructions belong here once that build exists.
+Current numbers are in [`REPORT.md`](REPORT.md) once the first results land; it is generated from the records in [`ledger/`](ledger/), which also hold every frozen statement and who reviewed it.
+
+## Building
+
+Lean and Mathlib are pinned in `lean-toolchain` and `lake-manifest.json`. With [`elan`](https://github.com/leanprover/elan) installed:
+
+```bash
+lake exe cache get
+```
+
+```bash
+lake build
+```
+
+The first command downloads the prebuilt Mathlib (several GB). CI runs the same build on every pull request, together with `python3 scripts/lint.py`.
+
+## How the repository is organized
+
+| Path | Contents |
+| --- | --- |
+| [`NavierStokesTao/`](NavierStokesTao/) | the Lean library |
+| [`docs/MAP.md`](docs/MAP.md) | paper item → Lean declaration → what it depends on |
+| [`AGENTS.md`](AGENTS.md) | how a person or an AI agent takes a turn here, and the rules for Lean code |
+| [`docs/LESSONS.md`](docs/LESSONS.md) | why the process looks the way it does |
+| `scripts/` | the Lean-only proof pass, the gate that accepts a proof only after a module build, and the state commands |
+| [`ledger/`](ledger/) | current state and append-only history of every attempt |
+
+Part of the work is done by AI agents under the process in `AGENTS.md`. Each result records how it was found: Lean-only search, after a model pass, by hand, or an undisclosed method. Every route goes through the same gate; nothing is counted because a model said it was right.
+
+Licensed under Apache-2.0 ([`LICENSE`](LICENSE)), the licence Mathlib uses.
 
 ## References
 

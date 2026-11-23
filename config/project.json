@@ -1,0 +1,17 @@
+{
+ "repo": "devin-liu/navier-stokes-tao",
+ "branch": "main",
+ "worktree": ".",
+ "lean_root": "NavierStokesTao",
+ "paper": "arXiv:0710.1604v5",
+ "lean_timeout_sec": 600,
+ "build_timeout_sec": 3600,
+ "failure_bundle_chars": 14000,
+ "turn_stale_hours": 4,
+ "budget": {
+  "model_passes_per_batch": 1,
+  "mid_model": "a current mid-tier model; the exact model id is recorded with each pass (scripts/nst model-pass --model)",
+  "strong_model": "the strongest available model; the exact model id is recorded with each pass",
+  "strong_model_requires": "a named intermediate lemma that serves two or more targets"
+ }
+}

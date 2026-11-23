@@ -1,0 +1,15 @@
+# tier  tactic
+# One Lean run per tier, covering every target of the file. A slow tier cannot cost a cheaper
+# tier its results, and a target that wins in one tier is not tried in the next.
+# Order within a tier is the order of preference when several close the goal.
+1 assumption
+1 rfl
+1 simp
+1 norm_num
+1 solve_by_elim
+1 positivity
+1 linarith
+2 exact?
+2 aesop
+2 simp_all
+2 grind
