@@ -74,6 +74,7 @@ before anything large is tried, and it tests the definitions before analysis is 
 |---|---|---|---|---|
 | Mean-zero reduction | The mean is conserved; a [Galilean change of coordinates](MEAN-ZERO.md) reduces all three conjectures to mean zero | `spatialMean_conserved`, `smoothSolution_galilean`, `spatialMean_galileanVelocity`, `h1Norm_sq_galilean_centered` | `MeanZero.lean` | eq. (1), `H¹` |
 | (not stated separately) | Torus integration is invariant under translations of continuous periodic lifts | `setIntegral_unitCube_translate` | `MeanZero.lean` | periodic lifts, translation invariance of Haar measure |
+| (not stated separately) | Lattice-periodic lifts descend to Mathlib's quotient torus, and the cube integral agrees with its normalized Haar integral | `latticePeriodic_factors_torus`, `setIntegral_torusPoint` | `TorusIntegral.lean` | `UnitAddTorus.integral_preimage` |
 | eq. (4) | Duhamel form with a first-order Fourier multiplier `D` whose range is divergence-free and mean-zero; a smooth solution of (4) with smooth divergence-free data solves (1) for a suitable pressure | — | `Duhamel.lean` | heat semigroup |
 | Lemma 2.1 | Energy estimate for the forced heat equation: `‖u‖_{X^s_T} ≲_s ‖u₀‖_{H^s_0} + ‖F‖_{L²_t H^{s-1}_0}` | — | `Energy.lean` | `X^s_T` |
 | eq. (5) | Heat smoothing: `‖e^{tΔ} f‖_{H^{s+δ}_0} ≲_{s,δ} t^{-δ/2} ‖f‖_{H^s_0}` | — | `Heat.lean` | `H^s_0` |
@@ -100,6 +101,7 @@ as standard. In Lean each is its own target.
 
 ## Files, in import order
 
-`Basic`, `Setting` → `Sobolev` → `Conjectures` → `MeanZero`, `Heat`, `Energy`, `Duhamel` →
+`Basic`, `Setting` → `Sobolev`, `TorusIntegral` → `Conjectures` → `MeanZero`, `Heat`,
+`Energy`, `Duhamel` →
 `LocalTheory` → `Implications` → `Main`. One file per row group; split a file when it passes
 about 400 lines or when two people would want it at once.
