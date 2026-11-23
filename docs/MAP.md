@@ -45,6 +45,9 @@ before anything large is tried, and it tests the definitions before analysis is 
   The notation subsection defines the homogeneous norm only in the mean-zero case, and
   Section 3.2 uses Poincaré to bound `H¹` by the derivative norm there. Equivalent
   inhomogeneous norms give equivalent conjectures by rescaling the bounding functions.
+  The derivative seminorm loses the constant mode. Mean conservation and the Galilean
+  reduction let one treat this mode separately: on the mean-zero part, Poincaré compares
+  the two norms, while the initial inhomogeneous norm controls the conserved mean.
 - **Pressure.** Keep a smooth pressure as a separate argument to `SmoothSolution`, as in
   equation (1) and Conjectures 1.1–1.3. Only Conjecture 1.1 asserts existence of a solution
   pair. Section 2 uses Leray projection to eliminate pressure and later recovers it.
