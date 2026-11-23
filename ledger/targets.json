@@ -1,4 +1,25 @@
 {
+ "galileanVelocity_initial": {
+  "decl": "galileanVelocity_initial",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "open",
+  "updated": "2026-11-23T12:18:54-05:00"
+ },
+ "galileanVelocity_inverse": {
+  "decl": "galileanVelocity_inverse",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "open",
+  "updated": "2026-11-23T12:18:54-05:00"
+ },
+ "h1Norm_sq_galilean_centered": {
+  "decl": "h1Norm_sq_galilean_centered",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "open",
+  "updated": "2026-11-23T12:18:54-05:00"
+ },
  "longTermBound_implies_shortTermBound": {
   "axioms": [
    "propext",
@@ -23,5 +44,26 @@
   "paper": "Theorem 1.4",
   "state": "open",
   "updated": "2026-11-23T12:07:02-05:00"
+ },
+ "smoothSolution_galilean": {
+  "decl": "smoothSolution_galilean",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "open",
+  "updated": "2026-11-23T12:18:54-05:00"
+ },
+ "spatialMean_conserved": {
+  "decl": "spatialMean_conserved",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "open",
+  "updated": "2026-11-23T12:18:54-05:00"
+ },
+ "spatialMean_galileanVelocity": {
+  "decl": "spatialMean_galileanVelocity",
+  "file": "NavierStokesTao/MeanZero.lean",
+  "paper": "Section 2, mean-zero reduction",
+  "state": "open",
+  "updated": "2026-11-23T12:18:54-05:00"
  }
 }
