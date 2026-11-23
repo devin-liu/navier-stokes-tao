@@ -43,6 +43,13 @@
   "state": "stuck",
   "updated": "2026-11-23T12:24:20-05:00"
  },
+ "integral_periodic_divergence_eq_zero": {
+  "decl": "integral_periodic_divergence_eq_zero",
+  "file": "NavierStokesTao/PeriodicCalculus.lean",
+  "paper": "none",
+  "state": "open",
+  "updated": "2026-11-23T17:22:46-05:00"
+ },
  "kineticEnergy_hasDerivWithinAt": {
   "decl": "kineticEnergy_hasDerivWithinAt",
   "file": "NavierStokesTao/Energy.lean",

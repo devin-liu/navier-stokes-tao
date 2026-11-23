@@ -75,6 +75,7 @@ before anything large is tried, and it tests the definitions before analysis is 
 | Mean-zero reduction | The mean is conserved; a [Galilean change of coordinates](MEAN-ZERO.md) reduces all three conjectures to mean zero | `spatialMean_conserved`, `smoothSolution_galilean`, `spatialMean_galileanVelocity`, `h1Norm_sq_galilean_centered` | `MeanZero.lean` | eq. (1), `H¹` |
 | (not stated separately) | Torus integration is invariant under translations of continuous periodic lifts | `setIntegral_unitCube_translate` | `MeanZero.lean` | periodic lifts, translation invariance of Haar measure |
 | (not stated separately) | Lattice-periodic lifts descend to Mathlib's quotient torus, and the cube integral agrees with its normalized Haar integral | `latticePeriodic_factors_torus`, `setIntegral_torusPoint` | `TorusIntegral.lean` | `UnitAddTorus.integral_preimage` |
+| (not stated separately) | The total divergence of a periodic C¹ flux vanishes on the unit cube | `integral_periodic_divergence_eq_zero` | `PeriodicCalculus.lean` | Mathlib divergence theorem, cancellation of opposite faces |
 | eq. (4) | Duhamel form with a first-order Fourier multiplier `D` whose range is divergence-free and mean-zero; a smooth solution of (4) with smooth divergence-free data solves (1) for a suitable pressure | — | `Duhamel.lean` | heat semigroup |
 | Lemma 2.1 | Energy estimate for the forced heat equation: `‖u‖_{X^s_T} ≲_s ‖u₀‖_{H^s_0} + ‖F‖_{L²_t H^{s-1}_0}` | — | `Energy.lean` | `X^s_T` |
 | eq. (5) | Heat smoothing: `‖e^{tΔ} f‖_{H^{s+δ}_0} ≲_{s,δ} t^{-δ/2} ‖f‖_{H^s_0}` | — | `Heat.lean` | `H^s_0` |
@@ -83,7 +84,7 @@ before anything large is tried, and it tests the definitions before analysis is 
 | Proposition 2.2(iii) | Data converging weakly in the ball give solutions converging strongly in `C⁰_t H¹_0([ε,T] × Ω)` | — | `LocalTheory.lean` | 2.2(i), (ii) |
 | Energy identity | The derivative of the squared kinetic norm is minus twice the integral of the squared velocity gradient. The statement allows any spatial mean and uses inward derivatives at the time endpoints. | `kineticEnergy_identity` | `Energy.lean` | eq. (1), time differentiation, spatial balance |
 | (not stated separately) | Differentiate the cube integral of squared velocity along a smooth time family | `kineticEnergy_hasDerivWithinAt` | `Energy.lean` | differentiation under the integral |
-| (not stated separately) | Pair the spatial momentum terms with the velocity and integrate over the cube | `kineticEnergy_spatialBalance` | `Energy.lean` | periodic integration by parts |
+| (not stated separately) | Pair the spatial momentum terms with the velocity and integrate over the cube | `kineticEnergy_spatialBalance` | `Energy.lean` | periodic integration by parts, zero total divergence |
 
 The paper quotes the energy identity, the mean-zero reduction, the existence of `D` and (5)
 as standard. In Lean each is its own target.
@@ -103,7 +104,7 @@ as standard. In Lean each is its own target.
 
 ## Files, in import order
 
-`Basic`, `Setting` → `Sobolev`, `TorusIntegral` → `Conjectures` → `MeanZero`, `Heat`,
+`Basic`, `Setting` → `Sobolev`, `TorusIntegral`, `PeriodicCalculus` → `Conjectures` → `MeanZero`, `Heat`,
 `Energy`, `Duhamel` →
 `LocalTheory` → `Implications` → `Main`. One file per row group; split a file when it passes
 about 400 lines or when two people would want it at once.

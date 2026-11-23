@@ -322,3 +322,4 @@
 {"ts": "2026-11-23T17:20:16-05:00", "type": "model-pass", "kind": "review", "model": "gpt-6", "tier": "mid", "targets": ["integral_periodic_divergence_eq_zero"], "files": [], "purpose": "Independently check the periodic flux statement and its role in the paper.", "lemma": null, "usage_before": "unmeasured", "operator_ok": false}
 {"ts": "2026-11-23T17:22:08-05:00", "type": "state", "decl": "kineticEnergy_identity", "from": "pr-open", "to": "merged", "note": null}
 {"ts": "2026-11-23T17:22:11-05:00", "type": "preflight", "behind": "0", "ahead": "0", "open_prs": [], "overlap": [], "verdict": "clear"}
+{"ts": "2026-11-23T17:22:46-05:00", "type": "statement-check", "file": "NavierStokesTao/PeriodicCalculus.lean", "sha": "f8fed74", "secs": 18.2, "ok": true, "declarations": 1, "sorries": 1}
