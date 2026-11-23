@@ -2,16 +2,16 @@
 
 Written by `scripts/nst turn end`. Do not edit by hand and do not append: the next handover replaces it.
 
-Updated 2026-11-23T11:54:03-05:00 by claude-desktop (0 Lean runs, 0 model passes this turn).
+Updated 2026-11-23T12:01:51-05:00 by claude-desktop (0 Lean runs, 0 model passes this turn).
 
 ## Done last turn
 
-Used the checkout's scripts/nst as claude-desktop because scripts/rv is absent. Found no matching build process. The worktree was clean at entry and sync reported 0 problems. scripts/setup.sh --update rejected the option. The inbox and target ledger are empty, and local scout found no open Lean declarations. The existing milestone is Section 1 of docs/MAP.md: the setting, H1 norm, Conjectures 1.1 to 1.3, and Theorem 1.4. No Lean runs, claims, pushes, or pull requests.
+2026-11-23: the previous turn was started with a prompt written for a different workspace (it named scripts/rv, setup.sh --update and claims) and stopped without work. Fixed what made that a dead end: AGENTS.md now tells an agent with such a prompt to run prompts/cycle.md here; scripts/setup.sh explains --update/--fork/--warm instead of 'unknown option'; scripts/paper.sh fetch is classed as a read (no go-ahead); scripts/nst branch carries an uncommitted handover from main onto the new branch (tested in a scratch clone); prompts/cycle.md adds Closes #N for resolved issues and a one-line short form. scripts/selftest.sh passes. Operator go-ahead 2026-11-23, in their words: 'Create up to 10 open ones so we can kick things off' (covered: issues #2 to #10 and four labels, created and seen on GitHub). PR #1 merged 2026-11-23T16:50Z; CI green on main. Licence Apache-2.0 went in with PR #1.
 
 ## Next action
 
-Confirm which checkout should run the cycle.
+prompts/cycle.md from step 0, milestone 1 of docs/MAP.md (issues #2 to #6): scripts/paper.sh fetch, check the Section 1 rows against the source, then the statement pass
 
 ## Waiting on the operator
 
-For the RV proof cycle, supply the checkout that has scripts/rv. If this checkout is intended, authorize scripts/paper.sh fetch to start the Section 1 milestone. Pending project decisions from the prior handover: confirm the Apache-2.0 licence and review the H1 norm, smoothness on [0,T], and pressure choices once proposed. Stuck targets: none.
+Merge the pull request from branch fix/first-kickoff. The statement choices in docs/MAP.md (issues #2, #3, #4) are yours to decide once the first statement pass proposes them.
