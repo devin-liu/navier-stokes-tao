@@ -2,24 +2,21 @@
  "exists_small_gradient_energy": {
   "axioms": [
    "propext",
-   "sorryAx",
    "Classical.choice",
    "Quot.sound"
   ],
   "build_secs": 4.7,
   "decl": "exists_small_gradient_energy",
   "file": "NavierStokesTao/Energy.lean",
-  "inherited_sorry": true,
+  "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "Section 3.2, before eq. (7",
   "pr": 20,
-  "rests_on": [
-   "kineticEnergy_hasDerivWithinAt"
-  ],
+  "rests_on": [],
   "route": "model",
   "state": "merged",
   "stmt_hash": "90ccdaa900d38809",
-  "updated": "2026-11-24T12:58:42-05:00"
+  "updated": "2026-11-24T13:57:49-05:00"
  },
  "forced_heat_energy_estimate": {
   "decl": "forced_heat_energy_estimate",
@@ -187,24 +184,21 @@
  "kineticEnergy_identity": {
   "axioms": [
    "propext",
-   "sorryAx",
    "Classical.choice",
    "Quot.sound"
   ],
   "build_secs": 4.3,
   "decl": "kineticEnergy_identity",
   "file": "NavierStokesTao/Energy.lean",
-  "inherited_sorry": true,
+  "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "Section 3.2, energy identity",
   "pr": 18,
-  "rests_on": [
-   "kineticEnergy_hasDerivWithinAt"
-  ],
+  "rests_on": [],
   "route": "model",
   "state": "merged",
   "stmt_hash": "c11a364ea90ea7f5",
-  "updated": "2026-11-24T12:58:42-05:00"
+  "updated": "2026-11-24T13:57:49-05:00"
  },
  "kineticEnergy_spatialBalance": {
   "axioms": [
