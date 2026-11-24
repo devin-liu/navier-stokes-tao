@@ -1,6 +1,6 @@
 # Progress report
 
-Generated 2026-11-24T09:35:22-05:00 by `scripts/nst report` from `ledger/`. Do not edit by hand.
+Generated 2026-11-24T09:38:30-05:00 by `scripts/nst report` from `ledger/`. Do not edit by hand.
 
 Repository: [devin-liu/navier-stokes-tao](https://github.com/devin-liu/navier-stokes-tao). Every proof counted here was accepted by Lean in a build of the real module; none is counted on a model's say-so.
 
@@ -8,8 +8,7 @@ Repository: [devin-liu/navier-stokes-tao](https://github.com/devin-liu/navier-st
 
 | State | Count |
 |---|---|
-| proved-local | 3 |
-| merged | 13 |
+| merged | 16 |
 | stuck | 6 |
 | **all targets taken on** | **22** |
 
@@ -31,8 +30,8 @@ Statements frozen: 48.
 
 | Route | Proved | Merged |
 |---|---|---|
-| after a model pass | 14 | 13 |
-| undisclosed method | 2 | 0 |
+| after a model pass | 14 | 14 |
+| undisclosed method | 2 | 2 |
 
 ## Cost
 
@@ -49,7 +48,7 @@ Statements frozen: 48.
 | `forced_heat_energy_estimate` | Lemma 2.1 | stuck |  |  |  |  |
 | `kineticEnergy_hasDerivWithinAt` | none | stuck |  |  |  |  |
 | `kineticEnergy_identity` | Section 3.2, energy identity | merged | conditional | after a model pass | #18 | propext, sorryAx, Classical.choice, Quot.sound |
-| `kineticEnergy_spatialBalance` | none | proved-local | verified | undisclosed method |  | propext, Classical.choice, Quot.sound |
+| `kineticEnergy_spatialBalance` | none | merged | verified | undisclosed method | #21 | propext, Classical.choice, Quot.sound |
 | `heat_smoothing` | eq. (5 | merged | verified | after a model pass | #20 | propext, Classical.choice, Quot.sound |
 | `globalRegularity_implies_shortTermBound` | Section 3.4 | stuck |  |  |  |  |
 | `longTermBound_implies_globalRegularity` | Section 3.1 | stuck |  |  |  |  |
@@ -60,9 +59,9 @@ Statements frozen: 48.
 | `h1Norm_sq_galilean_centered` | Section 2, mean-zero reduction | merged | verified | after a model pass | #20 | propext, Classical.choice, Quot.sound |
 | `setIntegral_unitCube_translate` | none | merged | verified | after a model pass | #16 | propext, Classical.choice, Quot.sound |
 | `smoothSolution_galilean` | Section 2, mean-zero reduction | stuck |  |  |  |  |
-| `spatialMean_conserved` | Section 2, mean-zero reduction | proved-local | verified | undisclosed method |  | propext, Classical.choice, Quot.sound |
+| `spatialMean_conserved` | Section 2, mean-zero reduction | merged | verified | undisclosed method | #21 | propext, Classical.choice, Quot.sound |
 | `spatialMean_galileanVelocity` | Section 2, mean-zero reduction | merged | conditional | after a model pass | #13 | propext, sorryAx, Classical.choice, Quot.sound |
 | `integral_periodic_divergence_eq_zero` | none | merged | verified | after a model pass | #19 | propext, Classical.choice, Quot.sound |
-| `integral_periodic_spatialPartial_eq_zero` | none | proved-local | verified | after a model pass |  | propext, Classical.choice, Quot.sound |
+| `integral_periodic_spatialPartial_eq_zero` | none | merged | verified | after a model pass | #21 | propext, Classical.choice, Quot.sound |
 | `latticePeriodic_factors_torus` | none | merged | verified | after a model pass | #14 | propext, Classical.choice, Quot.sound |
 | `setIntegral_torusPoint` | none | merged | verified | after a model pass | #15 | propext, Classical.choice, Quot.sound |

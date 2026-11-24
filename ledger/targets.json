@@ -139,10 +139,11 @@
   "inherited_sorry": false,
   "model": "gpt-6",
   "paper": "none",
+  "pr": 21,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "6644c4927f191433",
-  "updated": "2026-11-24T00:28:43-05:00"
+  "updated": "2026-11-24T09:38:30-05:00"
  },
  "kineticEnergy_hasDerivWithinAt": {
   "decl": "kineticEnergy_hasDerivWithinAt",
@@ -183,10 +184,11 @@
   "inherited_sorry": false,
   "note": "Lean-only pass 20261123-154850-Energy missed. First derive zero integral of periodic divergence by cancelling opposite faces in MeasureTheory.integral_divergence_of_hasFDerivAt_off_countable. Then apply that identity to the pressure, advection and viscous fluxes.",
   "paper": "none",
+  "pr": 21,
   "route": "private",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "803b89acc7f6b7d7",
-  "updated": "2026-11-24T09:13:54-05:00"
+  "updated": "2026-11-24T09:38:30-05:00"
  },
  "latticePeriodic_factors_torus": {
   "axioms": [
@@ -317,10 +319,11 @@
   "inherited_sorry": false,
   "note": "Tactic tiers missed. Differentiate the mean under the integral, express transport as a divergence, and use periodic cancellation of each boundary flux.",
   "paper": "Section 2, mean-zero reduction",
+  "pr": 21,
   "route": "private",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "8f4df2137d55cf3f",
-  "updated": "2026-11-24T09:14:23-05:00"
+  "updated": "2026-11-24T09:38:30-05:00"
  },
  "spatialMean_galileanVelocity": {
   "axioms": [
