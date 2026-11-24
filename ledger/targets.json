@@ -42,6 +42,13 @@
   "stmt_hash": "d2b24c9f7e90ae3b",
   "updated": "2026-11-23T12:27:33-05:00"
  },
+ "globalRegularity_implies_shortTermBound": {
+  "decl": "globalRegularity_implies_shortTermBound",
+  "file": "NavierStokesTao/Implications.lean",
+  "paper": "Section 3.4",
+  "state": "open",
+  "updated": "2026-11-23T23:51:06-05:00"
+ },
  "h1Norm_sq_galilean_centered": {
   "decl": "h1Norm_sq_galilean_centered",
   "file": "NavierStokesTao/MeanZero.lean",
@@ -140,6 +147,13 @@
   "stmt_hash": "c017ea0255fc33dc",
   "updated": "2026-11-23T12:33:23-05:00"
  },
+ "longTermBound_implies_globalRegularity": {
+  "decl": "longTermBound_implies_globalRegularity",
+  "file": "NavierStokesTao/Implications.lean",
+  "paper": "Section 3.1",
+  "state": "open",
+  "updated": "2026-11-23T23:51:06-05:00"
+ },
  "longTermBound_implies_shortTermBound": {
   "axioms": [
    "propext",
@@ -202,6 +216,13 @@
   "state": "merged",
   "stmt_hash": "f1d42396e9695a92",
   "updated": "2026-11-23T13:09:36-05:00"
+ },
+ "shortTermBound_implies_longTermBound": {
+  "decl": "shortTermBound_implies_longTermBound",
+  "file": "NavierStokesTao/Implications.lean",
+  "paper": "Section 3.2",
+  "state": "open",
+  "updated": "2026-11-23T23:51:06-05:00"
  },
  "smoothSolution_galilean": {
   "decl": "smoothSolution_galilean",
