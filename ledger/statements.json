@@ -69,6 +69,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "abbrev Velocity := EuclideanSpace ℝ (Fin 3)"
  },
+ "exists_small_gradient_energy": {
+  "basis": "Compared the energy identity and averaging step before equation (7) in runs/review-2026-11-23-Energy-gradient.md.",
+  "file": "NavierStokesTao/Energy.lean",
+  "frozen_at": "2026-11-23T23:54:08-05:00",
+  "hash": "90ccdaa900d38809",
+  "kind": "theorem",
+  "paper": "Section 3.2, before eq. (7",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem exists_small_gradient_energy {T L : ℝ} {u₀ : Position → Velocity} {u : ℝ → Position → Velocity} {p : ℝ → Position → ℝ} (hL : 0 < L) (hLT : L ≤ T) (hu : SmoothSolution (Set.Icc 0 T) u₀ u p) : ∃ t ∈ Set.Ioo 0 L, (∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u t) x‖ ^ 2) ≤ (∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2) / (2 * L)"
+ },
  "forcedHeatCoefficients": {
   "basis": "Compared Section 1.5, the Section 2 time spaces and Lemma 2.1, including T=0 and modewise integrability, in runs/review-2026-11-23-forced-heat.md.",
   "file": "NavierStokesTao/Energy.lean",
