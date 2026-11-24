@@ -1,5 +1,6 @@
 import NavierStokesTao.Heat
 import Mathlib.Analysis.Calculus.ContDiff.Comp
+import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
@@ -81,5 +82,16 @@ theorem kineticEnergy_identity {T : ℝ} {u₀ : Position → Velocity}
   rw [kineticEnergy_spatialBalance (u t) (p t) hv hp
     (hu.velocityPeriodic t ht) (hu.pressurePeriodic t ht) (hu.incompressible t ht)] at h
   exact h
+
+/-- On any positive initial subinterval, some interior time has squared gradient
+energy at most the initial kinetic energy divided by twice the subinterval length.
+This is the averaging step before Poincaré, and allows arbitrary spatial mean.
+(Paper: Section 3.2, before eq. (7)) -/
+theorem exists_small_gradient_energy {T L : ℝ} {u₀ : Position → Velocity}
+    {u : ℝ → Position → Velocity} {p : ℝ → Position → ℝ}
+    (hL : 0 < L) (hLT : L ≤ T) (hu : SmoothSolution (Set.Icc 0 T) u₀ u p) :
+    ∃ t ∈ Set.Ioo 0 L,
+      (∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u t) x‖ ^ 2) ≤
+        (∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2) / (2 * L) := sorry
 
 end NavierStokesTao
