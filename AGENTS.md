@@ -81,7 +81,9 @@ Never put a `sorry` inside a proof.
 - What a proved target counts as is computed, never typed (`scripts/nst status`, `REPORT.md`):
   - `verified`: its statement is frozen and its axioms are `propext`, `Classical.choice`,
     `Quot.sound` at most;
-  - `conditional`: Lean reports `sorryAx`, so it rests on something still unproved;
+  - `conditional`: Lean reports `sorryAx`, so it rests on something still unproved. `scripts/gate.py deps`
+    names the open statements from the compiled terms. `handin` refreshes these verdicts, and
+    the CI audit fails when the ledger is stale;
   - `unreviewed`: proved, but nobody independent has checked the statement against the paper.
 - **Frozen** means `scripts/nst freeze` recorded a review by someone other than the agent
   holding the turn, with what the review compared. Definitions and structures are frozen too:
