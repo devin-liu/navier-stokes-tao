@@ -18,7 +18,8 @@ noncomputable def forcedHeatCoefficients {E : Type*} [NormedAddCommGroup E]
 
 /-- The forced heat flow is continuous in order s and square integrable in time in
 order s+1. Its bound is uniform over finite time intervals, including T = 0.
-Mean zero is built into the coefficient data predicates. (Paper: Lemma 2.1) -/
+Mean zero is built into the data predicates. The coefficient space is generalized
+to a complete real normed space for the modewise integral. (Paper: Lemma 2.1) -/
 theorem forced_heat_energy_estimate {E : Type*} [NormedAddCommGroup E]
     [NormedSpace ℝ E] [CompleteSpace E] (s : ℝ) :
     ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 ≤ T →
