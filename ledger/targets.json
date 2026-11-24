@@ -56,10 +56,11 @@
   "model": "gpt-6",
   "note": "Mathlib divergence theorem applies after unfolding spatialPartial. Candidate run 20261123-172339-PeriodicCalculus stopped at Pi.single elaboration in the opposite-face shift. Give the integer shift the explicit type Fin 3 → ℤ before coercing its entries to ℝ. The candidate repair budget was used.",
   "paper": "none",
+  "pr": 19,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "20f952592562562e",
-  "updated": "2026-11-23T17:26:41-05:00"
+  "updated": "2026-11-23T23:44:50-05:00"
  },
  "kineticEnergy_hasDerivWithinAt": {
   "decl": "kineticEnergy_hasDerivWithinAt",

@@ -1,6 +1,6 @@
 # Progress report
 
-Generated 2026-11-23T17:26:41-05:00 by `scripts/nst report` from `ledger/`. Do not edit by hand.
+Generated 2026-11-23T23:44:50-05:00 by `scripts/nst report` from `ledger/`. Do not edit by hand.
 
 Repository: [devin-liu/navier-stokes-tao](https://github.com/devin-liu/navier-stokes-tao). Every proof counted here was accepted by Lean in a build of the real module; none is counted on a model's say-so.
 
@@ -9,8 +9,7 @@ Repository: [devin-liu/navier-stokes-tao](https://github.com/devin-liu/navier-st
 | State | Count |
 |---|---|
 | open | 1 |
-| proved-local | 1 |
-| merged | 8 |
+| merged | 9 |
 | stuck | 5 |
 | **all targets taken on** | **15** |
 
@@ -32,7 +31,7 @@ Statements frozen: 31.
 
 | Route | Proved | Merged |
 |---|---|---|
-| after a model pass | 9 | 8 |
+| after a model pass | 9 | 9 |
 
 ## Cost
 
@@ -56,6 +55,6 @@ Statements frozen: 31.
 | `smoothSolution_galilean` | Section 2, mean-zero reduction | stuck |  |  |  |  |
 | `spatialMean_conserved` | Section 2, mean-zero reduction | stuck |  |  |  |  |
 | `spatialMean_galileanVelocity` | Section 2, mean-zero reduction | merged | conditional | after a model pass | #13 | propext, sorryAx, Classical.choice, Quot.sound |
-| `integral_periodic_divergence_eq_zero` | none | proved-local | verified | after a model pass |  | propext, Classical.choice, Quot.sound |
+| `integral_periodic_divergence_eq_zero` | none | merged | verified | after a model pass | #19 | propext, Classical.choice, Quot.sound |
 | `latticePeriodic_factors_torus` | none | merged | verified | after a model pass | #14 | propext, Classical.choice, Quot.sound |
 | `setIntegral_torusPoint` | none | merged | verified | after a model pass | #15 | propext, Classical.choice, Quot.sound |
