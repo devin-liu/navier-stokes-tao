@@ -95,6 +95,7 @@ as standard. In Lean each is its own target.
 |---|---|---|---|---|
 | 3.1 | 1.2 ⇒ 1.1, by iterating Proposition 2.2: the existence time depends only on the norm, which the bound controls. Includes the mean-zero reduction. | `longTermBound_implies_globalRegularity` | `Implications.lean` | 2.2(i), (ii), mean-zero reduction |
 | 3.2, eq. (7) | From the energy identity and pigeonholing: for `T ≥ ε⁻²` a time `T' ≤ ε⁻²` with `‖u(T')‖_{H¹} ≲_E ε` | — | `Implications.lean` | energy identity, Poincaré |
+| 3.2, before eq. (7) | On an initial subinterval of length `L > 0`, some interior time has squared gradient energy at most the initial kinetic energy divided by `2L`. Allows arbitrary mean. | `exists_small_gradient_energy` | `Energy.lean` | energy identity |
 | 3.2, eq. (8), (9) | Small data stay small: repeat the proof of 2.2 and compare with the heat flow | — | `Implications.lean` | 2.2, (5) |
 | 3.2, eq. (10) | Iterate Conjecture 1.3 on `[0,T']` | — | `Implications.lean` | Conjecture 1.3 |
 | 3.2 | 1.3 ⇒ 1.2, including the mean-zero reduction | `shortTermBound_implies_longTermBound` | `Implications.lean` | (7) to (10), mean-zero reduction |
