@@ -110,7 +110,39 @@ theorem kineticEnergy_hasDerivWithinAt {T : ℝ} {u : ℝ → Position → Veloc
       (fun s ↦ ∫ x in Set.Icc (0 : Position) 1, ‖u s x‖ ^ 2)
       (∫ x in Set.Icc (0 : Position) 1,
         2 * ⟪u t x, derivWithin (fun s ↦ u s x) (Set.Icc 0 T) t⟫_ℝ)
-      (Set.Icc 0 T) t := sorry
+      (Set.Icc 0 T) t := by
+  let times := Set.Icc (0 : ℝ) T
+  let cube := Set.Icc (0 : Position) 1
+  let U (z : ℝ × Position) := u z.1 z.2
+  let F (r : ℝ) (x : Position) := ‖u r x‖ ^ 2
+  let d (r : ℝ) (x : Position) := derivWithin (fun s ↦ u s x) times r
+  let D (r : ℝ) (x : Position) := 2 * ⟪u r x, d r x⟫_ℝ
+  have hDiff := uniqueDiffOn_Icc hT
+  have hUD : UniqueDiffOn ℝ (times ×ˢ (Set.univ : Set Position)) :=
+    hDiff.prod uniqueDiffOn_univ
+  have hd (r : ℝ) (hr : r ∈ times) (x : Position) :
+      HasDerivWithinAt (fun s ↦ u s x)
+        (fderivWithin ℝ U (times ×ˢ Set.univ) (r, x) (1, 0)) times r := by
+    have hu' := (hu.differentiableOn (by simp) (x := (r, x))
+      (show (r, x) ∈ times ×ˢ Set.univ from ⟨hr, Set.mem_univ _⟩)).hasFDerivWithinAt
+    have hi : HasDerivAt (fun s : ℝ ↦ (s, x)) ((1 : ℝ), (0 : Position)) r := by
+      simpa using ((hasFDerivAt_id (𝕜 := ℝ) r).prodMk
+        (hasFDerivAt_const (𝕜 := ℝ) x r)).hasDerivAt
+    have hm : Set.MapsTo (fun s : ℝ ↦ (s, x)) times (times ×ˢ Set.univ) :=
+      fun _ hs ↦ ⟨hs, Set.mem_univ _⟩
+    exact hu'.comp_hasDerivWithinAt r hi.hasDerivWithinAt hm
+  have hD (r : ℝ) (hr : r ∈ times) (x : Position) :
+      HasDerivWithinAt (F · x) (D r x) times r := by
+    simpa only [F, D, d, (hd r hr x).derivWithin (hDiff r hr)] using (hd r hr x).norm_sq
+  have hdc : ContinuousOn (Function.uncurry d) (times ×ˢ Set.univ) := by
+    have hc := (hu.continuousOn_fderivWithin hUD (by simp)).clm_apply
+      continuousOn_const (g := fun _ ↦ ((1 : ℝ), (0 : Position)))
+    exact hc.congr fun z hz ↦ (hd z.1 hz.1 z.2).derivWithin (hDiff z.1 hz.1)
+  have hDc : ContinuousOn (Function.uncurry D) (times ×ˢ Set.univ) :=
+    continuousOn_const.mul (hu.continuousOn.inner hdc)
+  have hFc : ContinuousOn (Function.uncurry F) (times ×ˢ Set.univ) :=
+    hu.continuousOn.norm.pow 2
+  exact hasDerivWithinAt_setIntegral_Icc isCompact_Icc hT.le ht hFc hDc hD
 
 private theorem kineticEnergy_partial_smooth_periodic {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] {f : Position → E}

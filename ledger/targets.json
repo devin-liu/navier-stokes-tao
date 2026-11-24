@@ -167,12 +167,22 @@
   "updated": "2026-11-24T09:38:30-05:00"
  },
  "kineticEnergy_hasDerivWithinAt": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 13.3,
   "decl": "kineticEnergy_hasDerivWithinAt",
   "file": "NavierStokesTao/Energy.lean",
+  "inherited_sorry": false,
+  "model": "claude-opus-5-5",
   "note": "The monolithic draft hit the heartbeat limit in 20261124-094802-Energy. A shorter candidate in .agent/nst/energy-derivative specializes the frozen compact-set differentiation lemma; the proof-pass budget guard declined a new pass.",
   "paper": "none",
-  "state": "stuck",
-  "updated": "2026-11-24T09:50:34-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "f3f5452b2ca431ca",
+  "updated": "2026-11-24T13:57:07-05:00"
  },
  "kineticEnergy_identity": {
   "axioms": [
