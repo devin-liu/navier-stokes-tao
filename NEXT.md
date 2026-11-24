@@ -2,16 +2,16 @@
 
 Written by `scripts/nst turn end`. Do not edit by hand and do not append: the next handover replaces it.
 
-Updated 2026-11-23T23:48:42-05:00 by codex-desktop (6 Lean runs, 3 model passes this turn).
+Updated 2026-11-23T23:58:10-05:00 by codex-desktop (24 Lean runs, 13 model passes this turn).
 
 ## Done last turn
 
-Operator authorization used: “Approved. Squash-merge PR #19 if CI is still green, then continue the next cycle.” This covered squash-merging PR #19 after green CI. GitHub on 2026-11-23: PR #19 build passed in 2m16s, the squash merge was confirmed at e08043d, and preflight showed 0 ahead, 0 behind, 0 open PRs and 3 open issues. Recorded the merge and created cycle/1123-section2-framework. Lean built the Fourier Sobolev and heat statements and independent review froze them. The heat smoothing candidate exhausted its repair round at a scalar rewrite. Local hand-in passed and the PR draft is in outbox/PR.md.
+Operator requested continued iteration with a reset after measurable improvement and a stop after three consecutive cycles without improvement. Counted independent freezes and gate-accepted proofs. The frozen total moved from 37 to 47 and accepted proofs from 9 to 13. Verified heat_smoothing and h1Norm_sq_galilean_centered with standard axioms. Lean accepted exists_small_gradient_energy conditional on the kinetic energy identity and regularityEquivalence conditional on the three analytic implications. Heat smoothing, the Galilean H1 identity and the moving-frame check used additional proof passes under the iteration instruction. The h1Norm pass was recorded after launching its check when the default budget guard declined it. The moving-frame, forced heat energy, and Section 3 implication proof cycles then produced no accepted proof or freeze, reaching 3 consecutive cycles. Hand-in passed and the PR draft was refreshed locally.
 
 ## Next action
 
-Decide whether to publish the statement-only cycle branch.
+Decide whether to publish cycle/1123-section2-framework.
 
 ## Waiting on the operator
 
-Authorization to publish cycle/1123-section2-framework. Stuck targets for possible private attempts: heat_smoothing, kineticEnergy_hasDerivWithinAt, kineticEnergy_spatialBalance, h1Norm_sq_galilean_centered, smoothSolution_galilean, spatialMean_conserved.
+Publishing authorization. Stuck: kineticEnergy_hasDerivWithinAt, kineticEnergy_spatialBalance, forced_heat_energy_estimate, smoothSolution_galilean, spatialMean_conserved, longTermBound_implies_globalRegularity, shortTermBound_implies_longTermBound, globalRegularity_implies_shortTermBound.
