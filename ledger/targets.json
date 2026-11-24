@@ -89,6 +89,13 @@
   "stmt_hash": "0e897d34fde38e6b",
   "updated": "2026-11-24T00:10:03-05:00"
  },
+ "hasDerivWithinAt_setIntegral_Icc": {
+  "decl": "hasDerivWithinAt_setIntegral_Icc",
+  "file": "NavierStokesTao/Energy.lean",
+  "paper": "none",
+  "state": "open",
+  "updated": "2026-11-24T09:49:00-05:00"
+ },
  "heat_smoothing": {
   "axioms": [
    "propext",

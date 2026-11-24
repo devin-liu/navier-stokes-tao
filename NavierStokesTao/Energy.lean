@@ -4,7 +4,9 @@ import NavierStokesTao.Heat
 import Mathlib.Analysis.Calculus.ContDiff.Comp
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.MeasureTheory.Integral.Bochner.Set
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.Topology.Order.ProjIcc
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
 namespace NavierStokesTao
@@ -31,6 +33,20 @@ theorem forced_heat_energy_estimate {E : Type*} [NormedAddCommGroup E]
         InXT s T (forcedHeatCoefficients a F) ∧
           xTNorm s T (forcedHeatCoefficients a F) ≤
             C * (meanZeroSobolevNorm s a + sobolevTimeL2Norm (s - 1) T F) := sorry
+
+/-- A jointly continuous scalar family with jointly continuous time derivatives can be
+differentiated under a compact set integral, including from within the time interval at
+its endpoints. (Paper: none) -/
+theorem hasDerivWithinAt_setIntegral_Icc {X : Type*} [TopologicalSpace X]
+    [MeasurableSpace X] [BorelSpace X] [T2Space X] [SecondCountableTopology X]
+    {μ : Measure X} [IsLocallyFiniteMeasure μ] {K : Set X} (hK : IsCompact K)
+    {a b t : ℝ} (hab : a ≤ b) (ht : t ∈ Set.Icc a b) {f d : ℝ → X → ℝ}
+    (hf : ContinuousOn f.uncurry (Set.Icc a b ×ˢ Set.univ))
+    (hd : ContinuousOn d.uncurry (Set.Icc a b ×ˢ Set.univ))
+    (hderiv : ∀ r ∈ Set.Icc a b, ∀ x : X,
+      HasDerivWithinAt (f · x) (d r x) (Set.Icc a b) r) :
+    HasDerivWithinAt (fun r ↦ ∫ x in K, f r x ∂μ)
+      (∫ x in K, d t x ∂μ) (Set.Icc a b) t := sorry
 
 /-- Differentiate the squared velocity norm integrated over the cube along a smooth time
 family, with inward derivatives at the endpoints. (Paper: none) -/
