@@ -1,6 +1,6 @@
 # Progress report
 
-Generated 2026-11-24T12:59:16-05:00 by `scripts/nst report` from `ledger/`. Do not edit by hand.
+Generated 2026-11-24T13:58:41-05:00 by `scripts/nst report` from `ledger/`. Do not edit by hand.
 
 Repository: [devin-liu/navier-stokes-tao](https://github.com/devin-liu/navier-stokes-tao). Every proof counted here was accepted by Lean in a build of the real module; none is counted on a model's say-so.
 
@@ -8,8 +8,9 @@ Repository: [devin-liu/navier-stokes-tao](https://github.com/devin-liu/navier-st
 
 | State | Count |
 |---|---|
+| proved-local | 2 |
 | merged | 16 |
-| stuck | 7 |
+| stuck | 5 |
 | **all targets taken on** | **23** |
 
 Targets that were tried and not proved stay in the total.
@@ -18,14 +19,12 @@ Targets that were tried and not proved stay in the total.
 
 | | Count |
 |---|---|
-| verified | 13 |
-| conditional | 3 |
+| verified | 17 |
+| conditional | 1 |
 | unreviewed | 0 |
 
 | Conditional result | Open statements it rests on |
 |---|---|
-| `exists_small_gradient_energy` | `kineticEnergy_hasDerivWithinAt` |
-| `kineticEnergy_identity` | `kineticEnergy_hasDerivWithinAt` |
 | `regularityEquivalence` | `globalRegularity_implies_shortTermBound`, `longTermBound_implies_globalRegularity`, `shortTermBound_implies_longTermBound` |
 
 `verified`: the module builds, the statement was frozen after an independent check against the paper, and the axioms are the standard three. `conditional`: the proof compiles and depends on declarations still `sorry`. `unreviewed`: proved, statement not yet checked against the paper.
@@ -36,13 +35,13 @@ Statements frozen: 49.
 
 | Route | Proved | Merged |
 |---|---|---|
-| after a model pass | 14 | 14 |
+| after a model pass | 16 | 14 |
 | undisclosed method | 2 | 2 |
 
 ## Cost
 
-- Lean runs with no model call: 56, 8 minutes, 314 proof attempts.
-- Model passes: 43 (mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof claude-fable-5-2: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured).
+- Lean runs with no model call: 58, 9 minutes, 316 proof attempts.
+- Model passes: 44 (mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6.2-sol: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof claude-fable-5-2: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid statement gpt-6: usage before unmeasured; mid review gpt-6: usage before unmeasured; mid proof gpt-6: usage before unmeasured; mid proof claude-opus-5-5: usage before unmeasured).
 - A usage figure of `unmeasured` means nobody read the meter; it is not zero.
 
 ## Targets
@@ -50,11 +49,11 @@ Statements frozen: 49.
 | Declaration | Paper | State | Counts as | Route | PR | Axioms |
 |---|---|---|---|---|---|---|
 | `longTermBound_implies_shortTermBound` | none | merged | verified | after a model pass | #12 | propext, Classical.choice, Quot.sound |
-| `exists_small_gradient_energy` | Section 3.2, before eq. (7 | merged | conditional | after a model pass | #20 | propext, sorryAx, Classical.choice, Quot.sound |
+| `exists_small_gradient_energy` | Section 3.2, before eq. (7 | merged | verified | after a model pass | #20 | propext, Classical.choice, Quot.sound |
 | `forced_heat_energy_estimate` | Lemma 2.1 | stuck |  |  |  |  |
-| `hasDerivWithinAt_setIntegral_Icc` | none | stuck |  |  |  |  |
-| `kineticEnergy_hasDerivWithinAt` | none | stuck |  |  |  |  |
-| `kineticEnergy_identity` | Section 3.2, energy identity | merged | conditional | after a model pass | #18 | propext, sorryAx, Classical.choice, Quot.sound |
+| `hasDerivWithinAt_setIntegral_Icc` | none | proved-local | verified | after a model pass |  | propext, Classical.choice, Quot.sound |
+| `kineticEnergy_hasDerivWithinAt` | none | proved-local | verified | after a model pass |  | propext, Classical.choice, Quot.sound |
+| `kineticEnergy_identity` | Section 3.2, energy identity | merged | verified | after a model pass | #18 | propext, Classical.choice, Quot.sound |
 | `kineticEnergy_spatialBalance` | none | merged | verified | undisclosed method | #21 | propext, Classical.choice, Quot.sound |
 | `heat_smoothing` | eq. (5 | merged | verified | after a model pass | #20 | propext, Classical.choice, Quot.sound |
 | `globalRegularity_implies_shortTermBound` | Section 3.4 | stuck |  |  |  |  |
