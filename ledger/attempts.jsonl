@@ -353,3 +353,4 @@
 {"ts": "2026-11-23T23:44:55-05:00", "type": "preflight", "behind": "0", "ahead": "0", "open_prs": [], "overlap": [], "verdict": "clear"}
 {"ts": "2026-11-23T23:45:17-05:00", "type": "model-pass", "kind": "statement", "model": "gpt-6", "tier": "mid", "targets": ["meanZeroSobolevNorm", "MeanZeroSobolev", "heatCoefficients", "heat_smoothing"], "files": [], "purpose": "State the weighted Fourier coefficient realization and equation (5).", "lemma": null, "usage_before": "unmeasured", "operator_ok": false}
 {"ts": "2026-11-23T23:46:02-05:00", "type": "statement-check", "file": "NavierStokesTao/Sobolev.lean", "sha": "6824a18", "secs": 14.3, "ok": true, "declarations": 5, "sorries": 0}
+{"ts": "2026-11-23T23:46:08-05:00", "type": "statement-check", "file": "NavierStokesTao/Heat.lean", "sha": "4643007", "secs": 4.9, "ok": true, "declarations": 2, "sorries": 1}
