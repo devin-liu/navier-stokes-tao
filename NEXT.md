@@ -2,11 +2,11 @@
 
 Written by `scripts/nst turn end`. Do not edit by hand and do not append: the next handover replaces it.
 
-Updated 2026-11-23T23:58:10-05:00 by codex-desktop (24 Lean runs, 13 model passes this turn).
+Updated 2026-11-23T23:58:37-05:00 by codex-desktop (0 Lean runs, 0 model passes this turn).
 
 ## Done last turn
 
-Operator requested continued iteration with a reset after measurable improvement and a stop after three consecutive cycles without improvement. Counted independent freezes and gate-accepted proofs. The frozen total moved from 37 to 47 and accepted proofs from 9 to 13. Verified heat_smoothing and h1Norm_sq_galilean_centered with standard axioms. Lean accepted exists_small_gradient_energy conditional on the kinetic energy identity and regularityEquivalence conditional on the three analytic implications. Heat smoothing, the Galilean H1 identity and the moving-frame check used additional proof passes under the iteration instruction. The h1Norm pass was recorded after launching its check when the default budget guard declined it. The moving-frame, forced heat energy, and Section 3 implication proof cycles then produced no accepted proof or freeze, reaching 3 consecutive cycles. Hand-in passed and the PR draft was refreshed locally.
+Audited search in firstpass, tactic config, gate, proof prompt, and the recent target records. Lean-only search was recorded for all eight stuck targets. Public scripts provide a private candidate intake and no cascade runner. The audit found two concrete entry points: reuse periodic divergence cancellation for the energy and mean proofs, and search the pinned library for a shared within-time differentiation lemma. Section 3 remains statement work for its missing dependencies. No proof runs or outward actions in this audit.
 
 ## Next action
 
