@@ -5,7 +5,9 @@
   scripts/gate.py apply <file> <decl> --from-run RUN            # a win found by firstpass.py
   scripts/gate.py apply <file> <decl> --proof-file F --route R  # any other proof (see firstpass.py for the format)
   scripts/gate.py axioms <file> <decl> [<decl> ...]
-  scripts/gate.py audit-axioms                     # recheck accepted proofs after a build
+  scripts/gate.py audit-axioms                     # recheck accepted proofs after a build (read-only; CI)
+  scripts/gate.py deps [--update]                  # which open statements each accepted proof rests on, from compiled
+                                                   # terms; --update refreshes the verdicts recorded in the ledger
   scripts/gate.py check <file>                     # new or changed statements: lint, build the module, register targets
   scripts/gate.py handin                           # full build, lint, frozen statements, ledger, privacy check
 
@@ -39,7 +41,8 @@ def first_error(out: str) -> str:
     return rv.short(" | ".join(lines[:3]) or out[-400:], 500)
 
 
-def read_axioms(wt: pathlib.Path, rel: str, text: str, decls: list[str], timeout: int) -> dict[str, list[str] | None]:
+def full_names(rel: str, text: str, decls: list[str]) -> dict[str, str]:
+    """Ledger name -> the full Lean name of the declaration."""
     names = {}
     for d in decls:
         base = d.split(".")[-1]
@@ -50,6 +53,11 @@ def read_axioms(wt: pathlib.Path, rel: str, text: str, decls: list[str], timeout
         ns = rv.namespace_at(text, m.start())
         # keep the name as declared, e.g. `Printed.foo_false`, so `#print axioms` finds it
         names[d] = f"{ns}.{m.group(1)}" if ns else m.group(1)
+    return names
+
+
+def read_axioms(wt: pathlib.Path, rel: str, text: str, decls: list[str], timeout: int) -> dict[str, list[str] | None]:
+    names = full_names(rel, text, decls)
     scratch = f"import {rv.module_name(rel)}\n" + "".join(f"#print axioms {n}\n" for n in names.values())
     srel = ".agent/nst/Axioms.lean"
     (wt / srel).parent.mkdir(parents=True, exist_ok=True)
@@ -202,18 +210,86 @@ def cmd_axioms(a) -> None:
         print(f"{d}: " + ("no answer (does the module build?)" if ax is None else (", ".join(ax) or "none")))
 
 
-def cmd_audit_axioms(a) -> None:
-    wt = rv.worktree()
+# Walks the elaborated terms (types and proofs), so private helpers and instances are followed.
+# The idea is that of scripts/progress/Deps.lean in mccorvie/riemann-masullo (Apache-2.0); this
+# version is written for `lake lean` and for the targets of the ledger only.
+DEPS_LEAN = """open Lean in
+run_cmd do
+  let env ← getEnv
+  let inProject (n : Name) : Bool := match env.getModuleIdxFor? n with
+    | some i => (`ROOT).isPrefixOf env.header.moduleNames[i.toNat]!
+    | none => false
+  for target in ([NAMES] : List Name) do
+    let mut todo := [target]
+    let mut seen : NameSet := {}
+    let mut found : List Name := []
+    repeat
+      let n :: rest := todo | break
+      todo := rest
+      if seen.contains n then continue
+      seen := seen.insert n
+      let some info := env.find? n | throwError "unknown constant {n}"
+      let mut used := info.type.getUsedConstants
+      match info with
+      | .thmInfo t => used := used ++ t.value.getUsedConstants
+      | .defnInfo d => used := used ++ d.value.getUsedConstants
+      | .opaqueInfo o => used := used ++ o.value.getUsedConstants
+      | .inductInfo i => used := used ++ i.ctors.toArray
+      | _ => pure ()
+      if used.contains ``sorryAx then found := n :: found
+      todo := (used.filter inProject).toList ++ todo
+    logInfo m!"RESTS {target} ON {found}"
+"""
+
+
+def accepted_rows() -> dict[str, dict[str, dict]]:
     by_file: dict[str, dict[str, dict]] = {}
     for row in rv.load_targets().values():
         if row["state"] in PROVED:
             by_file.setdefault(row["file"], {})[row["decl"]] = row
+    return by_file
 
-    checked = failures = 0
+
+def read_rests(wt: pathlib.Path, names: dict[str, tuple[str, str]], timeout: int) -> dict[str, list[str]] | None:
+    """decl -> the declarations with their own `sorry` beneath it. `names`: decl -> (file, full name)."""
+    if not names:
+        return {}
+    modules = sorted({rv.module_name(rel) for rel, _ in names.values()})
+    srel = ".agent/nst/Deps.lean"
+    (wt / srel).parent.mkdir(parents=True, exist_ok=True)
+    (wt / srel).write_text("import Lean\n" + "".join(f"import {m}\n" for m in modules)
+                           + DEPS_LEAN.replace("ROOT", rv.lean_root().replace("/", "."))
+                           .replace("NAMES", ", ".join(f"`{n}" for _, n in names.values())), encoding="utf-8")
+    rc, out, secs, timed_out = rv.lake_lean(wt, srel, timeout)
+    if rc != 0:
+        print("dependency trace " + ("timed out" if timed_out else f"failed: {first_error(out)}"), file=sys.stderr)
+        return None
+    by_full = {}
+    for m in rv.parse_messages(out, only=srel):
+        hit = re.search(r"RESTS\s+(\S+)\s+ON\s+\[(.*)\]", m["text"], re.S)
+        if hit:
+            by_full[hit.group(1)] = sorted(x.strip().split(".", 1)[-1] if x.strip().startswith(rv.lean_root() + ".")
+                                           else x.strip() for x in hit.group(2).split(",") if x.strip())
+    if any(full not in by_full for _, full in names.values()):
+        print("dependency trace gave no answer for some targets", file=sys.stderr)
+        return None
+    return {d: by_full[full] for d, (_, full) in names.items()}
+
+
+def audit(update: bool, show: bool) -> bool:
+    """Compare what Lean says about every accepted proof with the ledger. `update` records a
+    changed verdict. A proof that newly depends on `sorry` or on any other axiom is a failure,
+    and is never recorded: only `apply` may accept a conditional proof."""
+    wt = rv.worktree()
     timeout = rv.cfg().get("lean_timeout_sec", 600)
+    seen: dict[str, list[str]] = {}
+    names: dict[str, tuple[str, str]] = {}
+    rowof: dict[str, dict] = {}
+    failures = stale = checked = 0
     with rv.build_lock(wt):
-        for rel, rows in sorted(by_file.items()):
+        for rel, rows in sorted(accepted_rows().items()):
             text = (wt / rel).read_text(encoding="utf-8")
+            full = full_names(rel, text, sorted(rows))
             for decl, axioms in read_axioms(wt, rel, text, sorted(rows), timeout).items():
                 checked += 1
                 if axioms is None:
@@ -225,9 +301,48 @@ def cmd_audit_axioms(a) -> None:
                 if extra:
                     print(f"{rel}: {decl}: unexpected axioms: {', '.join(extra)}")
                     failures += 1
+                    continue
+                seen[decl], rowof[decl], names[decl] = axioms, rows[decl], (rel, full[decl])
+        rests = read_rests(wt, names, timeout)
+    if rests is None:
+        failures += 1
+        rests = {}
+    for decl, on in rests.items():
+        axioms, row = seen[decl], rowof[decl]
+        if bool(on) != ("sorryAx" in axioms):
+            print(f"{decl}: the trace found {on or 'nothing open'}, but `#print axioms` says {axioms}")
+            failures += 1
+            continue
+        if show and on:
+            print(f"{decl} rests on {', '.join(on)}")
+        fresh = {"axioms": axioms, "inherited_sorry": "sorryAx" in axioms, "rests_on": on}
+        old = {"axioms": row.get("axioms") or [], "inherited_sorry": bool(row.get("inherited_sorry")),
+               "rests_on": row.get("rests_on") or []}
+        if {**fresh, "axioms": sorted(axioms)} == {**old, "axioms": sorted(old["axioms"])}:
+            continue
+        if update:
+            rv.append("attempts.jsonl", {"ts": rv.now(), "type": "verdict", "decl": decl, "file": row["file"],
+                                         "sha": rv.git_sha(wt), "from": old, "to": fresh})
+            rv.set_target(decl, **fresh)
+            print(f"updated {decl}: rests on {', '.join(on) or 'nothing open'}")
+        else:
+            stale += 1
+            print(f"STALE {decl}: the ledger says it rests on {', '.join(old['rests_on']) or 'nothing recorded'}"
+                  f"{' (sorryAx)' if old['inherited_sorry'] else ''}; Lean says {', '.join(on) or 'nothing open'}. "
+                  "Run scripts/gate.py deps --update")
+    print(f"Axiom audit: {checked} accepted proofs checked, {failures} failures, {stale} stale")
+    return not failures and not stale
 
-    print(f"Axiom audit: {checked} accepted proofs checked, {failures} failures")
-    sys.exit(1 if failures else 0)
+
+def cmd_audit_axioms(a) -> None:
+    sys.exit(0 if audit(update=False, show=False) else 1)
+
+
+def cmd_deps(a) -> None:
+    ok = audit(update=a.update, show=True)
+    if a.update and ok:
+        checkpoint(rv.worktree(), [], "Refresh verdicts from compiled terms")
+    sys.exit(0 if ok else 1)
 
 
 def lean_tree(wt: pathlib.Path) -> str:
@@ -286,6 +401,8 @@ def cmd_handin(a) -> None:
     built_mathlib = bool(re.search(r"(Building|Compiling|Built) Mathlib\.", out))
     step("lake build", rc == 0, f"{secs:.0f}s" if rc == 0 else first_error(out))
     step("Mathlib came from the cache", not built_mathlib, "Lake compiled Mathlib itself: fix the setup" if built_mathlib else "")
+    step("verdicts refreshed from compiled terms", rc == 0 and audit(update=True, show=False),
+         "" if rc == 0 else "not run: the build failed")
     rc, out = lint()
     step("scripts/lint.py", rc == 0, "" if rc == 0 else out[-300:])
     r = subprocess.run([sys.executable, str(rv.ROOT / "scripts" / "nst.py"), "sync", "--quiet"], capture_output=True, text=True)
@@ -317,6 +434,7 @@ def main() -> None:
     p.add_argument("--route"); p.set_defaults(fn=cmd_apply)
     p = sub.add_parser("axioms"); p.add_argument("file"); p.add_argument("decl", nargs="+"); p.set_defaults(fn=cmd_axioms)
     p = sub.add_parser("audit-axioms"); p.set_defaults(fn=cmd_audit_axioms)
+    p = sub.add_parser("deps"); p.add_argument("--update", action="store_true"); p.set_defaults(fn=cmd_deps)
     p = sub.add_parser("handin"); p.set_defaults(fn=cmd_handin)
     a = ap.parse_args()
     a.fn(a)

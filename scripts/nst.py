@@ -163,6 +163,8 @@ def cmd_status(a) -> None:
         print(f"  {d:<38.38} {r['state']:<12} {verdict(r, frozen) or ('frozen' if d in frozen else 'draft'):<11} "
               f"{(r.get('route') or ''):<9} tries {len(tries):<3} {r.get('paper') or ''}"
               + (f" PR #{r['pr']}" if r.get("pr") else ""))
+        if r.get("rests_on"):
+            print(f"      rests on {', '.join(r['rests_on'])}")
     passes = [x for x in att if x.get("type") == "model-pass"]
     compiles = [x for x in att if x.get("type") == "compile"]
     print(f"SPEND     Lean runs {len(compiles)} ({sum(x.get('secs', 0) for x in compiles) / 60:.0f} min), "
@@ -434,11 +436,16 @@ def cmd_draft(a) -> None:
     title = (f"Prove {len(rows)} declaration{'s' if len(rows) != 1 else ''} in {stems}" if rows
              else f"State {len(stated)} declaration{'s' if len(stated) != 1 else ''} in {stems}")
     body = [title, ""]
+    rests: list[str] = []
     if rows:
         body += ["## Proved", "", "| Declaration | Paper | Counts as | Route | `#print axioms` |", "|---|---|---|---|---|"]
         for r in rows:
             body.append(f"| `{r['decl']}` | {r.get('paper') or ''} | {verdict(r, frozen)} | {ROUTE_NAMES.get(r.get('route'), '')} | "
                         f"{', '.join(r.get('axioms') or []) or 'none'} |")
+            if r.get("rests_on"):
+                rests.append(f"- `{r['decl']}`: " + ", ".join(f"`{x}`" for x in r["rests_on"]))
+        if rests:
+            body += ["", "Rests on these open statements:", "", *rests]
         body += ["", "`conditional`: the proof compiles and uses declarations that are still `sorry` (Lean reports `sorryAx`). "
                      "`unreviewed`: the statement has not had its independent check against the paper yet."]
     if stated:
@@ -481,6 +488,10 @@ def cmd_report(a) -> None:
               "## What the proved ones count as", "", "| | Count |", "|---|---|"]
     for v in ("verified", "conditional", "unreviewed"):
         lines.append(f"| {v} | {sum(verdict(r, frozen) == v for r in done)} |")
+    cond = [r for r in done if r.get("rests_on")]
+    if cond:
+        lines += ["", "| Conditional result | Open statements it rests on |", "|---|---|"]
+        lines += [f"| `{r['decl']}` | {', '.join(f'`{x}`' for x in r['rests_on'])} |" for r in sorted(cond, key=lambda r: r["decl"])]
     lines += ["", "`verified`: the module builds, the statement was frozen after an independent check against the paper, and the "
                   "axioms are the standard three. `conditional`: the proof compiles and depends on declarations still `sorry`. "
                   "`unreviewed`: proved, statement not yet checked against the paper.", "",

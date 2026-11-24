@@ -75,7 +75,12 @@ python3 "$S/gate.py" apply $F uses_earlier --proof-file "$tmp/inherit.lean" --ro
 expect "inherited sorryAx is accepted and disclosed" 'sorryAx is inherited'
 
 python3 "$S/gate.py" audit-axioms >"$out" 2>&1; rc=$?
-expect "audit permits recorded inherited sorry" '3 accepted proofs checked, 0 failures'
+expect "audit reports a dependency the ledger lacks" 'STALE uses_earlier: .* Lean says step_up'
+[ "$rc" = 1 ] || { echo "  FAIL a stale verdict should fail the audit (rc=$rc)"; fails=$((fails + 1)); }
+python3 "$S/gate.py" deps --update >"$out" 2>&1
+expect "the trace names the open statement" 'updated uses_earlier: rests on step_up'
+python3 "$S/gate.py" audit-axioms >"$out" 2>&1; rc=$?
+expect "audit permits recorded inherited sorry" '3 accepted proofs checked, 0 failures, 0 stale'
 [ "$rc" = 0 ] || { echo "  FAIL audit should pass (rc=$rc)"; fails=$((fails + 1)); }
 targets="$tmp/state/ledger/targets.json"
 cp "$targets" "$tmp/targets.json"
@@ -84,6 +89,16 @@ python3 "$S/gate.py" audit-axioms >"$out" 2>&1; rc=$?
 expect "audit detects unrecorded inherited sorry" 'uses_earlier: unexpected axioms: sorryAx'
 [ "$rc" = 1 ] || { echo "  FAIL audit should reject (rc=$rc)"; fails=$((fails + 1)); }
 cp "$tmp/targets.json" "$targets"
+
+cp "$tmp/wt/$F" "$tmp/open.lean"; cp "$tmp/state/ledger/attempts.jsonl" "$tmp/attempts.jsonl"
+printf 'by exact Nat.le_succ_of_le h\n' >"$tmp/step.lean"
+python3 "$S/gate.py" apply $F step_up --proof-file "$tmp/step.lean" --route human >"$out" 2>&1
+expect "the open statement gets its proof" 'ACCEPTED: step_up'
+python3 "$S/gate.py" deps --update >"$out" 2>&1
+expect "closing the gap clears the dependent" 'updated uses_earlier: rests on nothing open'
+python3 "$S/gate.py" audit-axioms >"$out" 2>&1
+expect "and the audit agrees" '4 accepted proofs checked, 0 failures, 0 stale'
+cp "$tmp/open.lean" "$tmp/wt/$F"; cp "$tmp/targets.json" "$targets"; cp "$tmp/attempts.jsonl" "$tmp/state/ledger/attempts.jsonl"
 
 sed 's/^namespace Probe$/import Does.Not.Exist\nnamespace Probe/' "$tmp/wt/$F" >"$tmp/wt/Probe/Broken.lean"
 before=$(grep -c '"type": "try"' "$tmp/state/ledger/attempts.jsonl")

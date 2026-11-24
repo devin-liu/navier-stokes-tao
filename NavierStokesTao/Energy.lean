@@ -4,7 +4,9 @@ import NavierStokesTao.Heat
 import Mathlib.Analysis.Calculus.ContDiff.Comp
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.MeasureTheory.Integral.Bochner.Set
-import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.FundThmCalculus
+import Mathlib.MeasureTheory.Integral.Prod
+import Mathlib.Topology.Order.ProjIcc
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
 namespace NavierStokesTao
@@ -32,6 +34,72 @@ theorem forced_heat_energy_estimate {E : Type*} [NormedAddCommGroup E]
           xTNorm s T (forcedHeatCoefficients a F) ≤
             C * (meanZeroSobolevNorm s a + sobolevTimeL2Norm (s - 1) T F) := sorry
 
+/-- A jointly continuous scalar family with jointly continuous time derivatives can be
+differentiated under a compact set integral, including from within the time interval at
+its endpoints. (Paper: none) -/
+theorem hasDerivWithinAt_setIntegral_Icc {X : Type*} [TopologicalSpace X]
+    [MeasurableSpace X] [BorelSpace X] [T2Space X] [SecondCountableTopology X]
+    {μ : Measure X} [IsLocallyFiniteMeasure μ] {K : Set X} (hK : IsCompact K)
+    {a b t : ℝ} (hab : a ≤ b) (ht : t ∈ Set.Icc a b) {f d : ℝ → X → ℝ}
+    (hf : ContinuousOn f.uncurry (Set.Icc a b ×ˢ Set.univ))
+    (hd : ContinuousOn d.uncurry (Set.Icc a b ×ˢ Set.univ))
+    (hderiv : ∀ r ∈ Set.Icc a b, ∀ x : X,
+      HasDerivWithinAt (f · x) (d r x) (Set.Icc a b) r) :
+    HasDerivWithinAt (fun r ↦ ∫ x in K, f r x ∂μ)
+      (∫ x in K, d t x ∂μ) (Set.Icc a b) t := by
+  let times := Set.Icc a b
+  let extend (r : ℝ) := (Set.projIcc a b hab r : ℝ)
+  let D (r : ℝ) (x : X) := d (extend r) x
+  have he (r : ℝ) (hr : r ∈ times) : extend r = r :=
+    congrArg Subtype.val (Set.projIcc_of_mem hab hr)
+  have hc : Continuous (Function.uncurry D) := by
+    have hec : Continuous extend :=
+      continuous_subtype_val.comp (continuous_projIcc (a := a) (b := b) (h := hab))
+    exact hd.comp_continuous ((hec.comp continuous_fst).prodMk continuous_snd)
+      (fun z ↦ ⟨(Set.projIcc a b hab z.1).property, Set.mem_univ _⟩)
+  let G (r : ℝ) := ∫ x in K, D r x ∂μ
+  have hG : Continuous G := continuous_parametric_integral_of_continuous hc hK
+  have ha : a ∈ times := ⟨le_rfl, hab⟩
+  have hval (r : ℝ) (hr : r ∈ times) : IntegrableOn (f r) K μ :=
+    (hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun _ ↦ ⟨hr, Set.mem_univ _⟩)).continuousOn.integrableOn_compact hK
+  have hident (r : ℝ) (hr : r ∈ times) :
+      (∫ s in a..r, G s) = (∫ x in K, f r x ∂μ) - ∫ x in K, f a x ∂μ := by
+    have hseg : Set.uIcc a r ⊆ times := by
+      rw [← segment_eq_uIcc]
+      exact (convex_Icc a b).segment_subset ha hr
+    have hFTC (x : X) : (∫ s in a..r, D s x) = f r x - f a x := by
+      apply intervalIntegral.integral_eq_sub_of_hasDeriv_right
+      · exact hf.comp (continuous_id.prodMk continuous_const).continuousOn
+          (fun _ hs ↦ ⟨hseg hs, Set.mem_univ _⟩)
+      · intro s hs
+        have hst := hseg (Set.mem_Icc_of_Ioo hs)
+        rw [show D s x = d s x from congrArg (d · x) (he s hst)]
+        exact ((hderiv s hst x).hasDerivAt
+          (Filter.mem_of_superset (Ioo_mem_nhds hs.1 hs.2)
+            (Set.Ioo_subset_Icc_self.trans hseg))).hasDerivWithinAt
+      · exact (hc.comp (continuous_id.prodMk continuous_const)).intervalIntegrable _ _
+    have hint : Integrable (Function.uncurry D)
+        ((volume.restrict (Set.uIoc a r)).prod (μ.restrict K)) := by
+      rw [Measure.prod_restrict]
+      exact (hc.continuousOn.integrableOn_compact
+        (isCompact_uIcc.prod hK)).mono_set
+          (Set.prod_mono Set.uIoc_subset_uIcc (Set.Subset.rfl))
+    have hswap : (∫ s in a..r, G s) = ∫ x in K, (∫ s in a..r, D s x) ∂μ := by
+      simp only [G, intervalIntegral.intervalIntegral_eq_integral_uIoc, integral_smul,
+        integral_integral_swap hint]
+    rw [hswap]
+    simp_rw [hFTC]
+    exact integral_sub (hval r hr) (hval a ha)
+  have hprim := intervalIntegral.integral_hasDerivAt_right (hG.intervalIntegrable a t)
+    hG.aestronglyMeasurable.stronglyMeasurableAtFilter hG.continuousAt
+  have hgt : G t = ∫ x in K, d t x ∂μ := by
+    simp only [G, D, he t ht]
+  rw [← hgt]
+  apply (hprim.hasDerivWithinAt.add_const (∫ x in K, f a x ∂μ)).congr_of_mem _ ht
+  intro r hr
+  rw [hident r hr, sub_add_cancel]
+
 /-- Differentiate the squared velocity norm integrated over the cube along a smooth time
 family, with inward derivatives at the endpoints. (Paper: none) -/
 theorem kineticEnergy_hasDerivWithinAt {T : ℝ} {u : ℝ → Position → Velocity}
@@ -42,7 +110,39 @@ theorem kineticEnergy_hasDerivWithinAt {T : ℝ} {u : ℝ → Position → Veloc
       (fun s ↦ ∫ x in Set.Icc (0 : Position) 1, ‖u s x‖ ^ 2)
       (∫ x in Set.Icc (0 : Position) 1,
         2 * ⟪u t x, derivWithin (fun s ↦ u s x) (Set.Icc 0 T) t⟫_ℝ)
-      (Set.Icc 0 T) t := sorry
+      (Set.Icc 0 T) t := by
+  let times := Set.Icc (0 : ℝ) T
+  let cube := Set.Icc (0 : Position) 1
+  let U (z : ℝ × Position) := u z.1 z.2
+  let F (r : ℝ) (x : Position) := ‖u r x‖ ^ 2
+  let d (r : ℝ) (x : Position) := derivWithin (fun s ↦ u s x) times r
+  let D (r : ℝ) (x : Position) := 2 * ⟪u r x, d r x⟫_ℝ
+  have hDiff := uniqueDiffOn_Icc hT
+  have hUD : UniqueDiffOn ℝ (times ×ˢ (Set.univ : Set Position)) :=
+    hDiff.prod uniqueDiffOn_univ
+  have hd (r : ℝ) (hr : r ∈ times) (x : Position) :
+      HasDerivWithinAt (fun s ↦ u s x)
+        (fderivWithin ℝ U (times ×ˢ Set.univ) (r, x) (1, 0)) times r := by
+    have hu' := (hu.differentiableOn (by simp) (x := (r, x))
+      (show (r, x) ∈ times ×ˢ Set.univ from ⟨hr, Set.mem_univ _⟩)).hasFDerivWithinAt
+    have hi : HasDerivAt (fun s : ℝ ↦ (s, x)) ((1 : ℝ), (0 : Position)) r := by
+      simpa using ((hasFDerivAt_id (𝕜 := ℝ) r).prodMk
+        (hasFDerivAt_const (𝕜 := ℝ) x r)).hasDerivAt
+    have hm : Set.MapsTo (fun s : ℝ ↦ (s, x)) times (times ×ˢ Set.univ) :=
+      fun _ hs ↦ ⟨hs, Set.mem_univ _⟩
+    exact hu'.comp_hasDerivWithinAt r hi.hasDerivWithinAt hm
+  have hD (r : ℝ) (hr : r ∈ times) (x : Position) :
+      HasDerivWithinAt (F · x) (D r x) times r := by
+    simpa only [F, D, d, (hd r hr x).derivWithin (hDiff r hr)] using (hd r hr x).norm_sq
+  have hdc : ContinuousOn (Function.uncurry d) (times ×ˢ Set.univ) := by
+    have hc := (hu.continuousOn_fderivWithin hUD (by simp)).clm_apply
+      continuousOn_const (g := fun _ ↦ ((1 : ℝ), (0 : Position)))
+    exact hc.congr fun z hz ↦ (hd z.1 hz.1 z.2).derivWithin (hDiff z.1 hz.1)
+  have hDc : ContinuousOn (Function.uncurry D) (times ×ˢ Set.univ) :=
+    continuousOn_const.mul (hu.continuousOn.inner hdc)
+  have hFc : ContinuousOn (Function.uncurry F) (times ×ˢ Set.univ) :=
+    hu.continuousOn.norm.pow 2
+  exact hasDerivWithinAt_setIntegral_Icc isCompact_Icc hT.le ht hFc hDc hD
 
 private theorem kineticEnergy_partial_smooth_periodic {E : Type*}
     [NormedAddCommGroup E] [NormedSpace ℝ E] {f : Position → E}
