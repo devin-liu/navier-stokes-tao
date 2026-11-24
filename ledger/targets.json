@@ -46,9 +46,10 @@
  "heat_smoothing": {
   "decl": "heat_smoothing",
   "file": "NavierStokesTao/Heat.lean",
+  "note": "The modewise comparison and sum proof is in inbox/heat_smoothing.c01.lean. In run 20261123-234745-Heat, rw [sub_mul, one_mul, hscale] at hlog expanded the left subtraction only, then failed on one_mul. A future attempt can expand both subtractions with simp only [sub_mul, one_mul, hscale] at hlog. The permitted repair round is spent.",
   "paper": "eq. (5",
-  "state": "open",
-  "updated": "2026-11-23T23:46:08-05:00"
+  "state": "stuck",
+  "updated": "2026-11-23T23:48:06-05:00"
  },
  "integral_periodic_divergence_eq_zero": {
   "axioms": [
