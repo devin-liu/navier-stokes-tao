@@ -68,12 +68,22 @@
   "updated": "2026-11-23T23:51:06-05:00"
  },
  "h1Norm_sq_galilean_centered": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 5.4,
   "decl": "h1Norm_sq_galilean_centered",
   "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
   "note": "Tactic tiers missed. After translation invariance, use the translated spatial derivative and expand the square with the cross term given by the mean.",
   "paper": "Section 2, mean-zero reduction",
-  "state": "stuck",
-  "updated": "2026-11-23T12:24:20-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "0e897d34fde38e6b",
+  "updated": "2026-11-23T23:55:42-05:00"
  },
  "heat_smoothing": {
   "axioms": [
