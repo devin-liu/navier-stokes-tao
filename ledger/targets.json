@@ -156,10 +156,10 @@
  "kineticEnergy_hasDerivWithinAt": {
   "decl": "kineticEnergy_hasDerivWithinAt",
   "file": "NavierStokesTao/Energy.lean",
-  "note": "Lean-only pass 20261123-154850-Energy missed. Mathlib parametric integral differentiation assumes an ordinary derivative on a neighborhood, so the proof needs a one-sided endpoint argument or a C1 reflection extension with a compact uniform bound.",
+  "note": "The monolithic draft hit the heartbeat limit in 20261124-094802-Energy. A shorter candidate in .agent/nst/energy-derivative specializes the frozen compact-set differentiation lemma; the proof-pass budget guard declined a new pass.",
   "paper": "none",
   "state": "stuck",
-  "updated": "2026-11-23T15:49:30-05:00"
+  "updated": "2026-11-24T09:50:34-05:00"
  },
  "kineticEnergy_identity": {
   "axioms": [
