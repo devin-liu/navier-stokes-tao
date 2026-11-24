@@ -1,4 +1,4 @@
-import NavierStokesTao.Conjectures
+import NavierStokesTao.Implications
 
 namespace NavierStokesTao
 
