@@ -179,6 +179,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "theorem h1Norm_sq_galilean_centered (u : ℝ → Position → Velocity) (t : ℝ) (hSmooth : ContDiff ℝ ∞ (u t)) (hPeriodic : LatticePeriodic (u t)) : (h1Norm (u t) : ℝ) ^ 2 = (h1Norm (galileanVelocity (spatialMean (u t)) u t) : ℝ) ^ 2 + ‖spatialMean (u t)‖ ^ 2"
  },
+ "hasDerivWithinAt_setIntegral_Icc": {
+  "basis": "Compared against scalar FTC and compact-domain differentiation under the integral, including endpoints, null integration set and singleton interval. runs/review-2026-11-24-Energy-Icc.md",
+  "file": "NavierStokesTao/Energy.lean",
+  "frozen_at": "2026-11-24T09:50:06-05:00",
+  "hash": "4626f788b9f115bb",
+  "kind": "theorem",
+  "paper": "none",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem hasDerivWithinAt_setIntegral_Icc {X : Type*} [TopologicalSpace X] [MeasurableSpace X] [BorelSpace X] [T2Space X] [SecondCountableTopology X] {μ : Measure X} [IsLocallyFiniteMeasure μ] {K : Set X} (hK : IsCompact K) {a b t : ℝ} (hab : a ≤ b) (ht : t ∈ Set.Icc a b) {f d : ℝ → X → ℝ} (hf : ContinuousOn f.uncurry (Set.Icc a b ×ˢ Set.univ)) (hd : ContinuousOn d.uncurry (Set.Icc a b ×ˢ Set.univ)) (hderiv : ∀ r ∈ Set.Icc a b, ∀ x : X, HasDerivWithinAt (f · x) (d r x) (Set.Icc a b) r) : HasDerivWithinAt (fun r ↦ ∫ x in K, f r x ∂μ) (∫ x in K, d t x ∂μ) (Set.Icc a b) t"
+ },
  "heatCoefficients": {
   "basis": "Compared Section 1.5 and equation (5), including Fourier normalization and conjugate symmetry, in runs/review-2026-11-23-Heat.md.",
   "file": "NavierStokesTao/Heat.lean",
