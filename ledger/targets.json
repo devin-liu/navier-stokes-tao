@@ -12,10 +12,11 @@
   "inherited_sorry": true,
   "model": "gpt-6",
   "paper": "Section 3.2, before eq. (7",
+  "pr": 20,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "90ccdaa900d38809",
-  "updated": "2026-11-23T23:54:17-05:00"
+  "updated": "2026-11-24T00:10:03-05:00"
  },
  "forced_heat_energy_estimate": {
   "decl": "forced_heat_energy_estimate",
@@ -82,10 +83,11 @@
   "model": "gpt-6",
   "note": "Tactic tiers missed. After translation invariance, use the translated spatial derivative and expand the square with the cross term given by the mean.",
   "paper": "Section 2, mean-zero reduction",
+  "pr": 20,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "0e897d34fde38e6b",
-  "updated": "2026-11-23T23:55:42-05:00"
+  "updated": "2026-11-24T00:10:03-05:00"
  },
  "heat_smoothing": {
   "axioms": [
@@ -100,10 +102,11 @@
   "model": "gpt-6",
   "note": "The modewise comparison and sum proof is in inbox/heat_smoothing.c01.lean. In run 20261123-234745-Heat, rw [sub_mul, one_mul, hscale] at hlog expanded the left subtraction only, then failed on one_mul. A future attempt can expand both subtractions with simp only [sub_mul, one_mul, hscale] at hlog. The permitted repair round is spent.",
   "paper": "eq. (5",
+  "pr": 20,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "fabf6d96e8a13e29",
-  "updated": "2026-11-23T23:49:19-05:00"
+  "updated": "2026-11-24T00:10:03-05:00"
  },
  "integral_periodic_divergence_eq_zero": {
   "axioms": [
@@ -123,6 +126,23 @@
   "state": "merged",
   "stmt_hash": "20f952592562562e",
   "updated": "2026-11-23T23:44:50-05:00"
+ },
+ "integral_periodic_spatialPartial_eq_zero": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 5.0,
+  "decl": "integral_periodic_spatialPartial_eq_zero",
+  "file": "NavierStokesTao/PeriodicCalculus.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
+  "paper": "none",
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "6644c4927f191433",
+  "updated": "2026-11-24T00:28:43-05:00"
  },
  "kineticEnergy_hasDerivWithinAt": {
   "decl": "kineticEnergy_hasDerivWithinAt",
@@ -152,12 +172,21 @@
   "updated": "2026-11-23T17:22:08-05:00"
  },
  "kineticEnergy_spatialBalance": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 7.4,
   "decl": "kineticEnergy_spatialBalance",
   "file": "NavierStokesTao/Energy.lean",
+  "inherited_sorry": false,
   "note": "Lean-only pass 20261123-154850-Energy missed. First derive zero integral of periodic divergence by cancelling opposite faces in MeasureTheory.integral_divergence_of_hasFDerivAt_off_countable. Then apply that identity to the pressure, advection and viscous fluxes.",
   "paper": "none",
-  "state": "stuck",
-  "updated": "2026-11-23T15:49:31-05:00"
+  "route": "private",
+  "state": "proved-local",
+  "stmt_hash": "803b89acc7f6b7d7",
+  "updated": "2026-11-24T09:13:54-05:00"
  },
  "latticePeriodic_factors_torus": {
   "axioms": [
@@ -216,10 +245,11 @@
   "inherited_sorry": true,
   "model": "gpt-6",
   "paper": "Theorem 1.4",
+  "pr": 20,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "c3abdfb413b5d212",
-  "updated": "2026-11-23T23:53:11-05:00"
+  "updated": "2026-11-24T00:10:03-05:00"
  },
  "setIntegral_torusPoint": {
   "axioms": [
@@ -276,12 +306,21 @@
   "updated": "2026-11-23T23:57:08-05:00"
  },
  "spatialMean_conserved": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 7.2,
   "decl": "spatialMean_conserved",
   "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": false,
   "note": "Tactic tiers missed. Differentiate the mean under the integral, express transport as a divergence, and use periodic cancellation of each boundary flux.",
   "paper": "Section 2, mean-zero reduction",
-  "state": "stuck",
-  "updated": "2026-11-23T12:24:19-05:00"
+  "route": "private",
+  "state": "proved-local",
+  "stmt_hash": "8f4df2137d55cf3f",
+  "updated": "2026-11-24T09:14:23-05:00"
  },
  "spatialMean_galileanVelocity": {
   "axioms": [

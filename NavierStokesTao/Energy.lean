@@ -1,3 +1,5 @@
+import NavierStokesTao.PeriodicCalculus
+import Mathlib.Analysis.InnerProductSpace.Calculus
 import NavierStokesTao.Heat
 import Mathlib.Analysis.Calculus.ContDiff.Comp
 import Mathlib.Analysis.Calculus.Deriv.MeanValue
@@ -42,6 +44,17 @@ theorem kineticEnergy_hasDerivWithinAt {T : ℝ} {u : ℝ → Position → Veloc
         2 * ⟪u t x, derivWithin (fun s ↦ u s x) (Set.Icc 0 T) t⟫_ℝ)
       (Set.Icc 0 T) t := sorry
 
+private theorem kineticEnergy_partial_smooth_periodic {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] {f : Position → E}
+    (hf : ContDiff ℝ ∞ f) (hp : LatticePeriodic f) (i : Fin 3) :
+    ContDiff ℝ ∞ (spatialPartial i f) ∧ LatticePeriodic (spatialPartial i f) := by
+  constructor
+  · exact (hf.fderiv_right (by simp)).clm_apply contDiff_const
+  · intro m x
+    unfold spatialPartial
+    rw [← fderiv_comp_add_right]
+    rw [show (fun y : Position ↦ f (y + fun j ↦ (m j : ℝ))) = f from funext (hp m)]
+
 /-- Pair the spatial terms of the momentum equation with a smooth periodic divergence-free
 velocity. The advection and pressure integrals vanish, leaving the viscous dissipation.
 (Paper: none) -/
@@ -51,7 +64,81 @@ theorem kineticEnergy_spatialBalance (v : Position → Velocity) (q : Position �
     (hdiv : ∀ x, spatialDivergence v x = 0) :
     (∫ x in Set.Icc (0 : Position) 1, 2 * ⟪v x,
       spatialLaplacian v x - pressureGradient q x - fderiv ℝ v x (v x).ofLp⟫_ℝ) =
-      -2 * ∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i v x‖ ^ 2 := sorry
+      -2 * ∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i v x‖ ^ 2 := by
+  let e (x : Position) : ℝ := (1 / 2) * ⟪v x, v x⟫_ℝ
+  let c (i : Fin 3) : Velocity →L[ℝ] ℝ := PiLp.proj 2 (fun _ : Fin 3 ↦ ℝ) i
+  let flux (i : Fin 3) (x : Position) : ℝ :=
+    ⟪v x, spatialPartial i v x⟫_ℝ - (q x + e x) * c i (v x)
+  have hv1 (i) := (kineticEnergy_partial_smooth_periodic hv hvper i).1
+  have he : ContDiff ℝ ∞ e := contDiff_const.mul (hv.inner ℝ hv)
+  have hc (i) : ContDiff ℝ ∞ (fun x ↦ c i (v x)) := (c i).contDiff.comp hv
+  have hf (i) : ContDiff ℝ ∞ (flux i) :=
+    (hv.inner ℝ (hv1 i)).sub ((hq.add he).mul (hc i))
+  have hper (i) : LatticePeriodic (flux i) := by
+    intro m x
+    simp only [flux, e, hvper m x, hqper m x,
+      (kineticEnergy_partial_smooth_periodic hv hvper i).2 m x]
+  have hflux := integral_periodic_divergence_eq_zero flux (fun i ↦ (hf i).of_le (by simp)) hper
+  have hdiff (i : Fin 3) (x : Position) :
+      spatialPartial i (flux i) x =
+        ‖spatialPartial i v x‖ ^ 2 + ⟪v x, spatialPartial i (spatialPartial i v) x⟫_ℝ -
+          ((spatialPartial i q x + ⟪v x, spatialPartial i v x⟫_ℝ) * v x i +
+            (q x + e x) * spatialPartial i v x i) := by
+    have dv := (hv.differentiable (by simp) x).hasFDerivAt
+    have dq := (hq.differentiable (by simp) x).hasFDerivAt
+    have dv1 := ((hv1 i).differentiable (by simp) x).hasFDerivAt
+    have dc := (c i).hasFDerivAt.comp x dv
+    have de := (dv.inner ℝ dv).const_mul (1 / 2 : ℝ)
+    have dflux := (dv.inner ℝ dv1).sub ((dq.add de).mul dc)
+    change fderiv ℝ (flux i) x (Pi.single i 1) = _
+    have hd : HasFDerivAt (flux i) _ x := dflux
+    rw [hd.fderiv]
+    simp only [sub_apply, add_apply,
+      smul_apply, ContinuousLinearMap.comp_apply,
+      ContinuousLinearMap.prod_apply, fderivInnerCLM_apply, smul_eq_mul,
+      spatialPartial, real_inner_self_eq_norm_sq]
+    rw [real_inner_comm ((fderiv ℝ v x) (Pi.single i 1)) (v x)]
+    simp only [Pi.add_apply, Function.comp_apply, e, c, PiLp.proj_apply,
+      real_inner_self_eq_norm_sq]
+    ring
+  have hsum (x : Position) :
+      (∑ i, spatialPartial i (flux i) x) =
+        (∑ i, ‖spatialPartial i v x‖ ^ 2) +
+          ⟪v x, spatialLaplacian v x - pressureGradient q x -
+            fderiv ℝ v x (v x).ofLp⟫_ℝ := by
+    have hvec : (∑ i : Fin 3, (v x i) • Pi.single i (1 : ℝ)) = (v x).ofLp := by
+      ext i
+      simp [Pi.single_apply]
+    have hadv : (∑ i, ⟪v x, spatialPartial i v x⟫_ℝ * v x i) =
+        ⟪v x, fderiv ℝ v x (v x).ofLp⟫_ℝ := by
+      conv_rhs => rw [← hvec, map_sum, inner_sum]
+      simp [spatialPartial, inner_smul_right, mul_comm]
+    have hpress : (∑ i, spatialPartial i q x * v x i) =
+        ⟪v x, pressureGradient q x⟫_ℝ := by
+      rw [EuclideanSpace.inner_eq_star_dotProduct]
+      simp [pressureGradient, dotProduct]
+    have hz : (∑ i, spatialPartial i v x i) = 0 := hdiv x
+    simp only [hdiff, Finset.sum_sub_distrib, Finset.sum_add_distrib, add_mul,
+      ← Finset.mul_sum, hz, mul_zero, add_zero, hpress, hadv,
+      ← inner_sum, spatialLaplacian, inner_sub_right]
+    ring
+  let A (x : Position) := ∑ i, ‖spatialPartial i v x‖ ^ 2
+  let B (x : Position) := ⟪v x, spatialLaplacian v x - pressureGradient q x -
+    fderiv ℝ v x (v x).ofLp⟫_ℝ
+  have hA : Continuous A := continuous_finsetSum _ (fun i _ ↦ (hv1 i).continuous.norm.pow 2)
+  have hF : Continuous (fun x ↦ ∑ i, spatialPartial i (flux i) x) :=
+    continuous_finsetSum _ (fun i _ ↦
+      ((hf i).continuous_fderiv (by simp)).clm_apply continuous_const)
+  have hB : Continuous B := by
+    convert hF.sub hA using 1
+    funext x
+    exact (eq_sub_of_add_eq' (hsum x).symm)
+  change (∫ x in Set.Icc (0 : Position) 1, 2 * B x) =
+    -2 * ∫ x in Set.Icc (0 : Position) 1, A x
+  rw [integral_const_mul]
+  simp_rw [hsum] at hflux
+  rw [integral_add hA.integrableOn_Icc hB.integrableOn_Icc] at hflux
+  linarith
 
 /-- The kinetic energy identity on the unit torus for a smooth solution on a finite interval.
 The time derivative is taken within the interval, including at its endpoints, as in

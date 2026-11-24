@@ -209,6 +209,16 @@
   "reviewer": "gpt-6:subagent",
   "statement": "theorem integral_periodic_divergence_eq_zero (f : Fin 3 → Position → ℝ) (hf : ∀ i, ContDiff ℝ 1 (f i)) (hper : ∀ i, LatticePeriodic (f i)) : (∫ x in Set.Icc (0 : Position) 1, ∑ i, spatialPartial i (f i) x) = 0"
  },
+ "integral_periodic_spatialPartial_eq_zero": {
+  "basis": "Independent back-translation and comparison with integral_periodic_divergence_eq_zero by keeping only the j-th flux; constant, sinusoidal, and nonperiodic probes. runs/review-2026-11-24-periodic-partial.md",
+  "file": "NavierStokesTao/PeriodicCalculus.lean",
+  "frozen_at": "2026-11-24T00:28:14-05:00",
+  "hash": "6644c4927f191433",
+  "kind": "theorem",
+  "paper": "none",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem integral_periodic_spatialPartial_eq_zero (f : Position → ℝ) (hf : ContDiff ℝ 1 f) (hp : LatticePeriodic f) (j : Fin 3) : (∫ x in Set.Icc (0 : Position) 1, spatialPartial j f x) = 0"
+ },
  "kineticEnergy_hasDerivWithinAt": {
   "basis": "Compared both intermediate statements with the Section 3.2 energy calculation and equation (1). See runs/review-2026-11-23-Energy-components.md.",
   "file": "NavierStokesTao/Energy.lean",
