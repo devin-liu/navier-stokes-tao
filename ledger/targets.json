@@ -1,10 +1,21 @@
 {
  "exists_small_gradient_energy": {
+  "axioms": [
+   "propext",
+   "sorryAx",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.7,
   "decl": "exists_small_gradient_energy",
   "file": "NavierStokesTao/Energy.lean",
+  "inherited_sorry": true,
+  "model": "gpt-6",
   "paper": "Section 3.2, before eq. (7",
-  "state": "open",
-  "updated": "2026-11-23T23:52:56-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "90ccdaa900d38809",
+  "updated": "2026-11-23T23:54:17-05:00"
  },
  "forced_heat_energy_estimate": {
   "decl": "forced_heat_energy_estimate",

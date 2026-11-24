@@ -92,6 +92,33 @@ theorem exists_small_gradient_energy {T L : ℝ} {u₀ : Position → Velocity}
     (hL : 0 < L) (hLT : L ≤ T) (hu : SmoothSolution (Set.Icc 0 T) u₀ u p) :
     ∃ t ∈ Set.Ioo 0 L,
       (∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u t) x‖ ^ 2) ≤
-        (∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2) / (2 * L) := sorry
+        (∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2) / (2 * L) := by
+  let e (r : ℝ) : ℝ := ∫ x in Set.Icc (0 : Position) 1, ‖u r x‖ ^ 2
+  let g (r : ℝ) : ℝ :=
+    ∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u r) x‖ ^ 2
+  have hwithin (r : ℝ) (hr : r ∈ Set.Icc 0 T) :
+      HasDerivWithinAt e (-2 * g r) (Set.Icc 0 T) r :=
+    kineticEnergy_identity (hL.trans_le hLT) hu r hr
+  have hcont : ContinuousOn e (Set.Icc 0 L) := by
+    intro r hr
+    have hrT : r ∈ Set.Icc 0 T := ⟨hr.1, hr.2.trans hLT⟩
+    exact (hwithin r hrT).continuousWithinAt.mono
+      (fun _ hx ↦ ⟨hx.1, hx.2.trans hLT⟩)
+  have hderiv (r : ℝ) (hr : r ∈ Set.Ioo 0 L) :
+      HasDerivAt e (-2 * g r) r :=
+    (hwithin r ⟨hr.1.le, hr.2.le.trans hLT⟩).hasDerivAt
+      (Icc_mem_nhds hr.1 (hr.2.trans_le hLT))
+  have hdiff : DifferentiableOn ℝ e (Set.Ioo 0 L) :=
+    fun r hr ↦ (hderiv r hr).differentiableAt.differentiableWithinAt
+  obtain ⟨r, hr, hslope⟩ := exists_deriv_eq_slope e hL hcont hdiff
+  rw [(hderiv r hr).deriv, sub_zero] at hslope
+  have hscaled := (eq_div_iff hL.ne').mp hslope
+  have hend : 0 ≤ e L := integral_nonneg (fun _ ↦ sq_nonneg _)
+  refine ⟨r, hr, ?_⟩
+  change g r ≤ (∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2) / (2 * L)
+  have hstart : e 0 = ∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2 := by
+    simp only [e, hu.initial]
+  rw [← hstart, le_div_iff₀ (mul_pos (by norm_num) hL)]
+  nlinarith only [hscaled, hend]
 
 end NavierStokesTao
