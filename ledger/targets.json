@@ -92,9 +92,10 @@
  "hasDerivWithinAt_setIntegral_Icc": {
   "decl": "hasDerivWithinAt_setIntegral_Icc",
   "file": "NavierStokesTao/Energy.lean",
+  "note": "Run 20261124-095011-Energy reached the Fubini identity but the integral notation attached the outer measure to the time integral. Parenthesize the inner interval integral in .agent/nst/energy-derivative/hasDerivWithinAt_setIntegral_Icc.c01.lean before a new authorized check.",
   "paper": "none",
-  "state": "open",
-  "updated": "2026-11-24T09:49:00-05:00"
+  "state": "stuck",
+  "updated": "2026-11-24T09:50:33-05:00"
  },
  "heat_smoothing": {
   "axioms": [
