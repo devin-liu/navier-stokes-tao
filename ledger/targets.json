@@ -1,4 +1,11 @@
 {
+ "forced_heat_energy_estimate": {
+  "decl": "forced_heat_energy_estimate",
+  "file": "NavierStokesTao/Energy.lean",
+  "paper": "Lemma 2.1",
+  "state": "open",
+  "updated": "2026-11-23T23:50:23-05:00"
+ },
  "galileanVelocity_initial": {
   "axioms": [
    "propext",

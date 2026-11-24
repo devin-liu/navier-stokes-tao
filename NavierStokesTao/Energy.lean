@@ -1,12 +1,32 @@
-import NavierStokesTao.Setting
+import NavierStokesTao.Heat
 import Mathlib.Analysis.Calculus.ContDiff.Comp
 import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
 namespace NavierStokesTao
 
 open MeasureTheory
 open scoped BigOperators ContDiff InnerProductSpace
+
+/-- Modewise Duhamel formula for the heat equation with prescribed forcing.
+(Paper: Lemma 2.1) -/
+noncomputable def forcedHeatCoefficients {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (a : (Fin 3 → ℤ) → E) (F : ℝ → (Fin 3 → ℤ) → E)
+    (t : ℝ) (k : Fin 3 → ℤ) : E :=
+  heatCoefficients t a k + ∫ r in (0 : ℝ)..t, heatCoefficients (t - r) (F r) k
+
+/-- The forced heat flow is continuous in order s and square integrable in time in
+order s+1. Its bound is uniform over finite time intervals, including T = 0.
+Mean zero is built into the coefficient data predicates. (Paper: Lemma 2.1) -/
+theorem forced_heat_energy_estimate {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [CompleteSpace E] (s : ℝ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 ≤ T →
+      ∀ (F : ℝ → (Fin 3 → ℤ) → E) (a : (Fin 3 → ℤ) → E),
+        SobolevTimeL2 (s - 1) T F → MeanZeroSobolev s a →
+        InXT s T (forcedHeatCoefficients a F) ∧
+          xTNorm s T (forcedHeatCoefficients a F) ≤
+            C * (meanZeroSobolevNorm s a + sobolevTimeL2Norm (s - 1) T F) := sorry
 
 /-- Differentiate the squared velocity norm integrated over the cube along a smooth time
 family, with inward derivatives at the endpoints. (Paper: none) -/
