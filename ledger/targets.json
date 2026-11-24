@@ -44,12 +44,22 @@
   "updated": "2026-11-23T12:24:20-05:00"
  },
  "heat_smoothing": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.4,
   "decl": "heat_smoothing",
   "file": "NavierStokesTao/Heat.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
   "note": "The modewise comparison and sum proof is in inbox/heat_smoothing.c01.lean. In run 20261123-234745-Heat, rw [sub_mul, one_mul, hscale] at hlog expanded the left subtraction only, then failed on one_mul. A future attempt can expand both subtractions with simp only [sub_mul, one_mul, hscale] at hlog. The permitted repair round is spent.",
   "paper": "eq. (5",
-  "state": "stuck",
-  "updated": "2026-11-23T23:48:06-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "fabf6d96e8a13e29",
+  "updated": "2026-11-23T23:49:19-05:00"
  },
  "integral_periodic_divergence_eq_zero": {
   "axioms": [
