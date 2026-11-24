@@ -46,7 +46,59 @@ theorem hasDerivWithinAt_setIntegral_Icc {X : Type*} [TopologicalSpace X]
     (hderiv : ∀ r ∈ Set.Icc a b, ∀ x : X,
       HasDerivWithinAt (f · x) (d r x) (Set.Icc a b) r) :
     HasDerivWithinAt (fun r ↦ ∫ x in K, f r x ∂μ)
-      (∫ x in K, d t x ∂μ) (Set.Icc a b) t := sorry
+      (∫ x in K, d t x ∂μ) (Set.Icc a b) t := by
+  let times := Set.Icc a b
+  let extend (r : ℝ) := (Set.projIcc a b hab r : ℝ)
+  let D (r : ℝ) (x : X) := d (extend r) x
+  have he (r : ℝ) (hr : r ∈ times) : extend r = r :=
+    congrArg Subtype.val (Set.projIcc_of_mem hab hr)
+  have hc : Continuous (Function.uncurry D) := by
+    have hec : Continuous extend :=
+      continuous_subtype_val.comp (continuous_projIcc (a := a) (b := b) (h := hab))
+    exact hd.comp_continuous ((hec.comp continuous_fst).prodMk continuous_snd)
+      (fun z ↦ ⟨(Set.projIcc a b hab z.1).property, Set.mem_univ _⟩)
+  let G (r : ℝ) := ∫ x in K, D r x ∂μ
+  have hG : Continuous G := continuous_parametric_integral_of_continuous hc hK
+  have ha : a ∈ times := ⟨le_rfl, hab⟩
+  have hval (r : ℝ) (hr : r ∈ times) : IntegrableOn (f r) K μ :=
+    (hf.comp_continuous (continuous_const.prodMk continuous_id)
+      (fun _ ↦ ⟨hr, Set.mem_univ _⟩)).continuousOn.integrableOn_compact hK
+  have hident (r : ℝ) (hr : r ∈ times) :
+      (∫ s in a..r, G s) = (∫ x in K, f r x ∂μ) - ∫ x in K, f a x ∂μ := by
+    have hseg : Set.uIcc a r ⊆ times := by
+      rw [← segment_eq_uIcc]
+      exact (convex_Icc a b).segment_subset ha hr
+    have hFTC (x : X) : (∫ s in a..r, D s x) = f r x - f a x := by
+      apply intervalIntegral.integral_eq_sub_of_hasDeriv_right
+      · exact hf.comp (continuous_id.prodMk continuous_const).continuousOn
+          (fun _ hs ↦ ⟨hseg hs, Set.mem_univ _⟩)
+      · intro s hs
+        have hst := hseg (Set.mem_Icc_of_Ioo hs)
+        rw [show D s x = d s x from congrArg (d · x) (he s hst)]
+        exact ((hderiv s hst x).hasDerivAt
+          (Filter.mem_of_superset (Ioo_mem_nhds hs.1 hs.2)
+            (Set.Ioo_subset_Icc_self.trans hseg))).hasDerivWithinAt
+      · exact (hc.comp (continuous_id.prodMk continuous_const)).intervalIntegrable _ _
+    have hint : Integrable (Function.uncurry D)
+        ((volume.restrict (Set.uIoc a r)).prod (μ.restrict K)) := by
+      rw [Measure.prod_restrict]
+      exact (hc.continuousOn.integrableOn_compact
+        (isCompact_uIcc.prod hK)).mono_set
+          (Set.prod_mono Set.uIoc_subset_uIcc (Set.Subset.rfl))
+    have hswap : (∫ s in a..r, G s) = ∫ x in K, (∫ s in a..r, D s x) ∂μ := by
+      simp only [G, intervalIntegral.intervalIntegral_eq_integral_uIoc, integral_smul,
+        integral_integral_swap hint]
+    rw [hswap]
+    simp_rw [hFTC]
+    exact integral_sub (hval r hr) (hval a ha)
+  have hprim := intervalIntegral.integral_hasDerivAt_right (hG.intervalIntegrable a t)
+    hG.aestronglyMeasurable.stronglyMeasurableAtFilter hG.continuousAt
+  have hgt : G t = ∫ x in K, d t x ∂μ := by
+    simp only [G, D, he t ht]
+  rw [← hgt]
+  apply (hprim.hasDerivWithinAt.add_const (∫ x in K, f a x ∂μ)).congr_of_mem _ ht
+  intro r hr
+  rw [hident r hr, sub_add_cancel]
 
 /-- Differentiate the squared velocity norm integrated over the cube along a smooth time
 family, with inward derivatives at the endpoints. (Paper: none) -/
