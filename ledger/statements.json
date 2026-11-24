@@ -139,6 +139,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def globalRegularity : Prop := ∀ u₀ : Position → Velocity, ContDiff ℝ ∞ u₀ → LatticePeriodic u₀ → (∀ x, spatialDivergence u₀ x = 0) → ∃ (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Ici 0) u₀ u p"
  },
+ "globalRegularity_implies_shortTermBound": {
+  "basis": "Compared the three frozen conjectures and Section 3 in runs/review-2026-11-23-Implications.md.",
+  "file": "NavierStokesTao/Implications.lean",
+  "frozen_at": "2026-11-23T23:53:02-05:00",
+  "hash": "7805a4bf349c5ad7",
+  "kind": "theorem",
+  "paper": "Section 3.4",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem globalRegularity_implies_shortTermBound : globalRegularity → shortTermBound"
+ },
  "h1Norm": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
   "file": "NavierStokesTao/Sobolev.lean",
@@ -239,6 +249,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def longTermBound : Prop := ∃ F : ℝ≥0 → ℝ≥0, Monotone F ∧ ∀ (T : ℝ), 0 < T → ∀ (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Icc 0 T) u₀ u p → h1Norm (u T) ≤ F (h1Norm u₀)"
  },
+ "longTermBound_implies_globalRegularity": {
+  "basis": "Compared the three frozen conjectures and Section 3 in runs/review-2026-11-23-Implications.md.",
+  "file": "NavierStokesTao/Implications.lean",
+  "frozen_at": "2026-11-23T23:53:02-05:00",
+  "hash": "201e68bc01f1a802",
+  "kind": "theorem",
+  "paper": "Section 3.1",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem longTermBound_implies_globalRegularity : longTermBound → globalRegularity"
+ },
  "longTermBound_implies_shortTermBound": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
   "file": "NavierStokesTao/Conjectures.lean",
@@ -318,6 +338,16 @@
   "paper": "Conjecture 1.3",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def shortTermBound : Prop := ∃ G : ℝ≥0 → ℝ≥0, Monotone G ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 → ∀ (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Icc 0 T) u₀ u p → h1Norm (u T) ≤ G (h1Norm u₀)"
+ },
+ "shortTermBound_implies_longTermBound": {
+  "basis": "Compared the three frozen conjectures and Section 3 in runs/review-2026-11-23-Implications.md.",
+  "file": "NavierStokesTao/Implications.lean",
+  "frozen_at": "2026-11-23T23:53:02-05:00",
+  "hash": "9fd75fd41ec0f21e",
+  "kind": "theorem",
+  "paper": "Section 3.2",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem shortTermBound_implies_longTermBound : shortTermBound → longTermBound"
  },
  "smoothSolution_galilean": {
   "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
