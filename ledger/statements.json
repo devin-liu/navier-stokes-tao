@@ -1,4 +1,14 @@
 {
+ "InXT": {
+  "basis": "Compared Section 1.5, the Section 2 time spaces and Lemma 2.1, including T=0 and modewise integrability, in runs/review-2026-11-23-forced-heat.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T23:52:33-05:00",
+  "hash": "597c3b2190468fb9",
+  "kind": "def",
+  "paper": "Section 2",
+  "reviewer": "gpt-6:subagent",
+  "statement": "def InXT {E : Type*} [NormedAddCommGroup E] (s T : ℝ) (u : ℝ → (Fin 3 → ℤ) → E) : Prop := (∀ t ∈ Set.Icc 0 T, MeanZeroSobolev s (u t)) ∧ (∀ t ∈ Set.Icc 0 T, Filter.Tendsto (fun r ↦ meanZeroSobolevNorm s (fun k ↦ u r k - u t k)) (nhdsWithin t (Set.Icc 0 T)) (nhds 0)) ∧ SobolevTimeL2 (s + 1) T u"
+ },
  "LatticePeriodic": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
   "file": "NavierStokesTao/Setting.lean",
@@ -8,6 +18,16 @@
   "paper": "eq. (1",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def LatticePeriodic {E : Type*} (f : Position → E) : Prop := ∀ (m : Fin 3 → ℤ) (x : Position), f (x + fun i ↦ (m i : ℝ)) = f x"
+ },
+ "MeanZeroSobolev": {
+  "basis": "Compared Section 1.5 and equation (5), including Fourier normalization and conjugate symmetry, in runs/review-2026-11-23-Heat.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T23:47:31-05:00",
+  "hash": "168ef620f8dda39a",
+  "kind": "def",
+  "paper": "Section 1.5",
+  "reviewer": "gpt-6:subagent",
+  "statement": "def MeanZeroSobolev {E : Type*} [Norm E] [Zero E] (s : ℝ) (a : (Fin 3 → ℤ) → E) : Prop := a 0 = 0 ∧ Summable (sobolevModeEnergy s a)"
  },
  "Position": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
@@ -29,6 +49,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "structure SmoothSolution (times : Set ℝ) (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ) : Prop where initialSmooth : ContDiff ℝ ∞ u₀ initialPeriodic : LatticePeriodic u₀ initialDivergenceFree : ∀ x, spatialDivergence u₀ x = 0 velocitySmooth : ContDiffOn ℝ ∞ (fun z : ℝ × Position ↦ u z.1 z.2) (times ×ˢ Set.univ) pressureSmooth : ContDiffOn ℝ ∞ (fun z : ℝ × Position ↦ p z.1 z.2) (times ×ˢ Set.univ) velocityPeriodic : ∀ t ∈ times, LatticePeriodic (u t) pressurePeriodic : ∀ t ∈ times, LatticePeriodic (p t) momentum : ∀ t ∈ times, ∀ x, derivWithin (fun s ↦ u s x) times t + fderiv ℝ (u t) x ((u t x).ofLp) = spatialLaplacian (u t) x - pressureGradient (p t) x incompressible : ∀ t ∈ times, ∀ x, spatialDivergence (u t) x = 0 initial : u 0 = u₀"
  },
+ "SobolevTimeL2": {
+  "basis": "Compared Section 1.5, the Section 2 time spaces and Lemma 2.1, including T=0 and modewise integrability, in runs/review-2026-11-23-forced-heat.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T23:52:33-05:00",
+  "hash": "f1392a4ad5db4220",
+  "kind": "def",
+  "paper": "Section 1.5",
+  "reviewer": "gpt-6:subagent",
+  "statement": "def SobolevTimeL2 {E : Type*} [Norm E] [Zero E] [TopologicalSpace E] (s T : ℝ) (u : ℝ → (Fin 3 → ℤ) → E) : Prop := (∀ᵐ t ∂volume.restrict (Set.Icc 0 T), MeanZeroSobolev s (u t)) ∧ (∀ k, AEStronglyMeasurable (fun t ↦ u t k) (volume.restrict (Set.Icc 0 T))) ∧ IntegrableOn (fun t ↦ meanZeroSobolevNorm s (u t) ^ 2) (Set.Icc 0 T)"
+ },
  "Velocity": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
   "file": "NavierStokesTao/Setting.lean",
@@ -38,6 +68,36 @@
   "paper": "eq. (1",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "abbrev Velocity := EuclideanSpace ℝ (Fin 3)"
+ },
+ "exists_small_gradient_energy": {
+  "basis": "Compared the energy identity and averaging step before equation (7) in runs/review-2026-11-23-Energy-gradient.md.",
+  "file": "NavierStokesTao/Energy.lean",
+  "frozen_at": "2026-11-23T23:54:08-05:00",
+  "hash": "90ccdaa900d38809",
+  "kind": "theorem",
+  "paper": "Section 3.2, before eq. (7",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem exists_small_gradient_energy {T L : ℝ} {u₀ : Position → Velocity} {u : ℝ → Position → Velocity} {p : ℝ → Position → ℝ} (hL : 0 < L) (hLT : L ≤ T) (hu : SmoothSolution (Set.Icc 0 T) u₀ u p) : ∃ t ∈ Set.Ioo 0 L, (∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u t) x‖ ^ 2) ≤ (∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2) / (2 * L)"
+ },
+ "forcedHeatCoefficients": {
+  "basis": "Compared Section 1.5, the Section 2 time spaces and Lemma 2.1, including T=0 and modewise integrability, in runs/review-2026-11-23-forced-heat.md.",
+  "file": "NavierStokesTao/Energy.lean",
+  "frozen_at": "2026-11-23T23:52:33-05:00",
+  "hash": "f581065c232d6f45",
+  "kind": "def",
+  "paper": "Lemma 2.1",
+  "reviewer": "gpt-6:subagent",
+  "statement": "noncomputable def forcedHeatCoefficients {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (a : (Fin 3 → ℤ) → E) (F : ℝ → (Fin 3 → ℤ) → E) (t : ℝ) (k : Fin 3 → ℤ) : E := heatCoefficients t a k + ∫ r in (0 : ℝ)..t, heatCoefficients (t - r) (F r) k"
+ },
+ "forced_heat_energy_estimate": {
+  "basis": "Compared Section 1.5, the Section 2 time spaces and Lemma 2.1, including T=0 and modewise integrability, in runs/review-2026-11-23-forced-heat.md.",
+  "file": "NavierStokesTao/Energy.lean",
+  "frozen_at": "2026-11-23T23:52:33-05:00",
+  "hash": "bdd8421555d535ec",
+  "kind": "theorem",
+  "paper": "Lemma 2.1",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem forced_heat_energy_estimate {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [CompleteSpace E] (s : ℝ) : ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 ≤ T → ∀ (F : ℝ → (Fin 3 → ℤ) → E) (a : (Fin 3 → ℤ) → E), SobolevTimeL2 (s - 1) T F → MeanZeroSobolev s a → InXT s T (forcedHeatCoefficients a F) ∧ xTNorm s T (forcedHeatCoefficients a F) ≤ C * (meanZeroSobolevNorm s a + sobolevTimeL2Norm (s - 1) T F)"
  },
  "galileanPressure": {
   "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
@@ -89,6 +149,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def globalRegularity : Prop := ∀ u₀ : Position → Velocity, ContDiff ℝ ∞ u₀ → LatticePeriodic u₀ → (∀ x, spatialDivergence u₀ x = 0) → ∃ (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Ici 0) u₀ u p"
  },
+ "globalRegularity_implies_shortTermBound": {
+  "basis": "Compared the three frozen conjectures and Section 3 in runs/review-2026-11-23-Implications.md.",
+  "file": "NavierStokesTao/Implications.lean",
+  "frozen_at": "2026-11-23T23:53:02-05:00",
+  "hash": "7805a4bf349c5ad7",
+  "kind": "theorem",
+  "paper": "Section 3.4",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem globalRegularity_implies_shortTermBound : globalRegularity → shortTermBound"
+ },
  "h1Norm": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
   "file": "NavierStokesTao/Sobolev.lean",
@@ -108,6 +178,26 @@
   "paper": "Section 2, mean-zero reduction",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "theorem h1Norm_sq_galilean_centered (u : ℝ → Position → Velocity) (t : ℝ) (hSmooth : ContDiff ℝ ∞ (u t)) (hPeriodic : LatticePeriodic (u t)) : (h1Norm (u t) : ℝ) ^ 2 = (h1Norm (galileanVelocity (spatialMean (u t)) u t) : ℝ) ^ 2 + ‖spatialMean (u t)‖ ^ 2"
+ },
+ "heatCoefficients": {
+  "basis": "Compared Section 1.5 and equation (5), including Fourier normalization and conjugate symmetry, in runs/review-2026-11-23-Heat.md.",
+  "file": "NavierStokesTao/Heat.lean",
+  "frozen_at": "2026-11-23T23:47:31-05:00",
+  "hash": "6f2c8ec622f72c77",
+  "kind": "def",
+  "paper": "eq. (5",
+  "reviewer": "gpt-6:subagent",
+  "statement": "noncomputable def heatCoefficients {E : Type*} [SMul ℝ E] (t : ℝ) (a : (Fin 3 → ℤ) → E) (k : Fin 3 → ℤ) : E := Real.exp (-(4 * Real.pi ^ 2 * modeLengthSq k * t)) • a k"
+ },
+ "heat_smoothing": {
+  "basis": "Compared Section 1.5 and equation (5), including Fourier normalization and conjugate symmetry, in runs/review-2026-11-23-Heat.md.",
+  "file": "NavierStokesTao/Heat.lean",
+  "frozen_at": "2026-11-23T23:47:31-05:00",
+  "hash": "fabf6d96e8a13e29",
+  "kind": "theorem",
+  "paper": "eq. (5",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem heat_smoothing {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] (s δ : ℝ) (hδ : 0 < δ) : ∃ C : ℝ, 0 < C ∧ ∀ (t : ℝ) (a : (Fin 3 → ℤ) → E), 0 < t → MeanZeroSobolev s a → MeanZeroSobolev (s + δ) (heatCoefficients t a) ∧ meanZeroSobolevNorm (s + δ) (heatCoefficients t a) ≤ C * t ^ (-δ / 2) * meanZeroSobolevNorm s a"
  },
  "integral_periodic_divergence_eq_zero": {
   "basis": "Compared the coordinate divergence and cover periodicity with the unit torus setup and the integration by parts used in Sections 2 and 3.2. See runs/review-2026-11-23-PeriodicCalculus.md.",
@@ -169,6 +259,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def longTermBound : Prop := ∃ F : ℝ≥0 → ℝ≥0, Monotone F ∧ ∀ (T : ℝ), 0 < T → ∀ (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Icc 0 T) u₀ u p → h1Norm (u T) ≤ F (h1Norm u₀)"
  },
+ "longTermBound_implies_globalRegularity": {
+  "basis": "Compared the three frozen conjectures and Section 3 in runs/review-2026-11-23-Implications.md.",
+  "file": "NavierStokesTao/Implications.lean",
+  "frozen_at": "2026-11-23T23:53:02-05:00",
+  "hash": "201e68bc01f1a802",
+  "kind": "theorem",
+  "paper": "Section 3.1",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem longTermBound_implies_globalRegularity : longTermBound → globalRegularity"
+ },
  "longTermBound_implies_shortTermBound": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
   "file": "NavierStokesTao/Conjectures.lean",
@@ -178,6 +278,26 @@
   "paper": "none",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "theorem longTermBound_implies_shortTermBound : longTermBound → shortTermBound"
+ },
+ "meanZeroSobolevNorm": {
+  "basis": "Compared Section 1.5 and equation (5), including Fourier normalization and conjugate symmetry, in runs/review-2026-11-23-Heat.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T23:47:31-05:00",
+  "hash": "81912fb0949a6bce",
+  "kind": "def",
+  "paper": "Section 1.5",
+  "reviewer": "gpt-6:subagent",
+  "statement": "noncomputable def meanZeroSobolevNorm {E : Type*} [Norm E] (s : ℝ) (a : (Fin 3 → ℤ) → E) : ℝ := Real.sqrt (∑' k, sobolevModeEnergy s a k)"
+ },
+ "modeLengthSq": {
+  "basis": "Compared Section 1.5 and equation (5), including Fourier normalization and conjugate symmetry, in runs/review-2026-11-23-Heat.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T23:47:31-05:00",
+  "hash": "d32d9a933c303b3c",
+  "kind": "def",
+  "paper": "Section 1.5",
+  "reviewer": "gpt-6:subagent",
+  "statement": "def modeLengthSq (k : Fin 3 → ℤ) : ℝ := ∑ i, (k i : ℝ) ^ 2"
  },
  "pressureGradient": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
@@ -229,6 +349,16 @@
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def shortTermBound : Prop := ∃ G : ℝ≥0 → ℝ≥0, Monotone G ∧ ∀ (T : ℝ), 0 < T → T ≤ 1 → ∀ (u₀ : Position → Velocity) (u : ℝ → Position → Velocity) (p : ℝ → Position → ℝ), SmoothSolution (Set.Icc 0 T) u₀ u p → h1Norm (u T) ≤ G (h1Norm u₀)"
  },
+ "shortTermBound_implies_longTermBound": {
+  "basis": "Compared the three frozen conjectures and Section 3 in runs/review-2026-11-23-Implications.md.",
+  "file": "NavierStokesTao/Implications.lean",
+  "frozen_at": "2026-11-23T23:53:02-05:00",
+  "hash": "9fd75fd41ec0f21e",
+  "kind": "theorem",
+  "paper": "Section 3.2",
+  "reviewer": "gpt-6:subagent",
+  "statement": "theorem shortTermBound_implies_longTermBound : shortTermBound → longTermBound"
+ },
  "smoothSolution_galilean": {
   "basis": "Independent back-translation, then Tao v5 equation (1), notation, and Section 2 mean-zero reduction, with explicit moving-frame and norm calculations. See runs/review-2026-11-23-mean-zero.md.",
   "file": "NavierStokesTao/MeanZero.lean",
@@ -238,6 +368,26 @@
   "paper": "Section 2, mean-zero reduction",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "theorem smoothSolution_galilean {times : Set ℝ} (hDiff : UniqueDiffOn ℝ times) {u₀ : Position → Velocity} {u : ℝ → Position → Velocity} {p : ℝ → Position → ℝ} (h : SmoothSolution times u₀ u p) (c : Velocity) : SmoothSolution times (fun x ↦ u₀ x - c) (galileanVelocity c u) (galileanPressure c p)"
+ },
+ "sobolevModeEnergy": {
+  "basis": "Compared Section 1.5 and equation (5), including Fourier normalization and conjugate symmetry, in runs/review-2026-11-23-Heat.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T23:47:31-05:00",
+  "hash": "c062f57dbbbe3a23",
+  "kind": "def",
+  "paper": "Section 1.5",
+  "reviewer": "gpt-6:subagent",
+  "statement": "noncomputable def sobolevModeEnergy {E : Type*} [Norm E] (s : ℝ) (a : (Fin 3 → ℤ) → E) (k : Fin 3 → ℤ) : ℝ := if k = 0 then 0 else modeLengthSq k ^ s * ‖a k‖ ^ 2"
+ },
+ "sobolevTimeL2Norm": {
+  "basis": "Compared Section 1.5, the Section 2 time spaces and Lemma 2.1, including T=0 and modewise integrability, in runs/review-2026-11-23-forced-heat.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T23:52:33-05:00",
+  "hash": "e01ff75af17b6b8e",
+  "kind": "def",
+  "paper": "Section 1.5",
+  "reviewer": "gpt-6:subagent",
+  "statement": "noncomputable def sobolevTimeL2Norm {E : Type*} [Norm E] (s T : ℝ) (u : ℝ → (Fin 3 → ℤ) → E) : ℝ := Real.sqrt (∫ t in Set.Icc 0 T, meanZeroSobolevNorm s (u t) ^ 2)"
  },
  "spatialDivergence": {
   "basis": "Independent Lean back-translation completed before consulting Tao v5, Section 1, equation (1), Notation, Conjectures 1.1–1.3, and Theorem 1.4, with Section 2 and 3.2 context for H¹. The restriction implication is infrastructure. See runs/review-2026-11-23-section-one-clean.md.",
@@ -308,5 +458,15 @@
   "paper": "eq. (1",
   "reviewer": "gpt-6.2-sol:subagent",
   "statement": "def torusPoint (x : Position) : UnitAddTorus (Fin 3) := fun i ↦ (x i : UnitAddCircle)"
+ },
+ "xTNorm": {
+  "basis": "Compared Section 1.5, the Section 2 time spaces and Lemma 2.1, including T=0 and modewise integrability, in runs/review-2026-11-23-forced-heat.md.",
+  "file": "NavierStokesTao/Sobolev.lean",
+  "frozen_at": "2026-11-23T23:52:33-05:00",
+  "hash": "4d182bc32fd1b99e",
+  "kind": "def",
+  "paper": "Section 2",
+  "reviewer": "gpt-6:subagent",
+  "statement": "noncomputable def xTNorm {E : Type*} [Norm E] (s T : ℝ) (u : ℝ → (Fin 3 → ℤ) → E) : ℝ := sSup ((fun t ↦ meanZeroSobolevNorm s (u t)) '' Set.Icc 0 T) + sobolevTimeL2Norm (s + 1) T u"
  }
 }

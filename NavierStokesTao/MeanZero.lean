@@ -104,6 +104,75 @@ theorem h1Norm_sq_galilean_centered (u : ℝ → Position → Velocity) (t : ℝ
     (hSmooth : ContDiff ℝ ∞ (u t)) (hPeriodic : LatticePeriodic (u t)) :
     (h1Norm (u t) : ℝ) ^ 2 =
       (h1Norm (galileanVelocity (spatialMean (u t)) u t) : ℝ) ^ 2 + ‖spatialMean (u t)‖ ^ 2 := by
-  sorry
+  let v := u t
+  let c := spatialMean v
+  let a : Position := t • c.ofLp
+  let cube := Set.Icc (0 : Position) 1
+  let d (x : Position) : ℝ := ∑ i : Fin 3, ‖spatialPartial i v x‖ ^ 2
+  let f (x : Position) : ℝ := ‖v x‖ ^ 2 + d x
+  let g (x : Position) : ℝ := ‖v x - c‖ ^ 2 + d x
+  have hdiff : Continuous (fderiv ℝ v) :=
+    hSmooth.continuous_fderiv (by simp)
+  have hd : Continuous d := by
+    unfold d
+    exact continuous_finsetSum _ (fun i _ ↦ ((hdiff.clm_apply continuous_const).norm).pow 2)
+  have hf : Continuous f := (hSmooth.continuous.norm.pow 2).add hd
+  have hg : Continuous g := ((hSmooth.continuous.sub continuous_const).norm.pow 2).add hd
+  have hgper : LatticePeriodic g := by
+    intro m x
+    let b : Position := fun i ↦ (m i : ℝ)
+    have heq : (fun y ↦ v (y + b)) = v := funext (hPeriodic m)
+    have hsp (i : Fin 3) : spatialPartial i v (x + b) = spatialPartial i v x := by
+      unfold spatialPartial
+      rw [← fderiv_comp_add_right (f := v) (x := x) b, heq]
+    change g (x + b) = g x
+    have hv : v (x + b) = v x := hPeriodic m x
+    simp only [g, d, hv, hsp]
+  have htranslate (x : Position) : galileanVelocity c u t x = v (x + a) - c := rfl
+  have hpartial (i : Fin 3) (x : Position) :
+      spatialPartial i (galileanVelocity c u t) x = spatialPartial i v (x + a) := by
+    change fderiv ℝ (fun y ↦ v (y + a) - c) x (Pi.single i 1) =
+      fderiv ℝ v (x + a) (Pi.single i 1)
+    rw [fderiv_sub_const, fderiv_comp_add_right]
+  change (Real.sqrt (∫ x in cube, f x)) ^ 2 =
+    (h1Norm (galileanVelocity c u t) : ℝ) ^ 2 + ‖c‖ ^ 2
+  have hgal : (h1Norm (galileanVelocity c u t) : ℝ) =
+      Real.sqrt (∫ x in cube, g x) := by
+    change Real.sqrt (∫ x in cube, ‖galileanVelocity c u t x‖ ^ 2 +
+      ∑ i : Fin 3, ‖spatialPartial i (galileanVelocity c u t) x‖ ^ 2) = _
+    simp only [htranslate, hpartial, ← show ∀ x, ‖v x - c‖ ^ 2 +
+      ∑ i : Fin 3, ‖spatialPartial i v x‖ ^ 2 = g x from fun _ ↦ rfl]
+    rw [setIntegral_unitCube_translate g hg hgper a]
+  have hfn : 0 ≤ ∫ x in cube, f x :=
+    integral_nonneg (fun x ↦ add_nonneg (sq_nonneg _)
+      (Finset.sum_nonneg (fun _ _ ↦ sq_nonneg _)))
+  have hgn : 0 ≤ ∫ x in cube, g x :=
+    integral_nonneg (fun x ↦ add_nonneg (sq_nonneg _)
+      (Finset.sum_nonneg (fun _ _ ↦ sq_nonneg _)))
+  rw [hgal, Real.sq_sqrt hfn, Real.sq_sqrt hgn]
+  let ell : Velocity →L[ℝ] ℝ := innerSL ℝ c
+  have hvint : IntegrableOn v cube :=
+    hSmooth.continuous.continuousOn.integrableOn_compact isCompact_Icc
+  have hfint : IntegrableOn f cube := hf.continuousOn.integrableOn_compact isCompact_Icc
+  have hellint : IntegrableOn (fun x ↦ ell (v x)) cube :=
+    (ell.continuous.comp hSmooth.continuous).continuousOn.integrableOn_compact isCompact_Icc
+  have hconst : IntegrableOn (fun _ : Position ↦ ‖c‖ ^ 2) cube :=
+    continuous_const.continuousOn.integrableOn_compact isCompact_Icc
+  have hexpand (x : Position) : g x = f x - 2 * ell (v x) + ‖c‖ ^ 2 := by
+    dsimp [g, f, ell]
+    rw [norm_sub_sq_real, real_inner_comm c (v x)]
+    ring
+  have hcross : (∫ x in cube, ell (v x)) = ‖c‖ ^ 2 := by
+    rw [ell.integral_comp_comm hvint]
+    exact real_inner_self_eq_norm_sq c
+  have hunit : (∫ _ in cube, ‖c‖ ^ 2) = ‖c‖ ^ 2 := by
+    simp [cube, setIntegral_const, Measure.real, Real.volume_Icc_pi]
+  simp_rw [hexpand]
+  have hadd :
+      (∫ x in cube, f x - 2 * ell (v x) + ‖c‖ ^ 2) =
+        (∫ x in cube, f x - 2 * ell (v x)) + ∫ _ in cube, ‖c‖ ^ 2 :=
+    integral_add (hfint.sub (hellint.const_mul 2)) hconst
+  rw [hadd, integral_sub hfint (hellint.const_mul 2), integral_const_mul, hcross, hunit]
+  ring
 
 end NavierStokesTao

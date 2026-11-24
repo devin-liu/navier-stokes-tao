@@ -60,8 +60,8 @@ before anything large is tried, and it tests the definitions before analysis is 
 |---|---|---|---|---|
 | eq. (1) | Periodic incompressible Navier–Stokes on `Ω`, viscosity 1, smooth `u`, `p`, divergence-free smooth data | `SmoothSolution` | `Setting.lean` | |
 | Section 1.5, `H¹` in (2)–(3) | Inhomogeneous norm on smooth periodic fields, with the normalization above | `h1Norm` | `Sobolev.lean` | spatial partial derivatives |
-| Section 1.5, `H^s_0` | Mean-zero distributions with the norm from nonzero Fourier modes | — | `Sobolev.lean` | |
-| Section 2, `X^s_T` | `C⁰_t H^s_0 ∩ L²_t H^{s+1}_0` on `[0,T] × Ω`, with the sum norm | — | `Sobolev.lean` | `H^s_0` |
+| Section 1.5, `H^s_0` | Weighted square summability of the nonzero Fourier coefficients. Uses coefficient sequences in a complexification. Real fields require conjugate symmetry. | `MeanZeroSobolev`, `meanZeroSobolevNorm` | `Sobolev.lean` | |
+| Section 2, `X^s_T` | `C⁰_t H^s_0 ∩ L²_t H^{s+1}_0` on `[0,T] × Ω`, with the sum norm. Uses coefficient curves and almost-everywhere membership for the L² part. | `InXT`, `xTNorm`, `SobolevTimeL2`, `sobolevTimeL2Norm` | `Sobolev.lean` | `H^s_0` |
 | Conjecture 1.1 | Every smooth divergence-free datum has a global smooth solution on `[0,∞)` | `globalRegularity` | `Conjectures.lean` | eq. (1) |
 | Conjecture 1.2, eq. (2) | A nondecreasing `F` bounds `‖u(T)‖_{H¹}` by `F(‖u₀‖_{H¹})` for every finite `T > 0` and every smooth solution on `[0,T]` | `longTermBound` | `Conjectures.lean` | eq. (1), `H¹` |
 | Conjecture 1.3, eq. (3) | The same with a nondecreasing `G` and `0 < T ≤ 1` | `shortTermBound` | `Conjectures.lean` | eq. (1), `H¹` |
@@ -77,8 +77,8 @@ before anything large is tried, and it tests the definitions before analysis is 
 | (not stated separately) | Lattice-periodic lifts descend to Mathlib's quotient torus, and the cube integral agrees with its normalized Haar integral | `latticePeriodic_factors_torus`, `setIntegral_torusPoint` | `TorusIntegral.lean` | `UnitAddTorus.integral_preimage` |
 | (not stated separately) | The total divergence of a periodic C¹ flux vanishes on the unit cube | `integral_periodic_divergence_eq_zero` | `PeriodicCalculus.lean` | Mathlib divergence theorem, cancellation of opposite faces |
 | eq. (4) | Duhamel form with a first-order Fourier multiplier `D` whose range is divergence-free and mean-zero; a smooth solution of (4) with smooth divergence-free data solves (1) for a suitable pressure | — | `Duhamel.lean` | heat semigroup |
-| Lemma 2.1 | Energy estimate for the forced heat equation: `‖u‖_{X^s_T} ≲_s ‖u₀‖_{H^s_0} + ‖F‖_{L²_t H^{s-1}_0}` | — | `Energy.lean` | `X^s_T` |
-| eq. (5) | Heat smoothing: `‖e^{tΔ} f‖_{H^{s+δ}_0} ≲_{s,δ} t^{-δ/2} ‖f‖_{H^s_0}` | — | `Heat.lean` | `H^s_0` |
+| Lemma 2.1 | Energy estimate for modewise forced heat flow: `‖u‖_{X^s_T} ≲_s ‖u₀‖_{H^s_0} + ‖F‖_{L²_t H^{s-1}_0}`. Coefficients lie in a complete real normed space for Bochner integration. | `forcedHeatCoefficients`, `forced_heat_energy_estimate` | `Energy.lean` | `X^s_T`, heat multiplier |
+| eq. (5) | Heat smoothing: `‖e^{tΔ} f‖_{H^{s+δ}_0} ≲_{s,δ} t^{-δ/2} ‖f‖_{H^s_0}`. The unit-period multiplier includes the factor `4π²`. | `heatCoefficients`, `heat_smoothing` | `Heat.lean` | `H^s_0` |
 | Proposition 2.2(i), eq. (6) | For `‖u₀‖_{H¹_0} ≤ A` and `T = cA⁻⁴`: a unique strong solution in `X¹_T`, bounded by `≲ A`, depending in a Lipschitz way on the data | — | `LocalTheory.lean` | Lemma 2.1, (5), (4) |
 | Proposition 2.2(ii) | That solution is smooth for `t > 0` | — | `LocalTheory.lean` | 2.2(i) |
 | Proposition 2.2(iii) | Data converging weakly in the ball give solutions converging strongly in `C⁰_t H¹_0([ε,T] × Ω)` | — | `LocalTheory.lean` | 2.2(i), (ii) |
@@ -93,13 +93,14 @@ as standard. In Lean each is its own target.
 
 | Paper item | What it says | Lean | File | Needs |
 |---|---|---|---|---|
-| 3.1 | 1.2 ⇒ 1.1, by iterating Proposition 2.2: the existence time depends only on the norm, which the bound controls | — | `Implications.lean` | 2.2(i), (ii) |
+| 3.1 | 1.2 ⇒ 1.1, by iterating Proposition 2.2: the existence time depends only on the norm, which the bound controls. Includes the mean-zero reduction. | `longTermBound_implies_globalRegularity` | `Implications.lean` | 2.2(i), (ii), mean-zero reduction |
 | 3.2, eq. (7) | From the energy identity and pigeonholing: for `T ≥ ε⁻²` a time `T' ≤ ε⁻²` with `‖u(T')‖_{H¹} ≲_E ε` | — | `Implications.lean` | energy identity, Poincaré |
+| 3.2, before eq. (7) | On an initial subinterval of length `L > 0`, some interior time has squared gradient energy at most the initial kinetic energy divided by `2L`. Allows arbitrary mean. | `exists_small_gradient_energy` | `Energy.lean` | energy identity |
 | 3.2, eq. (8), (9) | Small data stay small: repeat the proof of 2.2 and compare with the heat flow | — | `Implications.lean` | 2.2, (5) |
 | 3.2, eq. (10) | Iterate Conjecture 1.3 on `[0,T']` | — | `Implications.lean` | Conjecture 1.3 |
-| 3.2 | 1.3 ⇒ 1.2 | — | `Implications.lean` | (7) to (10) |
+| 3.2 | 1.3 ⇒ 1.2, including the mean-zero reduction | `shortTermBound_implies_longTermBound` | `Implications.lean` | (7) to (10), mean-zero reduction |
 | Remark 3.3, eq. (11) | A decaying strengthening of (2) in the mean-zero case. Not needed for Theorem 1.4 | — | later | |
-| 3.4 `?` | 1.1 ⇒ 1.3, by contradiction and compactness: a sequence of solutions with bounded data and unbounded norm, a weak limit, and 2.2(iii) | — | `Implications.lean` | 2.2(i), (iii), Conjecture 1.1 |
+| 3.4 | 1.1 ⇒ 1.3, by contradiction and compactness: a sequence of solutions with bounded data and unbounded norm, a weak limit, and 2.2(iii). Includes the mean-zero reduction. | `globalRegularity_implies_shortTermBound` | `Implications.lean` | 2.2(i), (iii), Conjecture 1.1, mean-zero reduction |
 | Section 4 `?` | Remarks. Not read | — | later | |
 
 ## Files, in import order

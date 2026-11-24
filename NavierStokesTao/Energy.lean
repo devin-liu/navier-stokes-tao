@@ -1,12 +1,34 @@
-import NavierStokesTao.Setting
+import NavierStokesTao.Heat
 import Mathlib.Analysis.Calculus.ContDiff.Comp
+import Mathlib.Analysis.Calculus.Deriv.MeanValue
 import Mathlib.MeasureTheory.Integral.Bochner.Set
+import Mathlib.MeasureTheory.Integral.IntervalIntegral.Basic
 import Mathlib.MeasureTheory.Measure.Lebesgue.Basic
 
 namespace NavierStokesTao
 
 open MeasureTheory
 open scoped BigOperators ContDiff InnerProductSpace
+
+/-- Modewise Duhamel formula for the heat equation with prescribed forcing.
+(Paper: Lemma 2.1) -/
+noncomputable def forcedHeatCoefficients {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] (a : (Fin 3 → ℤ) → E) (F : ℝ → (Fin 3 → ℤ) → E)
+    (t : ℝ) (k : Fin 3 → ℤ) : E :=
+  heatCoefficients t a k + ∫ r in (0 : ℝ)..t, heatCoefficients (t - r) (F r) k
+
+/-- The forced heat flow is continuous in order s and square integrable in time in
+order s+1. Its bound is uniform over finite time intervals, including T = 0.
+Mean zero is built into the data predicates. The coefficient space is generalized
+to a complete real normed space for the modewise integral. (Paper: Lemma 2.1) -/
+theorem forced_heat_energy_estimate {E : Type*} [NormedAddCommGroup E]
+    [NormedSpace ℝ E] [CompleteSpace E] (s : ℝ) :
+    ∃ C : ℝ, 0 < C ∧ ∀ (T : ℝ), 0 ≤ T →
+      ∀ (F : ℝ → (Fin 3 → ℤ) → E) (a : (Fin 3 → ℤ) → E),
+        SobolevTimeL2 (s - 1) T F → MeanZeroSobolev s a →
+        InXT s T (forcedHeatCoefficients a F) ∧
+          xTNorm s T (forcedHeatCoefficients a F) ≤
+            C * (meanZeroSobolevNorm s a + sobolevTimeL2Norm (s - 1) T F) := sorry
 
 /-- Differentiate the squared velocity norm integrated over the cube along a smooth time
 family, with inward derivatives at the endpoints. (Paper: none) -/
@@ -60,5 +82,43 @@ theorem kineticEnergy_identity {T : ℝ} {u₀ : Position → Velocity}
   rw [kineticEnergy_spatialBalance (u t) (p t) hv hp
     (hu.velocityPeriodic t ht) (hu.pressurePeriodic t ht) (hu.incompressible t ht)] at h
   exact h
+
+/-- On any positive initial subinterval, some interior time has squared gradient
+energy at most the initial kinetic energy divided by twice the subinterval length.
+This is the averaging step before Poincaré, and allows arbitrary spatial mean.
+(Paper: Section 3.2, before eq. (7)) -/
+theorem exists_small_gradient_energy {T L : ℝ} {u₀ : Position → Velocity}
+    {u : ℝ → Position → Velocity} {p : ℝ → Position → ℝ}
+    (hL : 0 < L) (hLT : L ≤ T) (hu : SmoothSolution (Set.Icc 0 T) u₀ u p) :
+    ∃ t ∈ Set.Ioo 0 L,
+      (∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u t) x‖ ^ 2) ≤
+        (∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2) / (2 * L) := by
+  let e (r : ℝ) : ℝ := ∫ x in Set.Icc (0 : Position) 1, ‖u r x‖ ^ 2
+  let g (r : ℝ) : ℝ :=
+    ∫ x in Set.Icc (0 : Position) 1, ∑ i : Fin 3, ‖spatialPartial i (u r) x‖ ^ 2
+  have hwithin (r : ℝ) (hr : r ∈ Set.Icc 0 T) :
+      HasDerivWithinAt e (-2 * g r) (Set.Icc 0 T) r :=
+    kineticEnergy_identity (hL.trans_le hLT) hu r hr
+  have hcont : ContinuousOn e (Set.Icc 0 L) := by
+    intro r hr
+    have hrT : r ∈ Set.Icc 0 T := ⟨hr.1, hr.2.trans hLT⟩
+    exact (hwithin r hrT).continuousWithinAt.mono
+      (fun _ hx ↦ ⟨hx.1, hx.2.trans hLT⟩)
+  have hderiv (r : ℝ) (hr : r ∈ Set.Ioo 0 L) :
+      HasDerivAt e (-2 * g r) r :=
+    (hwithin r ⟨hr.1.le, hr.2.le.trans hLT⟩).hasDerivAt
+      (Icc_mem_nhds hr.1 (hr.2.trans_le hLT))
+  have hdiff : DifferentiableOn ℝ e (Set.Ioo 0 L) :=
+    fun r hr ↦ (hderiv r hr).differentiableAt.differentiableWithinAt
+  obtain ⟨r, hr, hslope⟩ := exists_deriv_eq_slope e hL hcont hdiff
+  rw [(hderiv r hr).deriv, sub_zero] at hslope
+  have hscaled := (eq_div_iff hL.ne').mp hslope
+  have hend : 0 ≤ e L := integral_nonneg (fun _ ↦ sq_nonneg _)
+  refine ⟨r, hr, ?_⟩
+  change g r ≤ (∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2) / (2 * L)
+  have hstart : e 0 = ∫ x in Set.Icc (0 : Position) 1, ‖u₀ x‖ ^ 2 := by
+    simp only [e, hu.initial]
+  rw [← hstart, le_div_iff₀ (mul_pos (by norm_num) hL)]
+  nlinarith only [hscaled, hend]
 
 end NavierStokesTao

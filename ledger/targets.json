@@ -1,4 +1,30 @@
 {
+ "exists_small_gradient_energy": {
+  "axioms": [
+   "propext",
+   "sorryAx",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.7,
+  "decl": "exists_small_gradient_energy",
+  "file": "NavierStokesTao/Energy.lean",
+  "inherited_sorry": true,
+  "model": "gpt-6",
+  "paper": "Section 3.2, before eq. (7",
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "90ccdaa900d38809",
+  "updated": "2026-11-23T23:54:17-05:00"
+ },
+ "forced_heat_energy_estimate": {
+  "decl": "forced_heat_energy_estimate",
+  "file": "NavierStokesTao/Energy.lean",
+  "note": "All tactics missed in 20261123-235026-Energy. The proof pass found no ready-made forced heat estimate. For each nonzero mode set lambda=4*pi^2*|k|^2. Weighted Cauchy-Schwarz on the causal exponential gives the squared forced mode bound lambda^-1 times the integral of exp(-lambda*(t-r))*||F(r,k)||^2. Use its exponential factor <=1 for the supremum estimate and Tonelli for the time-integrated estimate, which gains a second lambda^-1. Prove continuity by continuous finite-mode sums and a uniform tail bound from the same supremum estimate.",
+  "paper": "Lemma 2.1",
+  "state": "stuck",
+  "updated": "2026-11-23T23:57:15-05:00"
+ },
  "galileanVelocity_initial": {
   "axioms": [
    "propext",
@@ -35,13 +61,49 @@
   "stmt_hash": "d2b24c9f7e90ae3b",
   "updated": "2026-11-23T12:27:33-05:00"
  },
+ "globalRegularity_implies_shortTermBound": {
+  "decl": "globalRegularity_implies_shortTermBound",
+  "file": "NavierStokesTao/Implications.lean",
+  "note": "20261123-235715-Implications missed. The argument needs the positive-time strong convergence of solutions with weakly convergent data in Proposition 2.2(iii), and compatibility of restarts.",
+  "paper": "Section 3.4",
+  "state": "stuck",
+  "updated": "2026-11-23T23:57:40-05:00"
+ },
  "h1Norm_sq_galilean_centered": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 5.4,
   "decl": "h1Norm_sq_galilean_centered",
   "file": "NavierStokesTao/MeanZero.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
   "note": "Tactic tiers missed. After translation invariance, use the translated spatial derivative and expand the square with the cross term given by the mean.",
   "paper": "Section 2, mean-zero reduction",
-  "state": "stuck",
-  "updated": "2026-11-23T12:24:20-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "0e897d34fde38e6b",
+  "updated": "2026-11-23T23:55:42-05:00"
+ },
+ "heat_smoothing": {
+  "axioms": [
+   "propext",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.4,
+  "decl": "heat_smoothing",
+  "file": "NavierStokesTao/Heat.lean",
+  "inherited_sorry": false,
+  "model": "gpt-6",
+  "note": "The modewise comparison and sum proof is in inbox/heat_smoothing.c01.lean. In run 20261123-234745-Heat, rw [sub_mul, one_mul, hscale] at hlog expanded the left subtraction only, then failed on one_mul. A future attempt can expand both subtractions with simp only [sub_mul, one_mul, hscale] at hlog. The permitted repair round is spent.",
+  "paper": "eq. (5",
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "fabf6d96e8a13e29",
+  "updated": "2026-11-23T23:49:19-05:00"
  },
  "integral_periodic_divergence_eq_zero": {
   "axioms": [
@@ -56,10 +118,11 @@
   "model": "gpt-6",
   "note": "Mathlib divergence theorem applies after unfolding spatialPartial. Candidate run 20261123-172339-PeriodicCalculus stopped at Pi.single elaboration in the opposite-face shift. Give the integer shift the explicit type Fin 3 → ℤ before coercing its entries to ℝ. The candidate repair budget was used.",
   "paper": "none",
+  "pr": 19,
   "route": "model",
-  "state": "proved-local",
+  "state": "merged",
   "stmt_hash": "20f952592562562e",
-  "updated": "2026-11-23T17:26:41-05:00"
+  "updated": "2026-11-23T23:44:50-05:00"
  },
  "kineticEnergy_hasDerivWithinAt": {
   "decl": "kineticEnergy_hasDerivWithinAt",
@@ -114,6 +177,14 @@
   "stmt_hash": "c017ea0255fc33dc",
   "updated": "2026-11-23T12:33:23-05:00"
  },
+ "longTermBound_implies_globalRegularity": {
+  "decl": "longTermBound_implies_globalRegularity",
+  "file": "NavierStokesTao/Implications.lean",
+  "note": "20261123-235715-Implications missed. Requires a uniform restart time for data with bounded H1 norm (Proposition 2.2) and compatibility of restarts on overlapping time domains.",
+  "paper": "Section 3.1",
+  "state": "stuck",
+  "updated": "2026-11-23T23:57:40-05:00"
+ },
  "longTermBound_implies_shortTermBound": {
   "axioms": [
    "propext",
@@ -133,11 +204,22 @@
   "updated": "2026-11-23T12:17:29-05:00"
  },
  "regularityEquivalence": {
+  "axioms": [
+   "propext",
+   "sorryAx",
+   "Classical.choice",
+   "Quot.sound"
+  ],
+  "build_secs": 4.2,
   "decl": "regularityEquivalence",
   "file": "NavierStokesTao/Main.lean",
+  "inherited_sorry": true,
+  "model": "gpt-6",
   "paper": "Theorem 1.4",
-  "state": "open",
-  "updated": "2026-11-23T12:07:02-05:00"
+  "route": "model",
+  "state": "proved-local",
+  "stmt_hash": "c3abdfb413b5d212",
+  "updated": "2026-11-23T23:53:11-05:00"
  },
  "setIntegral_torusPoint": {
   "axioms": [
@@ -177,13 +259,21 @@
   "stmt_hash": "f1d42396e9695a92",
   "updated": "2026-11-23T13:09:36-05:00"
  },
+ "shortTermBound_implies_longTermBound": {
+  "decl": "shortTermBound_implies_longTermBound",
+  "file": "NavierStokesTao/Implications.lean",
+  "note": "20261123-235715-Implications missed. The accepted gradient-energy bound is available, but periodic Poincare and the small-data persistence bootstrap of (8)-(9) are still needed.",
+  "paper": "Section 3.2",
+  "state": "stuck",
+  "updated": "2026-11-23T23:57:40-05:00"
+ },
  "smoothSolution_galilean": {
   "decl": "smoothSolution_galilean",
   "file": "NavierStokesTao/MeanZero.lean",
-  "note": "Tactic tiers missed. The chain rule must be implemented for the affine boost on the relative time domain and for its spatial slices.",
+  "note": "Run 20261123-235639-MeanZero attempted the affine boost via the joint within derivative. Composition maps and product derivatives need explicit types, and the monolithic proof reached Lean's heartbeat limit. Split the derivative calculation into a private lemma before any next check.",
   "paper": "Section 2, mean-zero reduction",
   "state": "stuck",
-  "updated": "2026-11-23T12:24:19-05:00"
+  "updated": "2026-11-23T23:57:08-05:00"
  },
  "spatialMean_conserved": {
   "decl": "spatialMean_conserved",
