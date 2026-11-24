@@ -39,4 +39,24 @@ theorem integral_periodic_divergence_eq_zero (f : Fin 3 → Position → ℝ)
     exact hper i shift (i.insertNth (0 : ℝ) x)
   simp only [Pi.one_apply, Pi.zero_apply, hflux, sub_self]
 
+/-- The integral over the unit cube of a spatial partial derivative of a periodic C¹ scalar
+field vanishes. (Paper: none) -/
+theorem integral_periodic_spatialPartial_eq_zero (f : Position → ℝ) (hf : ContDiff ℝ 1 f)
+    (hp : LatticePeriodic f) (j : Fin 3) :
+    (∫ x in Set.Icc (0 : Position) 1, spatialPartial j f x) = 0 := by
+  classical
+  let flux (i : Fin 3) (x : Position) : ℝ := if i = j then f x else 0
+  have hs (i : Fin 3) : ContDiff ℝ 1 (flux i) := by
+    by_cases hi : i = j <;> simp [flux, hi, hf, contDiff_const]
+  have hp' (i : Fin 3) : LatticePeriodic (flux i) := by
+    intro m x
+    by_cases hi : i = j <;> simp [flux, hi, hp m x]
+  have he (x : Position) : (∑ i, spatialPartial i (flux i) x) = spatialPartial j f x := by
+    rw [Finset.sum_eq_single j]
+    · simp [flux]
+    · intro i _ hi
+      simp [flux, hi, spatialPartial]
+    · simp
+  simpa only [he] using integral_periodic_divergence_eq_zero flux hs hp'
+
 end NavierStokesTao
